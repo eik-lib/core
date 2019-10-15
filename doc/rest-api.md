@@ -8,10 +8,10 @@ Modules are packages of files to be loaded by a browser. Modules are versioned a
 
 ### Endpoint Summary Table
 
-| Name                                      | Verb | Endpoint                                    | Form Fields |
-| ----------------------------------------- | ---- | ------------------------------------------- | ----------- |
-| [Public Package URL](#public-package-url) | GET  | `/:org/assets/:type/:name/:version/:extras` |             |
-| [Upload a Package](#upload-a-package)     | PUT  | `/:org/assets/:type/:name/:version`         | `filedata`  |
+| Name                                      | Verb | Endpoint                           | Form Fields |
+| ----------------------------------------- | ---- | ---------------------------------- | ----------- |
+| [Public Package URL](#public-package-url) | GET  | `/:org/pkg/:name/:version/:extras` |             |
+| [Upload a Package](#upload-a-package)     | PUT  | `/:org/pkg/:name/:version`         | `filedata`  |
 
 ### Public Package URL
 
@@ -20,13 +20,12 @@ Modules are packages of files to be loaded by a browser. Modules are versioned a
 Retrieves files from a module at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/assets/:type/:name/:version/:extras
+https://:assetServerUrl:port/:org/pkg/:name/:version/:extras
 ```
 
 URL parameters:
 
 -   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
--   `:type` is the type of the package, can be `js` or `css`. Validator: [\bcss\b|\bjs\b](https://regexper.com/#%5Cbcss%5Cb%7C%5Cbjs%5Cb).
 -   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
 -   `:version` is the version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
 -   `:extras` whildcard pathname to any file in the package
@@ -39,8 +38,8 @@ Status codes:
 Example:
 
 ```bash
-curl http://localhost:4001/finn/assets/js/lit-html/8.4.1/index.js
-curl http://localhost:4001/finn/assets/js/lit-html/8.4.1/lib/util/parser.js
+curl http://localhost:4001/finn/pkg/lit-html/8.4.1/index.js
+curl http://localhost:4001/finn/pkg/lit-html/8.4.1/lib/util/parser.js
 ```
 
 ### Upload a package
@@ -50,13 +49,12 @@ curl http://localhost:4001/finn/assets/js/lit-html/8.4.1/lib/util/parser.js
 Puts a new package at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/assets/:type/:name/:version
+https://:assetServerUrl:port/:org/pkg/:name/:version
 ```
 
 URL parameters:
 
 -   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
--   `:type` is the type of the package, can be `js` or `css`. Validator: [\bcss\b|\bjs\b](https://regexper.com/#%5Cbcss%5Cb%7C%5Cbjs%5Cb).
 -   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
 -   `:version` is the version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
 
@@ -76,7 +74,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F filedata=@file.tar http://localhost:4001/finn/assets/js/lit-html/8.4.1
+curl -X PUT -i -F filedata=@file.tar http://localhost:4001/finn/pkg/lit-html/8.4.1
 ```
 
 ## Aliases
@@ -85,12 +83,12 @@ An alias is a shorthand between a major version of a package and the set exact v
 
 ### Endpoint Summary Table
 
-| Name                                  | Verb   | Endpoint                                 | Form Fields |
-| ------------------------------------- | ------ | ---------------------------------------- | ----------- |
-| [Public Alias URL](#public-alias-url) | GET    | `/:org/alias/:type/:name/:alias/:extras` |             |
-| [Create Alias](#create-alias)         | PUT    | `/:org/alias/:type/:name/:alias`         | `version`   |
-| [Update Alias](#update-alias)         | POST   | `/:org/alias/:type/:name/:alias`         | `version`   |
-| [Delete Alias](#delete-alias)         | DELETE | `/:org/alias/:type/:name/:alias`         |             |
+| Name                                  | Verb   | Endpoint                          | Form Fields |
+| ------------------------------------- | ------ | --------------------------------- | ----------- |
+| [Public Alias URL](#public-alias-url) | GET    | `/:org/pkg/:name/v:alias/:extras` |             |
+| [Create Alias](#create-alias)         | PUT    | `/:org/pkg/:name/v:alias`         | `version`   |
+| [Update Alias](#update-alias)         | POST   | `/:org/pkg/:name/v:alias`         | `version`   |
+| [Delete Alias](#delete-alias)         | DELETE | `/:org/pkg/:name/v:alias`         |             |
 
 ### Public Alias URL
 
@@ -99,13 +97,12 @@ An alias is a shorthand between a major version of a package and the set exact v
 Retrieves files from a module at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/alias/:type/:name/:alias/:extras
+https://:assetServerUrl:port/:org/pkg/:name/v:alias/:extras
 ```
 
 URL parameters:
 
 -   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
--   `:type` is the type of the package, can be `js` or `css`. Validator: [\bcss\b|\bjs\b](https://regexper.com/#%5Cbcss%5Cb%7C%5Cbjs%5Cb).
 -   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
 -   `:alias` is the major version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
 -   `:extras` whildcard pathname to any file in the package
@@ -118,8 +115,8 @@ Status codes:
 Example:
 
 ```bash
-curl http://localhost:4001/finn/alias/js/lit-html/8/index.js
-curl http://localhost:4001/finn/alias/js/lit-html/8/lib/util/parser.js
+curl http://localhost:4001/finn/pkg/lit-html/v8/index.js
+curl http://localhost:4001/finn/pkg/lit-html/v8/lib/util/parser.js
 ```
 
 ### Create Alias
@@ -129,13 +126,12 @@ curl http://localhost:4001/finn/alias/js/lit-html/8/lib/util/parser.js
 Puts a new alias at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/alias/:type/:name/:alias
+https://:assetServerUrl:port/pkg/:org/:name/v:alias
 ```
 
 URL parameters:
 
 -   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
--   `:type` is the type of the package, can be `js` or `css`. Validator: [\bcss\b|\bjs\b](https://regexper.com/#%5Cbcss%5Cb%7C%5Cbjs%5Cb).
 -   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
 -   `:alias` is the major version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
 
@@ -154,7 +150,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/assets/js/lit-html/8
+curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/lit-html/v8
 ```
 
 ### Update Alias
@@ -164,13 +160,12 @@ curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/assets/js/lit-html/8
 Updates an existing alias at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/alias/:type/:name/:alias
+https://:assetServerUrl:port/:org/pkg/:name/v:alias
 ```
 
 URL parameters:
 
 -   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
--   `:type` is the type of the package, can be `js` or `css`. Validator: [\bcss\b|\bjs\b](https://regexper.com/#%5Cbcss%5Cb%7C%5Cbjs%5Cb).
 -   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
 -   `:alias` is the major version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
 
@@ -189,7 +184,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/assets/js/lit-html/8
+curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/lit-html/v8
 ```
 
 ### Delete Alias
@@ -199,13 +194,12 @@ curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/assets/js/lit-html/8
 Deletes an existing alias from the service.
 
 ```bash
-https://:assetServerUrl:port/:org/alias/:type/:name/:alias
+https://:assetServerUrl:port/:org/pkg/:name/v:alias
 ```
 
 URL parameters:
 
 -   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
--   `:type` is the type of the package, can be `js` or `css`. Validator: [\bcss\b|\bjs\b](https://regexper.com/#%5Cbcss%5Cb%7C%5Cbjs%5Cb).
 -   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
 -   `:alias` is the major version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
 
@@ -220,7 +214,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X DELETE http://localhost:4001/finn/assets/js/lit-html/8
+curl -X DELETE http://localhost:4001/finn/pkg/lit-html/v8
 ```
 
 ## Import Maps
@@ -229,12 +223,12 @@ An import map hold a mapping or a set of mappings between ECMA Script Module (ES
 
 ### Endpoint Summary Table
 
-| Name                                                                    | Verb   | Endpoint                  | Form Fields            |
-| ----------------------------------------------------------------------- | ------ | ------------------------- | ---------------------- |
-| [Fetch import map ](#fetch-import-map)                                  | GET    | `/:org/import-maps/:name` |                        |
-| [Create new import map ](#create-new-import-map)                        | PUT    | `/:org/import-maps/:name` | `specifier`, `address` |
-| [Delete import map ](#delete-import-map)                                | DELETE | `/:org/import-maps/:name` |                        |
-| [Update field within an import map](#update-field-within-an-import-map) | PATCH  | `/:org/import-maps/:name` | `specifier`, `address` |
+| Name                                                                    | Verb   | Endpoint          | Form Fields            |
+| ----------------------------------------------------------------------- | ------ | ----------------- | ---------------------- |
+| [Fetch import map ](#fetch-import-map)                                  | GET    | `/:org/map/:name` |                        |
+| [Create new import map ](#create-new-import-map)                        | PUT    | `/:org/map/:name` | `specifier`, `address` |
+| [Delete import map ](#delete-import-map)                                | DELETE | `/:org/map/:name` |                        |
+| [Update field within an import map](#update-field-within-an-import-map) | PATCH  | `/:org/map/:name` | `specifier`, `address` |
 
 ### Fetch import map
 
@@ -243,7 +237,7 @@ An import map hold a mapping or a set of mappings between ECMA Script Module (ES
 Retrieves a import map from the service.
 
 ```bash
-https://:assetServerUrl:port/:org/import-maps/:name
+https://:assetServerUrl:port/:org/map/:name
 ```
 
 URL parameters:
@@ -259,7 +253,7 @@ Status codes:
 Example:
 
 ```bash
-curl http://localhost:4001/finn/alias/my-mapping
+curl http://localhost:4001/finn/map/a-mapping
 ```
 
 ### Create new import map
@@ -269,7 +263,7 @@ curl http://localhost:4001/finn/alias/my-mapping
 Puts a new import map at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/import-maps/:name
+https://:assetServerUrl:port/:org/map/:name
 ```
 
 URL parameters:
@@ -293,7 +287,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F specifier=lit-html -F address=http://localhost:4001/finn/assets/js/lit-html/8 http://localhost:4001/finn/import-maps/my-mapping
+curl -X PUT -i -F specifier=lit-html -F address=http://localhost:4001/finn/pkg/lit-html/v8 http://localhost:4001/finn/map/my-mapping
 ```
 
 ### Delete import map
@@ -303,7 +297,7 @@ curl -X PUT -i -F specifier=lit-html -F address=http://localhost:4001/finn/asset
 Deletes an existing import map from the service.
 
 ```bash
-https://:assetServerUrl:port/:org/import-maps/:name
+https://:assetServerUrl:port/:org/map/:name
 ```
 
 URL parameters:
@@ -322,7 +316,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X DELETE http://localhost:4001/finn/import-maps/my-mapping
+curl -X DELETE http://localhost:4001/finn/map/a-mapping
 ```
 
 ### Update field within an import map
@@ -332,7 +326,7 @@ curl -X DELETE http://localhost:4001/finn/import-maps/my-mapping
 Upates the content of an existing import map at the service.
 
 ```bash
-https://:assetServerUrl:port/:org/import-maps/:name
+https://:assetServerUrl:port/:org/map/:name
 ```
 
 URL parameters:
@@ -356,5 +350,5 @@ Status codes:
 Example:
 
 ```bash
-curl -X PATCH -i -F specifier=lit-element -F address=http://localhost:4001/finn/assets/js/lit-element/3 http://localhost:4001/finn/import-maps/my-mapping
+curl -X PATCH -i -F specifier=lit-element -F address=http://localhost:4001/finn/pkg/lit-element/v3 http://localhost:4001/finn/map/a-mapping
 ```
