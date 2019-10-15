@@ -4,7 +4,7 @@
   "description": "Core package for Asset Pipe server",
   "main": "services/fastify.js",
   "scripts": {
-    "test": "tap",
+    "test": "tap test/**/*.js",
     "start": "NODE_DEBUG=foo node services/fastify.js",
     "lint:format": "eslint --fix .",
     "lint": "eslint ."
