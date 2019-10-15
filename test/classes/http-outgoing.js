@@ -1,7 +1,7 @@
 'use strict';
 
-const HttpOutgoing = require('../../lib/classes/http-outgoing');
 const tap = require('tap');
+const HttpOutgoing = require('../../lib/classes/http-outgoing');
 
 //
 // Constructor

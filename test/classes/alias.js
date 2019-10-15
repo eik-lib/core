@@ -1,7 +1,7 @@
 'use strict';
 
-const Alias = require('../../lib/classes/alias');
 const tap = require('tap');
+const Alias = require('../../lib/classes/alias');
 
 //
 // Constructor
