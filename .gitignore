@@ -3,3 +3,13 @@ package-lock.json
 uploads
 tmp
 gcloud.json
+node_modules/**/*
+.DS_Store
+tmp/**/*
+.idea
+.idea/**/*
+*.iml
+*.log
+coverage
+.vscode
+.nyc_output/
