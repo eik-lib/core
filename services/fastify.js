@@ -1,6 +1,8 @@
 'use strict';
 
 const fastify = require('fastify');
+const path = require('path');
+
 const {
     BASE_ALIAS,
     BASE_ASSETS,
@@ -40,8 +42,6 @@ const opts = {
         params: assetPost.params,
     },
 };
-
-const path = require('path');
 
 const cred = path.join(__dirname, '../gcloud.json');
 process.env.GOOGLE_APPLICATION_CREDENTIALS = cred;
@@ -228,7 +228,7 @@ app.delete(
     }
 );
 
-app.listen(4001, (err, address) => {
+app.listen(4001, (err) => {
     if (err) {
         app.log.error(err);
         process.exit(1);
