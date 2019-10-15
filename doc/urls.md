@@ -2,18 +2,20 @@
 
 The asset service has the following URI structure
 
-## Modules
+## Packages
 
 Modules are packages of files to be loaded by a browser. Modules are versioned and consist of one or multiple files. A module is imutable.
 
 ### Endpoint Summary Table
 
-| Name               | Verb | Endpoint                                    |
-| ------------------ | ---- | ------------------------------------------- |
-| Public Package URL | GET  | `/:org/assets/:type/:name/:version/:extras` |
-| Upload a Package   | PUT  | `/:org/assets/:type/:name/:version`         |
+| Name                                      | Verb | Endpoint                                    | Form Fields |
+| ----------------------------------------- | ---- | ------------------------------------------- | ----------- |
+| [Public Package URL](#public-package-url) | GET  | `/:org/assets/:type/:name/:version/:extras` |             |
+| [Upload a Package](#upload-a-package)     | PUT  | `/:org/assets/:type/:name/:version`         | `filedata`  |
 
-### Method: `GET`
+### Public Package URL
+
+**Method:** `GET`
 
 Retrieves files from a module at the service.
 
@@ -41,7 +43,9 @@ curl http://localhost:4001/finn/assets/js/lit-html/8.4.1/index.js
 curl http://localhost:4001/finn/assets/js/lit-html/8.4.1/lib/util/parser.js
 ```
 
-### Method: `PUT`
+### Upload a package
+
+**Method:** `PUT`
 
 Puts a new package at the service.
 
@@ -81,14 +85,16 @@ An alias is a shorthand between a major version of a package and the set exact v
 
 ### Endpoint Summary Table
 
-| Name             | Verb   | Endpoint                                 |
-| ---------------- | ------ | ---------------------------------------- |
-| Public Alias URL | GET    | `/:org/alias/:type/:name/:alias/:extras` |
-| Create Alias     | PUT    | `/:org/alias/:type/:name/:alias`         |
-| Update Alias     | POST   | `/:org/alias/:type/:name/:alias`         |
-| Delete Alias     | DELETE | `/:org/alias/:type/:name/:alias`         |
+| Name                                  | Verb   | Endpoint                                 | Form Fields |
+| ------------------------------------- | ------ | ---------------------------------------- | ----------- |
+| [Public Alias URL](#public-alias-url) | GET    | `/:org/alias/:type/:name/:alias/:extras` |             |
+| [Create Alias](#create-alias)         | PUT    | `/:org/alias/:type/:name/:alias`         | `version`   |
+| [Update Alias](#update-alias)         | POST   | `/:org/alias/:type/:name/:alias`         | `version`   |
+| [Delete Alias](#delete-alias)         | DELETE | `/:org/alias/:type/:name/:alias`         |             |
 
-### Method: `GET`
+### Public Alias URL
+
+**Method:** `GET`
 
 Retrieves files from a module at the service.
 
@@ -116,7 +122,9 @@ curl http://localhost:4001/finn/alias/js/lit-html/8/index.js
 curl http://localhost:4001/finn/alias/js/lit-html/8/lib/util/parser.js
 ```
 
-### Method: `PUT`
+### Create Alias
+
+**Method:** `PUT`
 
 Puts a new alias at the service.
 
@@ -149,7 +157,9 @@ Example:
 curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/assets/js/lit-html/8
 ```
 
-### Method: `POST`
+### Update Alias
+
+**Method:** `POST`
 
 Updates an existing alias at the service.
 
@@ -182,7 +192,9 @@ Example:
 curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/assets/js/lit-html/8
 ```
 
-### Method: `DELETE`
+### Delete Alias
+
+**Method:** `DELETE`
 
 Deletes an existing alias from the service.
 
@@ -217,14 +229,16 @@ An import map hold a mapping or a set of mappings between ECMA Script Module (ES
 
 ### Endpoint Summary Table
 
-| Name                              | Verb   | Endpoint                  |
-| --------------------------------- | ------ | ------------------------- |
-| Fetch import map by name          | GET    | `/:org/import-maps/:name` |
-| Create new import map by name     | PUT    | `/:org/import-maps/:name` |
-| Delete import map by name         | DELETE | `/:org/import-maps/:name` |
-| Update field within an import map | PATCH  | `/:org/import-maps/:name` |
+| Name                                                                    | Verb   | Endpoint                  | Form Fields            |
+| ----------------------------------------------------------------------- | ------ | ------------------------- | ---------------------- |
+| [Fetch import map ](#fetch-import-map)                                  | GET    | `/:org/import-maps/:name` |                        |
+| [Create new import map ](#create-new-import-map)                        | PUT    | `/:org/import-maps/:name` | `specifier`, `address` |
+| [Delete import map ](#delete-import-map)                                | DELETE | `/:org/import-maps/:name` |                        |
+| [Update field within an import map](#update-field-within-an-import-map) | PATCH  | `/:org/import-maps/:name` | `specifier`, `address` |
 
-### Method: `GET`
+### Fetch import map
+
+**Method:** `GET`
 
 Retrieves a import map from the service.
 
@@ -248,7 +262,9 @@ Example:
 curl http://localhost:4001/finn/alias/my-mapping
 ```
 
-### Method: `PUT`
+### Create new import map
+
+**Method:** `PUT`
 
 Puts a new import map at the service.
 
@@ -280,7 +296,9 @@ Example:
 curl -X PUT -i -F specifier=lit-html -F address=http://localhost:4001/finn/assets/js/lit-html/8 http://localhost:4001/finn/import-maps/my-mapping
 ```
 
-### Method: `DELETE`
+### Delete import map
+
+**Method:** `DELETE`
 
 Deletes an existing import map from the service.
 
@@ -307,7 +325,9 @@ Example:
 curl -X DELETE http://localhost:4001/finn/import-maps/my-mapping
 ```
 
-### Method: `PATCH`
+### Update field within an import map
+
+**Method:** `PATCH`
 
 Upates the content of an existing import map at the service.
 
