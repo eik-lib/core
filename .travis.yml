@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+    - '12'
+script:
+    - npm test
+    - npm run lint
+cache:
+    npm: true
+    directories:
+        - node_modules
+branches:
+    only:
+        - master
+        - '/^greenkeeper/.*$/'
+dist: trusty
