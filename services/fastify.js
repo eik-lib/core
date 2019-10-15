@@ -1,5 +1,6 @@
 'use strict';
 
+const fastify = require('fastify');
 const {
     BASE_ALIAS,
     BASE_ASSETS,
@@ -14,7 +15,6 @@ const mapPut = require('../lib/handlers/import-map.put');
 const mapGet = require('../lib/handlers/import-map.get');
 const mapDel = require('../lib/handlers/import-map.delete');
 
-const fastify = require('fastify');
 const SinkFS = require('../lib/sinks/fs');
 // const SinkGCS = require('../lib/sinks/gcs');
 
@@ -42,6 +42,7 @@ const opts = {
 };
 
 const path = require('path');
+
 const cred = path.join(__dirname, '../gcloud.json');
 process.env.GOOGLE_APPLICATION_CREDENTIALS = cred;
 
