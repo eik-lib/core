@@ -126,7 +126,7 @@ curl http://localhost:4001/finn/pkg/lit-html/v8/lib/util/parser.js
 Puts a new alias at the service.
 
 ```bash
-https://:assetServerUrl:port/pkg/:org/:name/v:alias
+https://:assetServerUrl:port/:org/pkg/:name/v:alias
 ```
 
 URL parameters:
