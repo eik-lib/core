@@ -38,8 +38,7 @@ Status codes:
 Example:
 
 ```bash
-curl http://localhost:4001/finn/pkg/lit-html/8.4.1/index.js
-curl http://localhost:4001/finn/pkg/lit-html/8.4.1/lib/util/parser.js
+curl -X GET http://localhost:4001/finn/pkg/fuzz/8.4.1/main/index.js
 ```
 
 ### Upload a package
@@ -74,7 +73,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F filedata=@file.tar http://localhost:4001/finn/pkg/lit-html/8.4.1
+curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/finn/pkg/fuzz/8.4.1
 ```
 
 ## Aliases
@@ -115,8 +114,7 @@ Status codes:
 Example:
 
 ```bash
-curl http://localhost:4001/finn/pkg/lit-html/v8/index.js
-curl http://localhost:4001/finn/pkg/lit-html/v8/lib/util/parser.js
+ curl -X GET -L http://localhost:4001/finn/pkg/fuzz/v8/main/index.js
 ```
 
 ### Create Alias
@@ -150,7 +148,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/lit-html/v8
+curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/fuzz/v8
 ```
 
 ### Update Alias
@@ -184,7 +182,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/lit-html/v8
+curl -X POST -i -F version=8.4.1 http://localhost:4001/finn/pkg/fuzz/v8
 ```
 
 ### Delete Alias
@@ -214,7 +212,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X DELETE http://localhost:4001/finn/pkg/lit-html/v8
+curl -X DELETE http://localhost:4001/finn/pkg/fuzz/v8
 ```
 
 ## Import Maps
@@ -253,7 +251,7 @@ Status codes:
 Example:
 
 ```bash
-curl http://localhost:4001/finn/map/a-mapping
+curl -X GET http://localhost:4001/finn/map/buzz
 ```
 
 ### Create new import map
@@ -287,7 +285,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X PUT -i -F specifier=lit-html -F address=http://localhost:4001/finn/pkg/lit-html/v8 http://localhost:4001/finn/map/my-mapping
+curl -X PUT -i -F specifier=fuzz -F address=http://localhost:4001/finn/pkg/fuzz/v8 http://localhost:4001/finn/map/buzz
 ```
 
 ### Delete import map
@@ -316,7 +314,7 @@ Status codes:
 Example:
 
 ```bash
-curl -X DELETE http://localhost:4001/finn/map/a-mapping
+curl -X DELETE http://localhost:4001/finn/map/buzz
 ```
 
 ### Update field within an import map
@@ -350,5 +348,5 @@ Status codes:
 Example:
 
 ```bash
-curl -X PATCH -i -F specifier=lit-element -F address=http://localhost:4001/finn/pkg/lit-element/v3 http://localhost:4001/finn/map/a-mapping
+curl -X PATCH -i -F specifier=fuzz -F address=http://localhost:4001/finn/pkg/fuzz/v8 http://localhost:4001/finn/map/buzz
 ```
