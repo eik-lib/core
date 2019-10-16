@@ -1,9 +1,9 @@
-name: Push To Master 
+name: PR Targeting Master 
 
 on:
-  push:
+  pull_request:
     branches:
-      - master
+    - master
 
 jobs:
   build:
