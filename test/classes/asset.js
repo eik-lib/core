@@ -1,7 +1,7 @@
 'use strict';
 
-const Asset = require('../../lib/classes/asset');
 const tap = require('tap');
+const Asset = require('../../lib/classes/asset');
 
 //
 // Constructor
