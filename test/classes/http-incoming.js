@@ -1,7 +1,7 @@
 'use strict';
 
-const HttpIncoming = require('../../lib/classes/http-incoming');
 const tap = require('tap');
+const HttpIncoming = require('../../lib/classes/http-incoming');
 
 //
 // Constructor

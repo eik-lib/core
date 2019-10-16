@@ -1,7 +1,7 @@
 'use strict';
 
-const UploadLog = require('../../lib/classes/upload-log');
 const tap = require('tap');
+const UploadLog = require('../../lib/classes/upload-log');
 
 //
 // Constructor

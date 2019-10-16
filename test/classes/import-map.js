@@ -1,7 +1,7 @@
 'use strict';
 
-const ImportMap = require('../../lib/classes/import-map');
 const tap = require('tap');
+const ImportMap = require('../../lib/classes/import-map');
 
 //
 // Constructor
