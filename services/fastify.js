@@ -8,14 +8,16 @@ const {
     BASE_ASSETS,
     BASE_IMPORT_MAPS,
 } = require('../lib/utils/globals');
-const assetPost = require('../lib/handlers/asset.post');
-const assetGet = require('../lib/handlers/asset.get');
-const aliasPut = require('../lib/handlers/alias.put');
+
+const pkgGet = require('../lib/handlers/pkg.get');
+const pkgPut = require('../lib/handlers/pkg.put');
 const aliasGet = require('../lib/handlers/alias.get');
+const aliasPut = require('../lib/handlers/alias.put');
+const aliasPost = require('../lib/handlers/alias.post');
 const aliasDel = require('../lib/handlers/alias.delete');
-const mapPut = require('../lib/handlers/import-map.put');
-const mapGet = require('../lib/handlers/import-map.get');
-const mapDel = require('../lib/handlers/import-map.delete');
+const mapPut = require('../lib/handlers/map.put');
+const mapGet = require('../lib/handlers/map.get');
+const mapDel = require('../lib/handlers/map.delete');
 
 const SinkFS = require('../lib/sinks/fs');
 // const SinkGCS = require('../lib/sinks/gcs');
@@ -26,22 +28,6 @@ const sink = new SinkFS();
 const app = fastify({
     logger: true,
 });
-
-const opts = {
-    schema: {
-        /*
-        response: {
-            200: {
-                type: 'object',
-                properties: {
-                    hello: { type: 'string' }
-                }
-            }
-        },
-        */
-        params: assetPost.params,
-    },
-};
 
 const cred = path.join(__dirname, '../gcloud.json');
 process.env.GOOGLE_APPLICATION_CREDENTIALS = cred;
@@ -61,172 +47,163 @@ app.setErrorHandler((error, request, reply) => {
     reply.code(404).send('Not found');
 });
 
-// curl -X POST -i -F field1=bar -F field2=foo -F filedata=@large.tar http://localhost:4001/finn/assets/js/my-module/8.8.8
 
-app.post(
-    `/:org${BASE_ASSETS}/:type/:name/:version`,
-    opts,
-    async (request, reply) => {
-        const stream = await assetPost.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name,
-            request.params.version
-        );
+//
+// Packages
+//
 
-        reply.type(stream.mimeType);
-        reply.send(stream);
-    }
-);
+// curl -X GET http://localhost:4001/finn/pkg/fuzz/8.4.1/main/index.js
 
-// curl http://localhost:4001/finn/assets/js/my-module/8.8.8/foo
-// curl http://localhost:4001/finn/assets/js/my-module/8.8.8/lang.js
-// curl -I -X GET http://localhost:4001/finn/assets/js/my-module/8.8.8/lang.js
+app.get(`/:org${BASE_ASSETS}/:name/:version/*`, async (request, reply) => {
+    const stream = await pkgGet.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.version,
+        request.params['*']
+    );
 
-// TODO: Handle when method is requested without a body (curl -I .....)
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
 
-app.get(
-    `/:org${BASE_ASSETS}/:type/:name/:version/*`,
-    opts,
-    async (request, reply) => {
-        const stream = await assetGet.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name,
-            request.params.version,
-            request.params['*']
-        );
+// curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/finn/pkg/fuzz/8.4.1
 
-        reply.type(stream.mimeType);
-        reply.send(stream);
-    }
-);
+app.put(`/:org${BASE_ASSETS}/:name/:version`, async (request, reply) => {
+    const stream = await pkgPut.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.version
+    );
 
-// curl -X PUT -i -F version=8.8.8 -F foo=bar http://localhost:4001/finn/alias/js/my-module
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
 
-app.put(
-    `/:org${BASE_ALIAS}/:type/:name/:alias`,
-    opts,
-    async (request, reply) => {
-        const stream = await aliasPut.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name,
-            request.params.alias
-        );
 
-        reply.type(stream.mimeType);
-        reply.send(stream);
-    }
-);
+//
+// Alias
+//
 
-// curl http://localhost:4001/finn/alias/js/my-module/8/lang.js
-// curl -L http://localhost:4001/finn/alias/js/my-module/8/lang.js
-// curl -I -X GET http://localhost:4001/finn/alias/js/my-module/8/lang.js
+// curl -X GET -L http://localhost:4001/finn/pkg/fuzz/v8/main/index.js
 
-app.get(
-    `/:org${BASE_ALIAS}/:type/:name/:alias/*`,
-    opts,
-    async (request, reply) => {
-        const stream = await aliasGet.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name,
-            request.params.alias,
-            request.params['*']
-        );
+app.get(`/:org${BASE_ALIAS}/:name/v:alias/*`, async (request, reply) => {
+    const stream = await aliasGet.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.alias,
+        request.params['*']
+    );
 
-        reply.type(stream.mimeType);
-        reply.code(stream.statusCode);
-        reply.redirect(stream.location);
-    }
-);
+    reply.type(stream.mimeType);
+    reply.code(stream.statusCode);
+    reply.redirect(stream.location);
+});
 
-// curl -X DELETE http://localhost:4001/finn/alias/js/my-module/8
+// curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/fuzz/v8
 
-app.delete(
-    `/:org${BASE_ALIAS}/:type/:name/:alias`,
-    opts,
-    async (request, reply) => {
-        const stream = await aliasDel.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name,
-            request.params.alias
-        );
+app.put(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasPut.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.alias
+    );
 
-        reply.type(stream.mimeType);
-        reply.send(stream);
-    }
-);
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
 
-// curl -X PUT -i -F specifier=lit-html -F address=http://foo.com http://localhost:4001/finn/import-maps/js/global-map
+// curl -X POST -i -F version=8.4.1 http://localhost:4001/finn/pkg/lit-html/v8
 
-app.put(
-    `/:org${BASE_IMPORT_MAPS}/:type/:name`,
-    opts,
-    async (request, reply) => {
-        const stream = await mapPut.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name
-        );
+app.post(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasPost.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.alias
+    );
 
-        reply.type(stream.mimeType);
-        reply.send(stream);
-    }
-);
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
 
-// curl http://localhost:4001/finn/import-maps/js/global-map
+// curl -X DELETE http://localhost:4001/finn/pkg/fuzz/v8
 
-app.get(
-    `/:org${BASE_IMPORT_MAPS}/:type/:name`,
-    opts,
-    async (request, reply) => {
-        const stream = await mapGet.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name
-        );
+app.delete(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasDel.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.alias
+    );
 
-        reply.type(stream.mimeType);
-        reply.send(stream);
-    }
-);
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
 
-// curl -X DELETE http://localhost:4001/finn/import-maps/js/global-map
 
-app.delete(
-    `/:org${BASE_IMPORT_MAPS}/:type/:name`,
-    opts,
-    async (request, reply) => {
-        const stream = await mapDel.handler(
-            sink,
-            request.req,
-            request.params.org,
-            request.params.type,
-            request.params.name
-        );
+//
+// Import Maps
+//
 
-        reply.type(stream.mimeType);
-        reply.code(stream.statusCode);
-        reply.send(stream);
-    }
-);
+// curl -X GET http://localhost:4001/finn/map/buzz
+
+app.get(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
+    const stream = await mapGet.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name
+    );
+
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
+
+// curl -X PUT -i -F specifier=fuzz -F address=http://localhost:4001/finn/pkg/fuzz/v8 http://localhost:4001/finn/map/buzz
+
+app.put(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
+    const stream = await mapPut.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name
+    );
+
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
+
+// curl -X DELETE http://localhost:4001/finn/map/buzz
+
+app.delete(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
+    const stream = await mapDel.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name
+    );
+
+    reply.type(stream.mimeType);
+    reply.code(stream.statusCode);
+    reply.send(stream);
+});
+
+// curl -X PATCH -i -F specifier=fuzz -F address=http://localhost:4001/finn/pkg/fuzz/v8 http://localhost:4001/finn/map/buzz
+
+app.patch(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
+    return {map: 'patch'}
+});
+
 
 app.listen(4001, (err) => {
     if (err) {
