@@ -4,7 +4,6 @@ const fastify = require('fastify');
 const path = require('path');
 
 const {
-    BASE_ALIAS,
     BASE_ASSETS,
     BASE_IMPORT_MAPS,
 } = require('../lib/utils/globals');
@@ -17,7 +16,6 @@ const aliasPost = require('../lib/handlers/alias.post');
 const aliasDel = require('../lib/handlers/alias.delete');
 const mapPut = require('../lib/handlers/map.put');
 const mapGet = require('../lib/handlers/map.get');
-const mapDel = require('../lib/handlers/map.delete');
 
 const SinkFS = require('../lib/sinks/fs');
 // const SinkGCS = require('../lib/sinks/gcs');
@@ -52,9 +50,9 @@ app.setErrorHandler((error, request, reply) => {
 // Packages
 //
 
-// curl -X GET http://localhost:4001/finn/pkg/fuzz/8.4.1/main/index.js
+// curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
 
-app.get(`/:org${BASE_ASSETS}/:name/:version/*`, async (request, reply) => {
+app.get(`/:org/${BASE_ASSETS}/:name/:version/*`, async (request, reply) => {
     const stream = await pkgGet.handler(
         sink,
         request.req,
@@ -68,9 +66,9 @@ app.get(`/:org${BASE_ASSETS}/:name/:version/*`, async (request, reply) => {
     reply.send(stream);
 });
 
-// curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/finn/pkg/fuzz/8.4.1
+// curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1
 
-app.put(`/:org${BASE_ASSETS}/:name/:version`, async (request, reply) => {
+app.put(`/:org/${BASE_ASSETS}/:name/:version`, async (request, reply) => {
     const stream = await pkgPut.handler(
         sink,
         request.req,
@@ -85,16 +83,52 @@ app.put(`/:org${BASE_ASSETS}/:name/:version`, async (request, reply) => {
 
 
 //
-// Alias
+// Import Maps
 //
 
-// curl -X GET -L http://localhost:4001/finn/pkg/fuzz/v8/main/index.js
+// curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
 
-app.get(`/:org${BASE_ALIAS}/:name/v:alias/*`, async (request, reply) => {
+app.get(`/:org/${BASE_IMPORT_MAPS}/:name/:version`, async (request, reply) => {
+    const stream = await mapGet.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.version,
+    );
+
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
+
+// curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/buzz/4.2.2
+
+app.put(`/:org/${BASE_IMPORT_MAPS}/:name/:version`, async (request, reply) => {
+    const stream = await mapPut.handler(
+        sink,
+        request.req,
+        request.params.org,
+        request.params.name,
+        request.params.version,
+    );
+
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
+
+
+//
+// Alias Packages
+//
+
+// curl -X GET -L http://localhost:4001/biz/pkg/fuzz/v8/main/index.js
+
+app.get(`/:org/${BASE_ASSETS}/:name/v:alias/*`, async (request, reply) => {
     const stream = await aliasGet.handler(
         sink,
         request.req,
         request.params.org,
+        BASE_ASSETS,
         request.params.name,
         request.params.alias,
         request.params['*']
@@ -105,13 +139,14 @@ app.get(`/:org${BASE_ALIAS}/:name/v:alias/*`, async (request, reply) => {
     reply.redirect(stream.location);
 });
 
-// curl -X PUT -i -F version=8.4.1 http://localhost:4001/finn/pkg/fuzz/v8
+// curl -X PUT -i -F version=8.4.1 http://localhost:4001/biz/pkg/fuzz/v8
 
-app.put(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
+app.put(`/:org/${BASE_ASSETS}/:name/v:alias`, async (request, reply) => {
     const stream = await aliasPut.handler(
         sink,
         request.req,
         request.params.org,
+        BASE_ASSETS,
         request.params.name,
         request.params.alias
     );
@@ -120,13 +155,14 @@ app.put(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
     reply.send(stream);
 });
 
-// curl -X POST -i -F version=8.4.1 http://localhost:4001/finn/pkg/lit-html/v8
+// curl -X POST -i -F version=8.4.1 http://localhost:4001/biz/pkg/lit-html/v8
 
-app.post(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
+app.post(`/:org/${BASE_ASSETS}/:name/v:alias`, async (request, reply) => {
     const stream = await aliasPost.handler(
         sink,
         request.req,
         request.params.org,
+        BASE_ASSETS,
         request.params.name,
         request.params.alias
     );
@@ -135,13 +171,14 @@ app.post(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
     reply.send(stream);
 });
 
-// curl -X DELETE http://localhost:4001/finn/pkg/fuzz/v8
+// curl -X DELETE http://localhost:4001/biz/pkg/fuzz/v8
 
-app.delete(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
+app.delete(`/:org/${BASE_ASSETS}/:name/v:alias`, async (request, reply) => {
     const stream = await aliasDel.handler(
         sink,
         request.req,
         request.params.org,
+        BASE_ASSETS,
         request.params.name,
         request.params.alias
     );
@@ -152,56 +189,72 @@ app.delete(`/:org${BASE_ALIAS}/:name/v:alias`, async (request, reply) => {
 
 
 //
-// Import Maps
+// Alias Import Maps
 //
 
-// curl -X GET http://localhost:4001/finn/map/buzz
+// curl -X GET -L http://localhost:4001/biz/map/buzz/v4
 
-app.get(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
-    const stream = await mapGet.handler(
+app.get(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasGet.handler(
         sink,
         request.req,
         request.params.org,
-        request.params.name
-    );
-
-    reply.type(stream.mimeType);
-    reply.send(stream);
-});
-
-// curl -X PUT -i -F specifier=fuzz -F address=http://localhost:4001/finn/pkg/fuzz/v8 http://localhost:4001/finn/map/buzz
-
-app.put(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
-    const stream = await mapPut.handler(
-        sink,
-        request.req,
-        request.params.org,
-        request.params.name
-    );
-
-    reply.type(stream.mimeType);
-    reply.send(stream);
-});
-
-// curl -X DELETE http://localhost:4001/finn/map/buzz
-
-app.delete(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
-    const stream = await mapDel.handler(
-        sink,
-        request.req,
-        request.params.org,
-        request.params.name
+        BASE_IMPORT_MAPS,
+        request.params.name,
+        request.params.alias,
     );
 
     reply.type(stream.mimeType);
     reply.code(stream.statusCode);
+    reply.redirect(stream.location);
+});
+
+// curl -X PUT -i -F version=4.2.2 http://localhost:4001/biz/map/buzz/v4
+
+app.put(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasPut.handler(
+        sink,
+        request.req,
+        request.params.org,
+        BASE_IMPORT_MAPS,
+        request.params.name,
+        request.params.alias
+    );
+
+    reply.type(stream.mimeType);
     reply.send(stream);
 });
 
-// curl -X PATCH -i -F specifier=fuzz -F address=http://localhost:4001/finn/pkg/fuzz/v8 http://localhost:4001/finn/map/buzz
+// curl -X POST -i -F version=4.4.2 http://localhost:4001/biz/map/buzz/v4
 
-app.patch(`/:org${BASE_IMPORT_MAPS}/:name`, async (request, reply) => {
-    return {map: 'patch'}
+app.post(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasPost.handler(
+        sink,
+        request.req,
+        request.params.org,
+        BASE_IMPORT_MAPS,
+        request.params.name,
+        request.params.alias
+    );
+
+    reply.type(stream.mimeType);
+    reply.send(stream);
+});
+
+// curl -X DELETE http://localhost:4001/biz/map/buzz/v4
+
+app.delete(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
+    const stream = await aliasDel.handler(
+        sink,
+        request.req,
+        request.params.org,
+        BASE_IMPORT_MAPS,
+        request.params.name,
+        request.params.alias
+    );
+
+    reply.type(stream.mimeType);
+    reply.send(stream);
 });
 
 
