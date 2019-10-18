@@ -4,7 +4,7 @@ The asset service has the following URI structure
 
 ## Packages
 
-Modules are packages of files to be loaded by a browser. Modules are versioned and consist of one or multiple files. A module is immutable.
+Modules are packages of files to be loaded by a browser. Modules are versioned and consist of one or more files. A module are immutable.
 
 ### Endpoint Summary Table
 
@@ -79,8 +79,8 @@ curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/finn/pkg/fuzz/8.4.
 
 ## Import Maps
 
-An [import map](https://github.com/WICG/import-maps) hold a mapping or a set of mappings between ECMA Script Module (ESM) bare imports and an alias of a package.
-Import maps are versioned and is immutable.
+An [import map](https://github.com/WICG/import-maps) holds a mapping or a set of mappings between ECMA Script Module (ESM) bare imports and an absolute URL.
+Import maps are versioned and are immutable.
 
 ### Endpoint Summary Table
 
@@ -170,7 +170,7 @@ An alias is a shorthand between a major version of a package / import map and th
 
 **Method:** `GET`
 
-Retrieves files from a package or a import map at the service.
+Retrieves files from a package or an import map at the service.
 
 ```bash
 https://:assetServerUrl:port/:org/:type/:name/v:alias/:extras
