@@ -24,6 +24,7 @@ const sink = new SinkFS();
 // const sink = new SinkGCS();
 
 const app = fastify({
+    ignoreTrailingSlash: true,
     logger: true,
 });
 
