@@ -5,25 +5,31 @@ const fetch = require('node-fetch');
 const FormData = require('form-data');
 const { join } = require('path');
 const { createReadStream } = require('fs');
-const fixture = require('./utils/fixture');
 const extractBody = require('./utils/extract-body');
 
-fixture({
-    org: 'biz',
-    name: 'fuzz',
-    version: '8.4.1',
-    extras: '/main/index.js',
-    content: 'hello world',
-});
-
 test('Packages GET', async t => {
+    const formData = new FormData();
+    formData.append(
+        'filedata',
+        createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
+    );
+
+    await fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
+        method: 'PUT',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
     const res = await fetch(
         'http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js',
     );
     const body = await res.text();
-
     t.equals(res.status, 200, 'server should respond with 200 ok');
-    t.equals(body, 'hello world', 'server should respond with file contents');
+    t.match(
+        body,
+        'hi there from the main file',
+        'server should respond with file contents',
+    );
 });
 
 test('Packages PUT - all files extracted, files accessible after upload', async t => {
@@ -47,33 +53,33 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     const file2 = await fetch(
         'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js.map',
     );
-    // const file3 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
-    // );
-    // const file4 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js.map',
-    // );
-    // const file5 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css',
-    // );
-    // const file6 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css.map',
-    // );
-    // const file7 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
-    // );
+    const file3 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
+    );
+    const file4 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js.map',
+    );
+    const file5 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css',
+    );
+    const file6 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css.map',
+    );
+    const file7 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
+    );
 
     t.equals(file1.status, 200, 'GET to index.js responded with 200 ok');
     t.equals(file2.status, 200, 'GET to index.js.map responded with 200 ok');
-    // t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
-    // t.equals(
-    //     file4.status,
-    //     200,
-    //     'GET to ie11 index.js.map responded with 200 ok',
-    // );
-    // t.equals(file5.status, 200, 'GET to index.css responded with 200 ok');
-    // t.equals(file6.status, 200, 'GET to index.css.map responded with 200 ok');
-    // t.equals(file7.status, 200, 'GET to assets.json responded with 200 ok');
+    t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
+    t.equals(
+        file4.status,
+        200,
+        'GET to ie11 index.js.map responded with 200 ok',
+    );
+    t.equals(file5.status, 200, 'GET to index.css responded with 200 ok');
+    t.equals(file6.status, 200, 'GET to index.css.map responded with 200 ok');
+    t.equals(file7.status, 200, 'GET to assets.json responded with 200 ok');
 });
 
 test('Packages PUT - all files extracted, correct response received', async t => {

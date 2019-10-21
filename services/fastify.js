@@ -15,9 +15,15 @@ const mapPut = require('../lib/handlers/map.put');
 const mapGet = require('../lib/handlers/map.get');
 
 const SinkFS = require('../lib/sinks/fs');
+const SinkMem = require('../lib/sinks/mem');
 // const SinkGCS = require('../lib/sinks/gcs');
 
-const sink = new SinkFS();
+let sink;
+if (process.env.NODE_ENV === 'test') {
+    sink = new SinkMem();
+} else {
+    sink = new SinkFS();
+}
 // const sink = new SinkGCS();
 
 const app = fastify({
