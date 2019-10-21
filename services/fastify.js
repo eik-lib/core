@@ -3,10 +3,7 @@
 const fastify = require('fastify');
 const path = require('path');
 
-const {
-    BASE_ASSETS,
-    BASE_IMPORT_MAPS,
-} = require('../lib/utils/globals');
+const { BASE_ASSETS, BASE_IMPORT_MAPS } = require('../lib/utils/globals');
 
 const pkgGet = require('../lib/handlers/pkg.get');
 const pkgPut = require('../lib/handlers/pkg.put');
@@ -45,7 +42,6 @@ app.setErrorHandler((error, request, reply) => {
     reply.code(404).send('Not found');
 });
 
-
 //
 // Packages
 //
@@ -59,7 +55,7 @@ app.get(`/:org/${BASE_ASSETS}/:name/:version/*`, async (request, reply) => {
         request.params.org,
         request.params.name,
         request.params.version,
-        request.params['*']
+        request.params['*'],
     );
 
     reply.type(stream.mimeType);
@@ -74,13 +70,12 @@ app.put(`/:org/${BASE_ASSETS}/:name/:version`, async (request, reply) => {
         request.req,
         request.params.org,
         request.params.name,
-        request.params.version
+        request.params.version,
     );
 
     reply.type(stream.mimeType);
     reply.send(stream);
 });
-
 
 //
 // Import Maps
@@ -116,7 +111,6 @@ app.put(`/:org/${BASE_IMPORT_MAPS}/:name/:version`, async (request, reply) => {
     reply.send(stream);
 });
 
-
 //
 // Alias Packages
 //
@@ -131,7 +125,7 @@ app.get(`/:org/${BASE_ASSETS}/:name/v:alias/*`, async (request, reply) => {
         BASE_ASSETS,
         request.params.name,
         request.params.alias,
-        request.params['*']
+        request.params['*'],
     );
 
     reply.type(stream.mimeType);
@@ -148,7 +142,7 @@ app.put(`/:org/${BASE_ASSETS}/:name/v:alias`, async (request, reply) => {
         request.params.org,
         BASE_ASSETS,
         request.params.name,
-        request.params.alias
+        request.params.alias,
     );
 
     reply.type(stream.mimeType);
@@ -164,7 +158,7 @@ app.post(`/:org/${BASE_ASSETS}/:name/v:alias`, async (request, reply) => {
         request.params.org,
         BASE_ASSETS,
         request.params.name,
-        request.params.alias
+        request.params.alias,
     );
 
     reply.type(stream.mimeType);
@@ -180,13 +174,12 @@ app.delete(`/:org/${BASE_ASSETS}/:name/v:alias`, async (request, reply) => {
         request.params.org,
         BASE_ASSETS,
         request.params.name,
-        request.params.alias
+        request.params.alias,
     );
 
     reply.type(stream.mimeType);
     reply.send(stream);
 });
-
 
 //
 // Alias Import Maps
@@ -218,7 +211,7 @@ app.put(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
         request.params.org,
         BASE_IMPORT_MAPS,
         request.params.name,
-        request.params.alias
+        request.params.alias,
     );
 
     reply.type(stream.mimeType);
@@ -234,7 +227,7 @@ app.post(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
         request.params.org,
         BASE_IMPORT_MAPS,
         request.params.name,
-        request.params.alias
+        request.params.alias,
     );
 
     reply.type(stream.mimeType);
@@ -243,22 +236,24 @@ app.post(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
 
 // curl -X DELETE http://localhost:4001/biz/map/buzz/v4
 
-app.delete(`/:org/${BASE_IMPORT_MAPS}/:name/v:alias`, async (request, reply) => {
-    const stream = await aliasDel.handler(
-        sink,
-        request.req,
-        request.params.org,
-        BASE_IMPORT_MAPS,
-        request.params.name,
-        request.params.alias
-    );
+app.delete(
+    `/:org/${BASE_IMPORT_MAPS}/:name/v:alias`,
+    async (request, reply) => {
+        const stream = await aliasDel.handler(
+            sink,
+            request.req,
+            request.params.org,
+            BASE_IMPORT_MAPS,
+            request.params.name,
+            request.params.alias,
+        );
 
-    reply.type(stream.mimeType);
-    reply.send(stream);
-});
+        reply.type(stream.mimeType);
+        reply.send(stream);
+    },
+);
 
-
-app.listen(4001, (err) => {
+app.listen(4001, err => {
     if (err) {
         app.log.error(err);
         process.exit(1);

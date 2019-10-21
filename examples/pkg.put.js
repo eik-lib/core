@@ -1,3 +1,5 @@
+/* eslint-disable import/no-extraneous-dependencies */
+
 'use strict';
 
 const FormData = require('form-data');
@@ -10,9 +12,8 @@ formData.append('filedata', fs.createReadStream('../fixtures/archive.tgz'));
 
 fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
     method: 'PUT',
-    body: formData
-})
-.then((res) => {
+    body: formData,
+}).then(res => {
     const stream = new Writable({
         objectMode: false,
         write(chunk, encoding, callback) {
