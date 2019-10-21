@@ -23,9 +23,6 @@ jobs:
           npm install
         env:
           CI: true
-      - name: start fastify
-        run: |
-          npm start &
       - name: Run tests
         run: |
           npm test
