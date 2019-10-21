@@ -41,9 +41,9 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
 
     t.equals(res.status, 200, 'server PUT should respond with 200 ok');
 
-    // const file1 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js',
-    // );
+    const file1 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js',
+    );
     // const file2 = await fetch(
     //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js.map',
     // );
@@ -63,7 +63,7 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     //     'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
     // );
 
-    // t.equals(file1.status, 200, 'GET to index.js responded with 200 ok');
+    t.equals(file1.status, 200, 'GET to index.js responded with 200 ok');
     // t.equals(file2.status, 200, 'GET to index.js.map responded with 200 ok');
     // t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
     // t.equals(
