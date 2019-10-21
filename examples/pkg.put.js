@@ -13,10 +13,12 @@ formData.append('filedata', fs.createReadStream('../fixtures/archive.tgz'));
 fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
     method: 'PUT',
     body: formData,
+    headers: formData.getHeaders(),
 }).then(res => {
     const stream = new Writable({
         objectMode: false,
         write(chunk, encoding, callback) {
+            // eslint-disable-next-line no-console
             console.log(JSON.parse(chunk.toString()));
             callback();
         },
