@@ -6,8 +6,14 @@ const FormData = require('form-data');
 const { join } = require('path');
 const { createReadStream } = require('fs');
 const extractBody = require('./utils/extract-body');
+const FastifyService = require('../../services/fastify');
+const SinkMem = require('../../lib/sinks/mem');
 
 test('Packages GET', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink });
+    await service.start();
+
     const formData = new FormData();
     formData.append(
         'filedata',
@@ -30,9 +36,15 @@ test('Packages GET', async t => {
         'hi there from the main file',
         'server should respond with file contents',
     );
+
+    await service.stop();
 });
 
 test('Packages PUT - all files extracted, files accessible after upload', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink });
+    await service.start();
+
     const formData = new FormData();
     formData.append(
         'filedata',
@@ -53,36 +65,42 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     const file2 = await fetch(
         'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js.map',
     );
-    // const file3 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
-    // );
-    // const file4 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js.map',
-    // );
-    // const file5 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css',
-    // );
-    // const file6 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css.map',
-    // );
-    // const file7 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
-    // );
+    const file3 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
+    );
+    const file4 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js.map',
+    );
+    const file5 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css',
+    );
+    const file6 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css.map',
+    );
+    const file7 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
+    );
 
     t.equals(file1.status, 200, 'GET to index.js responded with 200 ok');
     t.equals(file2.status, 200, 'GET to index.js.map responded with 200 ok');
-    // t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
-    // t.equals(
-    //     file4.status,
-    //     200,
-    //     'GET to ie11 index.js.map responded with 200 ok',
-    // );
-    // t.equals(file5.status, 200, 'GET to index.css responded with 200 ok');
-    // t.equals(file6.status, 200, 'GET to index.css.map responded with 200 ok');
-    // t.equals(file7.status, 200, 'GET to assets.json responded with 200 ok');
+    t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
+    t.equals(
+        file4.status,
+        200,
+        'GET to ie11 index.js.map responded with 200 ok',
+    );
+    t.equals(file5.status, 200, 'GET to index.css responded with 200 ok');
+    t.equals(file6.status, 200, 'GET to index.css.map responded with 200 ok');
+    t.equals(file7.status, 200, 'GET to assets.json responded with 200 ok');
+
+    await service.stop();
 });
 
 test('Packages PUT - all files extracted, correct response received', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink });
+    await service.start();
+
     const formData = new FormData();
     formData.append(
         'filedata',
@@ -171,4 +189,6 @@ test('Packages PUT - all files extracted, correct response received', async t =>
         'application/json',
         'assets.json mime should match',
     );
+
+    await service.stop();
 });
