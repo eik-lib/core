@@ -1,4 +1,4 @@
-name: Push To Master 
+name: Push To Master
 
 on:
   push:
@@ -13,14 +13,17 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
         node-version: [10.x, 12.x]
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: npm install and test
-      run: |
-        npm install
-        npm test
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: start fastify
+        run: |
+          npm start
+      - name: npm install and test
+        run: |
+          npm install
+          npm test
+        env:
+          CI: true
