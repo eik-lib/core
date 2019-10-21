@@ -18,12 +18,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: |
+          npm install
+        env:
+          CI: true
       - name: start fastify
         run: |
           npm start
-      - name: npm install and test
+      - name: Run tests
         run: |
-          npm install
           npm test
         env:
           CI: true
