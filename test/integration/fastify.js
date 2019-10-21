@@ -53,9 +53,9 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     const file2 = await fetch(
         'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js.map',
     );
-    const file3 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
-    );
+    // const file3 = await fetch(
+    //     'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
+    // );
     // const file4 = await fetch(
     //     'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js.map',
     // );
@@ -65,13 +65,13 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     // const file6 = await fetch(
     //     'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css.map',
     // );
-    // const file7 = await fetch(
-    //     'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
-    // );
+    const file7 = await fetch(
+        'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
+    );
 
     t.equals(file1.status, 200, 'GET to index.js responded with 200 ok');
     t.equals(file2.status, 200, 'GET to index.js.map responded with 200 ok');
-    t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
+    // t.equals(file3.status, 200, 'GET to ie11 index.js responded with 200 ok');
     // t.equals(
     //     file4.status,
     //     200,
@@ -79,7 +79,7 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     // );
     // t.equals(file5.status, 200, 'GET to index.css responded with 200 ok');
     // t.equals(file6.status, 200, 'GET to index.css.map responded with 200 ok');
-    // t.equals(file7.status, 200, 'GET to assets.json responded with 200 ok');
+    t.equals(file7.status, 200, 'GET to assets.json responded with 200 ok');
 });
 
 test('Packages PUT - all files extracted, correct response received', async t => {
