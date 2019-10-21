@@ -11,7 +11,7 @@ const SinkMem = require('../../lib/sinks/mem');
 
 test('Packages GET', async t => {
     const sink = new SinkMem();
-    const service = new FastifyService({ sink });
+    const service = new FastifyService({ sink, logger: false });
     await service.start();
 
     const formData = new FormData();
@@ -42,7 +42,7 @@ test('Packages GET', async t => {
 
 test('Packages PUT - all files extracted, files accessible after upload', async t => {
     const sink = new SinkMem();
-    const service = new FastifyService({ sink });
+    const service = new FastifyService({ sink, logger: false });
     await service.start();
 
     const formData = new FormData();
@@ -98,7 +98,7 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
 
 test('Packages PUT - all files extracted, correct response received', async t => {
     const sink = new SinkMem();
-    const service = new FastifyService({ sink });
+    const service = new FastifyService({ sink, logger: false });
     await service.start();
 
     const formData = new FormData();

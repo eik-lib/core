@@ -17,10 +17,8 @@ const mapGet = require('../lib/handlers/map.get');
 const SinkFS = require('../lib/sinks/fs');
 
 class FastifyService {
-    constructor({ sink, port = 4001 } = {}) {
-        const app = fastify({
-            logger: true,
-        });
+    constructor({ sink, port = 4001, logger = true } = {}) {
+        const app = fastify({ logger });
         this.sink = sink || new SinkFS();
         this.port = port;
         this.app = app;
