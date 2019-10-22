@@ -14,28 +14,14 @@ test('Packages GET', async t => {
     const service = new FastifyService({ sink, logger: false });
     await service.start();
 
-    const formData = new FormData();
-    formData.append(
-        'filedata',
-        createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
-    );
-
-    await fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
-        method: 'PUT',
-        body: formData,
-        headers: formData.getHeaders(),
-    });
+    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const res = await fetch(
         'http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js',
     );
     const body = await res.text();
     t.equals(res.status, 200, 'server should respond with 200 ok');
-    t.match(
-        body,
-        'hi there from the main file',
-        'server should respond with file contents',
-    );
+    t.equals(body, 'hello world', 'server should respond with file contents');
 
     await service.stop();
 });
