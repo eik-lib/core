@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 
 'use strict';
@@ -18,7 +19,6 @@ fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
     const stream = new Writable({
         objectMode: false,
         write(chunk, encoding, callback) {
-            // eslint-disable-next-line no-console
             console.log(JSON.parse(chunk.toString()));
             callback();
         },
