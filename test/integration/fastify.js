@@ -303,3 +303,65 @@ test('Alias POST', async t => {
 
     await service.stop();
 });
+
+test('Map GET', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink, logger: false });
+    await service.start();
+
+    sink.set(
+        '/biz/map/buzz/4.2.2/import-map.json',
+        JSON.stringify({
+            imports: {
+                fuzz: 'http://localhost:4001/finn/pkg/fuzz/v8',
+            },
+        }),
+    );
+
+    const res = await fetch('http://localhost:4001/biz/map/buzz/4.2.2');
+
+    const content = await res.text();
+
+    t.equal(res.status, 200, 'response status code should be 200 ok');
+    t.same(
+        content,
+        JSON.stringify({
+            imports: { fuzz: 'http://localhost:4001/finn/pkg/fuzz/v8' },
+        }),
+        'content should be an import map in JSON format',
+    );
+
+    await service.stop();
+});
+
+test('Map GET', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink, logger: false });
+    await service.start();
+
+    const formData = new FormData();
+    formData.append(
+        'map',
+        createReadStream(join(__dirname, '../../fixtures/import-map.json')),
+    );
+
+    const res = await fetch('http://localhost:4001/biz/map/buzz/4.2.2', {
+        method: 'PUT',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    const content = sink.get('/biz/map/buzz/4.2.2/import-map.json');
+
+    t.same(
+        JSON.parse(content),
+        {
+            imports: { fuzz: 'http://localhost:4001/finn/pkg/fuzz/v8' },
+        },
+        'content should be an import map in JSON format',
+    );
+
+    t.equal(res.status, 200, 'response status code should be 200 ok');
+
+    await service.stop();
+});
