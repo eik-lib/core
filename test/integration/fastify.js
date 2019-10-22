@@ -269,3 +269,37 @@ test('Alias PUT', async t => {
 
     await service.stop();
 });
+
+test('Alias POST', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink, logger: false });
+    await service.start();
+
+    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+
+    const formData = new FormData();
+    formData.append('version', '8.4.1');
+
+    await fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
+        method: 'POST',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    const contents = sink.get('/biz/pkg/fuzz/8/alias.json');
+
+    t.same(
+        contents,
+        JSON.stringify({
+            pathname: '/biz/pkg/fuzz/8.4.1',
+            version: '8.4.1',
+            alias: '8',
+            type: 'pkg',
+            name: 'fuzz',
+            org: 'biz',
+        }),
+        'alias should have been created',
+    );
+
+    await service.stop();
+});
