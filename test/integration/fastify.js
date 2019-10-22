@@ -178,3 +178,94 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     await service.stop();
 });
+
+test('Alias GET', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink, logger: false });
+    await service.start();
+
+    sink.set(
+        '/biz/pkg/fuzz/8/alias.json',
+        JSON.stringify({
+            pathname: '/biz/pkg/fuzz/8.4.1',
+            version: '8.4.1',
+            alias: '8',
+            type: 'pkg',
+            name: 'fuzz',
+            org: 'biz',
+        }),
+    );
+    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+
+    const res = await fetch(
+        'http://localhost:4001/biz/pkg/fuzz/v8/main/index.js',
+    );
+    const body = await res.text();
+    t.equals(res.status, 200, 'server should respond with 200 ok');
+    t.equals(body, 'hello world', 'server should respond with file contents');
+
+    await service.stop();
+});
+
+test('Alias DELETE', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink, logger: false });
+    await service.start();
+
+    sink.set(
+        '/biz/pkg/fuzz/8/alias.json',
+        JSON.stringify({
+            org: 'biz',
+            type: 'pkg',
+            name: 'fuzz',
+            version: '8.4.1',
+        }),
+    );
+    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+
+    await fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
+        method: 'DELETE',
+    });
+
+    const contents1 = sink.get('/biz/pkg/fuzz/v8/alias.json');
+    const contents2 = sink.get('/biz/pkg/fuzz/8.4.1/main/index.js');
+
+    t.same(contents1, null, 'alias should have been deleted');
+    t.same(contents2, 'hello world', 'aliased file should still be available');
+
+    await service.stop();
+});
+
+test('Alias PUT', async t => {
+    const sink = new SinkMem();
+    const service = new FastifyService({ sink, logger: false });
+    await service.start();
+
+    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+
+    const formData = new FormData();
+    formData.append('version', '8.4.1');
+
+    await fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
+        method: 'PUT',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    const contents = sink.get('/biz/pkg/fuzz/8/alias.json');
+
+    t.same(
+        contents,
+        JSON.stringify({
+            pathname: '/biz/pkg/fuzz/8.4.1',
+            version: '8.4.1',
+            alias: '8',
+            type: 'pkg',
+            name: 'fuzz',
+            org: 'biz',
+        }),
+        'alias should have been created',
+    );
+
+    await service.stop();
+});
