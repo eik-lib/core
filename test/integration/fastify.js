@@ -334,7 +334,7 @@ test('Map GET', async t => {
     await service.stop();
 });
 
-test('Map GET', async t => {
+test('Map PUT', async t => {
     const sink = new SinkMem();
     const service = new FastifyService({ sink, logger: false });
     await service.start();
