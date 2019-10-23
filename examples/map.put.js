@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable import/no-extraneous-dependencies */
+
 'use strict';
 
 const FormData = require('form-data');
@@ -10,9 +13,8 @@ formData.append('map', fs.createReadStream('../fixtures/import-map.json'));
 
 fetch('http://localhost:4001/biz/map/buzz/4.2.2', {
     method: 'PUT',
-    body: formData
-})
-.then((res) => {
+    body: formData,
+}).then(res => {
     const stream = new Writable({
         objectMode: false,
         write(chunk, encoding, callback) {
