@@ -38,7 +38,11 @@ class FastifyService {
         // Error handling
         app.setErrorHandler((error, request, reply) => {
             app.log.error(error);
-            reply.code(404).send('Not found');
+            if (error.statusCode) {
+                reply.code(error.statusCode).send(error.message);
+                return;
+            }
+            reply.code(500).send('Internal server error');
         });
 
         this.routes();
