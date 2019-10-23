@@ -1,3 +1,6 @@
+/* eslint-disable no-console */
+/* eslint-disable import/no-extraneous-dependencies */
+
 'use strict';
 
 const FormData = require('form-data');
@@ -8,7 +11,7 @@ formData.append('version', '8.8.9');
 
 fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
     method: 'POST',
-    body: formData
+    body: formData,
 })
-.then((res) => res.json())
-.then(obj => console.log(obj));
+    .then(res => res.json())
+    .then(obj => console.log(obj));
