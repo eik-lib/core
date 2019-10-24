@@ -75,7 +75,7 @@ class SinkTest {
                 return reject(new Error(`Directory traversal - ${filePath}`));
             }
 
-            const buff = this._state.get(pathname);
+            const buff = this._state.get(pathname) || [];
             const stream = new Readable({
                 read() {
                     buff.forEach((item) => {
