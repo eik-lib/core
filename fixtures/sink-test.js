@@ -5,11 +5,8 @@ const path = require('path');
 
 const DEFAULT_ROOT_PATH = '/asset-pipe';
 
-
 class SinkTest {
-    constructor({
-        rootPath = DEFAULT_ROOT_PATH
-    } = {}) {
+    constructor({ rootPath = DEFAULT_ROOT_PATH } = {}) {
         this._rootPath = rootPath;
         this._state = new Map();
     }
@@ -48,7 +45,8 @@ class SinkTest {
             const pathname = path.join(this._rootPath, filePath);
 
             if (pathname.indexOf(this._rootPath) !== 0) {
-                return reject(new Error(`Directory traversal - ${filePath}`));
+                reject(new Error(`Directory traversal - ${filePath}`));
+                return;
             }
 
             const buff = [];
@@ -72,17 +70,18 @@ class SinkTest {
             const pathname = path.join(this._rootPath, filePath);
 
             if (pathname.indexOf(this._rootPath) !== 0) {
-                return reject(new Error(`Directory traversal - ${filePath}`));
+                reject(new Error(`Directory traversal - ${filePath}`));
+                return;
             }
 
             const buff = this._state.get(pathname) || [];
             const stream = new Readable({
                 read() {
-                    buff.forEach((item) => {
+                    buff.forEach(item => {
                         this.push(item);
                     });
                     this.push(null);
-                }
+                },
             });
 
             resolve(stream);
@@ -96,7 +95,8 @@ class SinkTest {
             const pathname = path.join(this._rootPath, filePath);
 
             if (pathname.indexOf(this._rootPath) !== 0) {
-                return reject(new Error(`Directory traversal - ${filePath}`));
+                reject(new Error(`Directory traversal - ${filePath}`));
+                return;
             }
 
             this._state.delete(pathname);
@@ -109,10 +109,14 @@ class SinkTest {
             const pathname = path.join(this._rootPath, filePath);
 
             if (pathname.indexOf(this._rootPath) !== 0) {
-                return reject(new Error(`Directory traversal - ${filePath}`));
+                reject(new Error(`Directory traversal - ${filePath}`));
+                return;
             }
 
-            if (this._state.has(filePath)) return resolve();
+            if (this._state.has(filePath)) {
+                resolve();
+                return;
+            }
             reject(new Error('File does not exist'));
         });
     }
