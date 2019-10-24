@@ -2,24 +2,12 @@
 
 const fastify = require('fastify');
 const path = require('path');
-
-const { BASE_ASSETS, BASE_IMPORT_MAPS } = require('../lib/utils/globals');
-
-const pkgGet = require('../lib/handlers/pkg.get');
-const pkgPut = require('../lib/handlers/pkg.put');
-const aliasGet = require('../lib/handlers/alias.get');
-const aliasPut = require('../lib/handlers/alias.put');
-const aliasPost = require('../lib/handlers/alias.post');
-const aliasDel = require('../lib/handlers/alias.delete');
-const mapPut = require('../lib/handlers/map.put');
-const mapGet = require('../lib/handlers/map.get');
-
-const SinkFS = require('../lib/sinks/fs');
+const { http, sink, prop } = require('../');
 
 class FastifyService {
-    constructor({ sink, port = 4001, logger = true } = {}) {
+    constructor({ customSink, port = 4001, logger = true } = {}) {
         const app = fastify({ logger });
-        this.sink = sink || new SinkFS();
+        this.sink = customSink || new sink.FS();
         this.port = port;
         this.app = app;
 
@@ -56,9 +44,9 @@ class FastifyService {
         // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
 
         this.app.get(
-            `/:org/${BASE_ASSETS}/:name/:version/*`,
+            `/:org/${prop.base_pkg}/:name/:version/*`,
             async (request, reply) => {
-                const stream = await pkgGet.handler(
+                const stream = await http.pkgGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -75,9 +63,9 @@ class FastifyService {
         // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1
 
         this.app.put(
-            `/:org/${BASE_ASSETS}/:name/:version`,
+            `/:org/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
-                const stream = await pkgPut.handler(
+                const stream = await http.pkgPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -97,9 +85,9 @@ class FastifyService {
         // curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
 
         this.app.get(
-            `/:org/${BASE_IMPORT_MAPS}/:name/:version`,
+            `/:org/${prop.base_map}/:name/:version`,
             async (request, reply) => {
-                const stream = await mapGet.handler(
+                const stream = await http.mapGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -115,9 +103,9 @@ class FastifyService {
         // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/buzz/4.2.2
 
         this.app.put(
-            `/:org/${BASE_IMPORT_MAPS}/:name/:version`,
+            `/:org/${prop.base_map}/:name/:version`,
             async (request, reply) => {
-                const stream = await mapPut.handler(
+                const stream = await http.mapPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -137,13 +125,13 @@ class FastifyService {
         // curl -X GET -L http://localhost:4001/biz/pkg/fuzz/v8/main/index.js
 
         this.app.get(
-            `/:org/${BASE_ASSETS}/:name/v:alias/*`,
+            `/:org/${prop.base_pkg}/:name/v:alias/*`,
             async (request, reply) => {
-                const stream = await aliasGet.handler(
+                const stream = await http.aliasGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_ASSETS,
+                    prop.base_pkg,
                     request.params.name,
                     request.params.alias,
                     request.params['*'],
@@ -158,13 +146,13 @@ class FastifyService {
         // curl -X PUT -i -F version=8.4.1 http://localhost:4001/biz/pkg/fuzz/v8
 
         this.app.put(
-            `/:org/${BASE_ASSETS}/:name/v:alias`,
+            `/:org/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasPut.handler(
+                const stream = await http.aliasPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_ASSETS,
+                    prop.base_pkg,
                     request.params.name,
                     request.params.alias,
                 );
@@ -177,13 +165,13 @@ class FastifyService {
         // curl -X POST -i -F version=8.4.1 http://localhost:4001/biz/pkg/lit-html/v8
 
         this.app.post(
-            `/:org/${BASE_ASSETS}/:name/v:alias`,
+            `/:org/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasPost.handler(
+                const stream = await http.aliasPost.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_ASSETS,
+                    prop.base_pkg,
                     request.params.name,
                     request.params.alias,
                 );
@@ -196,13 +184,13 @@ class FastifyService {
         // curl -X DELETE http://localhost:4001/biz/pkg/fuzz/v8
 
         this.app.delete(
-            `/:org/${BASE_ASSETS}/:name/v:alias`,
+            `/:org/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasDel.handler(
+                const stream = await http.aliasDel.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_ASSETS,
+                    prop.base_pkg,
                     request.params.name,
                     request.params.alias,
                 );
@@ -219,13 +207,13 @@ class FastifyService {
         // curl -X GET -L http://localhost:4001/biz/map/buzz/v4
 
         this.app.get(
-            `/:org/${BASE_IMPORT_MAPS}/:name/v:alias`,
+            `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasGet.handler(
+                const stream = await http.aliasGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_IMPORT_MAPS,
+                    prop.base_map,
                     request.params.name,
                     request.params.alias,
                 );
@@ -239,13 +227,13 @@ class FastifyService {
         // curl -X PUT -i -F version=4.2.2 http://localhost:4001/biz/map/buzz/v4
 
         this.app.put(
-            `/:org/${BASE_IMPORT_MAPS}/:name/v:alias`,
+            `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasPut.handler(
+                const stream = await http.aliasPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_IMPORT_MAPS,
+                    prop.base_map,
                     request.params.name,
                     request.params.alias,
                 );
@@ -258,13 +246,13 @@ class FastifyService {
         // curl -X POST -i -F version=4.4.2 http://localhost:4001/biz/map/buzz/v4
 
         this.app.post(
-            `/:org/${BASE_IMPORT_MAPS}/:name/v:alias`,
+            `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasPost.handler(
+                const stream = await http.aliasPost.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_IMPORT_MAPS,
+                    prop.base_map,
                     request.params.name,
                     request.params.alias,
                 );
@@ -277,13 +265,13 @@ class FastifyService {
         // curl -X DELETE http://localhost:4001/biz/map/buzz/v4
 
         this.app.delete(
-            `/:org/${BASE_IMPORT_MAPS}/:name/v:alias`,
+            `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await aliasDel.handler(
+                const stream = await http.aliasDel.handler(
                     this.sink,
                     request.req,
                     request.params.org,
-                    BASE_IMPORT_MAPS,
+                    prop.base_map,
                     request.params.name,
                     request.params.alias,
                 );

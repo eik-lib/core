@@ -1,8 +1,8 @@
 {
-  "name": "core",
+  "name": "@asset-pipe/core",
   "version": "1.0.0",
   "description": "Core package for Asset Pipe server",
-  "main": "services/fastify.js",
+  "main": "lib/main.js",
   "scripts": {
     "test": "tap test/**/*.js",
     "start": "NODE_DEBUG=foo node services/fastify.js",

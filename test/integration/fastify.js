@@ -7,11 +7,11 @@ const { join } = require('path');
 const { createReadStream } = require('fs');
 const extractBody = require('./utils/extract-body');
 const FastifyService = require('../../services/fastify');
-const SinkMem = require('../../lib/sinks/mem');
+const SinkTest = require('../../fixtures/sink-test');
 
 test('Packages GET', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
@@ -27,8 +27,8 @@ test('Packages GET', async t => {
 });
 
 test('Packages PUT - all files extracted, files accessible after upload', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     const formData = new FormData();
@@ -83,8 +83,8 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
 });
 
 test('Packages PUT - all files extracted, correct response received', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     const formData = new FormData();
@@ -180,8 +180,8 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 });
 
 test('Alias GET', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     sink.set(
@@ -208,8 +208,8 @@ test('Alias GET', async t => {
 });
 
 test('Alias DELETE', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     sink.set(
@@ -237,8 +237,8 @@ test('Alias DELETE', async t => {
 });
 
 test('Alias PUT', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
@@ -271,8 +271,8 @@ test('Alias PUT', async t => {
 });
 
 test('Alias POST', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
@@ -305,8 +305,8 @@ test('Alias POST', async t => {
 });
 
 test('Map GET', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     sink.set(
@@ -335,8 +335,8 @@ test('Map GET', async t => {
 });
 
 test('Map PUT', async t => {
-    const sink = new SinkMem();
-    const service = new FastifyService({ sink, logger: false });
+    const sink = new SinkTest();
+    const service = new FastifyService({ customSink: sink, logger: false });
     await service.start();
 
     const formData = new FormData();
