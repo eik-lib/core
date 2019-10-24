@@ -1,6 +1,5 @@
 'use strict';
 
-const httpError = require('http-errors');
 const tap = require('tap');
 const validators = require('../../lib/utils/validators');
 
@@ -19,7 +18,7 @@ tap.test('.org() - valid values - should return value', (t) => {
 tap.test('.org() - invalid values - should throw', (t) => {
     t.throws(() => {
         validators.org('!name');
-    }, new httpError(400, 'The URL parameter "org" is not valid'));
+    }, new Error('Parameter "org" is not valid'));
     t.end();
 });
 
@@ -49,7 +48,7 @@ tap.test('.name() - valid values - should return value', (t) => {
 tap.test('.name() - invalid values - should throw', (t) => {
     t.throws(() => {
         validators.name(' leading-space:and:weirdchars');
-    }, new httpError(400, 'The URL parameter "name" is not valid'));
+    }, new Error('Parameter "name" is not valid'));
     t.end();
 });
 
@@ -67,42 +66,42 @@ tap.test('.version() - valid values - should return value', (t) => {
 tap.test('.version() - invalid values - should throw', (t) => {
     t.throws(() => {
         validators.version(' 1.and:weirdchars~5');
-    }, new httpError(400, 'The URL parameter "version" is not valid'));
+    }, new Error('Parameter "version" is not valid'));
     t.end();
 });
 
 tap.test('.version() - caret range - should throw', (t) => {
     t.throws(() => {
         validators.version('^1.2.4');
-    }, new httpError(400, 'The URL parameter "version" is not valid'));
+    }, new Error('Parameter "version" is not valid'));
     t.end();
 });
 
 tap.test('.version() - tilde range - should throw', (t) => {
     t.throws(() => {
         validators.version('~1.2.4');
-    }, new httpError(400, 'The URL parameter "version" is not valid'));
+    }, new Error('Parameter "version" is not valid'));
     t.end();
 });
 
 tap.test('.version() - X-range - should throw', (t) => {
     t.throws(() => {
         validators.version('1.x');
-    }, new httpError(400, 'The URL parameter "version" is not valid'));
+    }, new Error('Parameter "version" is not valid'));
     t.end();
 });
 
 tap.test('.version() - * - should throw', (t) => {
     t.throws(() => {
         validators.version('*');
-    }, new httpError(400, 'The URL parameter "version" is not valid'));
+    }, new Error('Parameter "version" is not valid'));
     t.end();
 });
 
 tap.test('.version() - latest - should throw', (t) => {
     t.throws(() => {
         validators.version('latest');
-    }, new httpError(400, 'The URL parameter "version" is not valid'));
+    }, new Error('Parameter "version" is not valid'));
     t.end();
 });
 
@@ -121,20 +120,33 @@ tap.test('.alias() - valid values - should return value', (t) => {
 tap.test('.name() - invalid value - semver patch - should throw', (t) => {
     t.throws(() => {
         validators.alias('1.2.4');
-    }, new httpError(400, 'The URL parameter "alias" is not valid'));
+    }, new Error('Parameter "alias" is not valid'));
     t.end();
 });
 
 tap.test('.name() - invalid value - semver minor - should throw', (t) => {
     t.throws(() => {
         validators.alias('1.2');
-    }, new httpError(400, 'The URL parameter "alias" is not valid'));
+    }, new Error('Parameter "alias" is not valid'));
     t.end();
 });
 
 tap.test('.name() - invalid value - semver latest - should throw', (t) => {
     t.throws(() => {
         validators.alias('latest');
-    }, new httpError(400, 'The URL parameter "alias" is not valid'));
+    }, new Error('Parameter "alias" is not valid'));
+    t.end();
+});
+
+
+//
+// .extra()
+//
+
+tap.test('.extra() - valid values - should return value', (t) => {
+    t.equal(validators.extra('/foo/bar/index.js'), '/foo/bar/index.js');
+    t.equal(validators.extra('/foo/a9-8_3/index.js'), '/foo/a9-8_3/index.js');
+    t.equal(validators.extra('/foo/bar'), '/foo/bar');
+    t.equal(validators.extra('index.js'), 'index.js');
     t.end();
 });
