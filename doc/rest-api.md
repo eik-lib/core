@@ -68,7 +68,7 @@ Status codes:
 -   `401` if user is not authorized
 -   `409` if module already exist
 -   `415` if file format of the uploaded file is unsupported
--   `502` if package could not be altered by the sink
+-   `502` if package could not be written to the sink
 
 Example:
 
@@ -138,12 +138,12 @@ Form parameters:
 
 Status codes:
 
--   `201` if import map is successfully uploaded
+-   `303` if import map is successfully uploaded. `location` is [Public Import Map URL](#public-import-map-url)
 -   `400` if validation in URL parameters or form fields fails
 -   `401` if user is not authorized
 -   `409` if import map already exist
 -   `415` if file format of the uploaded import map is unsupported
--   `502` if import map could not be altered by the sink
+-   `502` if import map could not be written to the sink
 
 Example:
 

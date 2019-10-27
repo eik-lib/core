@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tap test/**/*.js",
     "start": "NODE_DEBUG=foo node services/fastify.js",
-    "lint:format": "eslint --fix .",
+    "lint:fix": "eslint --fix .",
     "lint": "eslint ."
   },
   "keywords": [],
