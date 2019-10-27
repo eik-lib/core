@@ -160,7 +160,8 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
-                reply.send(stream);
+                reply.code(stream.statusCode);
+                reply.redirect(stream.location);
             },
         );
 
@@ -179,7 +180,8 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
-                reply.send(stream);
+                reply.code(stream.statusCode);
+                reply.redirect(stream.location);
             },
         );
 
@@ -241,7 +243,8 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
-                reply.send(stream);
+                reply.code(stream.statusCode);
+                reply.redirect(stream.location);
             },
         );
 
@@ -260,7 +263,8 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
-                reply.send(stream);
+                reply.code(stream.statusCode);
+                reply.redirect(stream.location);
             },
         );
 
