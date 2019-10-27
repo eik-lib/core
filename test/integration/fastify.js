@@ -185,7 +185,7 @@ test('Alias GET', async t => {
     await service.start();
 
     sink.set(
-        '/biz/pkg/fuzz/8/alias.json',
+        '/biz/pkg/fuzz/8.alias.json',
         JSON.stringify({
             pathname: '/biz/pkg/fuzz/8.4.1',
             version: '8.4.1',
@@ -213,7 +213,7 @@ test('Alias DELETE', async t => {
     await service.start();
 
     sink.set(
-        '/biz/pkg/fuzz/8/alias.json',
+        '/biz/pkg/fuzz/8.alias.json',
         JSON.stringify({
             org: 'biz',
             type: 'pkg',
@@ -227,7 +227,7 @@ test('Alias DELETE', async t => {
         method: 'DELETE',
     });
 
-    const contents1 = sink.get('/biz/pkg/fuzz/v8/alias.json');
+    const contents1 = sink.get('/biz/pkg/fuzz/8.alias.json');
     const contents2 = sink.get('/biz/pkg/fuzz/8.4.1/main/index.js');
 
     t.same(contents1, null, 'alias should have been deleted');
@@ -252,7 +252,7 @@ test('Alias PUT', async t => {
         headers: formData.getHeaders(),
     });
 
-    const contents = sink.get('/biz/pkg/fuzz/8/alias.json');
+    const contents = sink.get('/biz/pkg/fuzz/8.alias.json');
 
     t.same(
         contents,
@@ -286,7 +286,7 @@ test('Alias POST', async t => {
         headers: formData.getHeaders(),
     });
 
-    const contents = sink.get('/biz/pkg/fuzz/8/alias.json');
+    const contents = sink.get('/biz/pkg/fuzz/8.alias.json');
 
     t.same(
         contents,
