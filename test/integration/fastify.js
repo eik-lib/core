@@ -310,7 +310,7 @@ test('Map GET', async t => {
     await service.start();
 
     sink.set(
-        '/biz/map/buzz/4.2.2/import-map.json',
+        '/biz/map/buzz/4.2.2.json',
         JSON.stringify({
             imports: {
                 fuzz: 'http://localhost:4001/finn/pkg/fuzz/v8',
@@ -343,6 +343,7 @@ test('Map PUT', async t => {
     formData.append(
         'map',
         createReadStream(join(__dirname, '../../fixtures/import-map.json')),
+        {}
     );
 
     const res = await fetch('http://localhost:4001/biz/map/buzz/4.2.2', {
@@ -351,7 +352,7 @@ test('Map PUT', async t => {
         headers: formData.getHeaders(),
     });
 
-    const content = sink.get('/biz/map/buzz/4.2.2/import-map.json');
+    const content = sink.get('/biz/map/buzz/4.2.2.json');
 
     t.same(
         JSON.parse(content),
