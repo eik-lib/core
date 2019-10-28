@@ -148,6 +148,31 @@ tap.test('.name() - invalid value - semver latest - should throw', t => {
 
 
 //
+// .type()
+//
+
+tap.test('.type() - valid values - should return value', t => {
+    t.equal(validators.type('pkg'), 'pkg');
+    t.equal(validators.type('map'), 'map');
+    t.end();
+});
+
+tap.test('.type() - invalid value - should throw', t => {
+    t.throws(() => {
+        validators.type('foo');
+    }, new Error('Parameter "type" is not valid'));
+    t.end();
+});
+
+tap.test('.type() - invalid value - upper case - should throw', t => {
+    t.throws(() => {
+        validators.type('PKG');
+    }, new Error('Parameter "type" is not valid'));
+    t.end();
+});
+
+
+//
 // .extra()
 //
 

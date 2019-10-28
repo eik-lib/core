@@ -57,6 +57,7 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
+                reply.code(stream.statusCode);
                 reply.send(stream);
             },
         );
@@ -75,6 +76,7 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
+                reply.code(stream.statusCode);
                 reply.send(stream);
             },
         );
@@ -97,6 +99,7 @@ class FastifyService {
                 );
 
                 reply.type(stream.mimeType);
+                reply.code(stream.statusCode);
                 reply.send(stream);
             },
         );
