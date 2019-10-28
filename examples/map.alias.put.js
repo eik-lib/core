@@ -12,6 +12,7 @@ formData.append('version', '4.2.2');
 fetch('http://localhost:4001/biz/map/buzz/v4', {
     method: 'PUT',
     body: formData,
+    headers: formData.getHeaders(),
 })
     .then(res => res.json())
     .then(obj => console.log(obj));

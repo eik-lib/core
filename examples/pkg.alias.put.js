@@ -12,6 +12,7 @@ formData.append('version', '8.4.1');
 fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
     method: 'PUT',
     body: formData,
+    headers: formData.getHeaders(),
 })
     .then(res => res.json())
     .then(obj => console.log(obj));
