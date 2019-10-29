@@ -13,6 +13,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@asset-pipe/common": "^4.0.0-alpha.4",
     "@google-cloud/functions-framework": "^1.3.2",
     "@google-cloud/storage": "^4.0.0",
     "abslog": "^2.4.0",
