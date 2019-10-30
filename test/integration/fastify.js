@@ -5,7 +5,6 @@ const fetch = require('node-fetch');
 const FormData = require('form-data');
 const { join } = require('path');
 const { createReadStream } = require('fs');
-const extractBody = require('./utils/extract-body');
 const FastifyService = require('../../services/fastify');
 const SinkTest = require('../../fixtures/sink-test');
 
@@ -98,80 +97,80 @@ test('Packages PUT - all files extracted, correct response received', async t =>
         body: formData,
         headers: formData.getHeaders(),
     });
-
-    const buffer = await extractBody(res);
+    const obj = await res.json();
 
     t.equals(res.status, 200, 'server should respond with 200 ok');
 
     t.equal(
-        buffer[0].pathname,
+        obj.files[0].pathname,
         '/biz/pkg/frazz/2.1.4/main/index.js',
         'JavaScript file pathname should match',
     );
+
     t.equal(
-        buffer[0].mimeType,
+        obj.files[0].mimeType,
         'application/javascript',
         'JavaScript file mime should match',
     );
 
     t.equal(
-        buffer[1].pathname,
+        obj.files[1].pathname,
         '/biz/pkg/frazz/2.1.4/main/index.js.map',
         'JavaScript file source map pathname should match',
     );
     t.equal(
-        buffer[1].mimeType,
+        obj.files[1].mimeType,
         'application/json',
         'JavaScript file source map mime should match',
     );
 
     t.equal(
-        buffer[2].pathname,
+        obj.files[2].pathname,
         '/biz/pkg/frazz/2.1.4/ie11/index.js',
         'ie11 fallback bundle pathname should match',
     );
     t.equal(
-        buffer[2].mimeType,
+        obj.files[2].mimeType,
         'application/javascript',
         'ie11 fallback bundle mime should match',
     );
 
     t.equal(
-        buffer[3].pathname,
+        obj.files[3].pathname,
         '/biz/pkg/frazz/2.1.4/ie11/index.js.map',
         'ie11 fallback bundle source map pathname should match',
     );
     t.equal(
-        buffer[3].mimeType,
+        obj.files[3].mimeType,
         'application/json',
         'ie11 fallback bundle source map mime should match',
     );
 
     t.equal(
-        buffer[4].pathname,
+        obj.files[4].pathname,
         '/biz/pkg/frazz/2.1.4/main/index.css',
         'css file pathname should match',
     );
-    t.equal(buffer[4].mimeType, 'text/css', 'css file mime should match');
+    t.equal(obj.files[4].mimeType, 'text/css', 'css file mime should match');
 
     t.equal(
-        buffer[5].pathname,
+        obj.files[5].pathname,
         '/biz/pkg/frazz/2.1.4/main/index.css.map',
         'css file source map pathname should match',
     );
     t.equal(
-        buffer[5].mimeType,
+        obj.files[5].mimeType,
         'application/json',
         'css file source map mime should match',
     );
 
     t.equal(
-        buffer[6].pathname,
+        obj.files[6].pathname,
         '/biz/pkg/frazz/2.1.4/assets.json',
         'assets.json pathname should match',
     );
     t.equal(
-        buffer[6].mimeType,
+        obj.files[6].mimeType,
         'application/json',
         'assets.json mime should match',
     );
