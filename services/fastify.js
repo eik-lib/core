@@ -8,7 +8,7 @@ const { http, sink, prop } = require('../');
 class FastifyService {
     constructor({ customSink, port = 4001, logger = console } = {}) {
         const app = fastify({ logger: abslog(logger) });
-        this.sink = customSink || new sink.FS();
+        this.sink = customSink || new sink.GCS();
         this.port = port;
         this.app = app;
 
@@ -67,7 +67,7 @@ class FastifyService {
         this.app.put(
             `/:org/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
-                const stream = await http.pkgPut.handler(
+                const outgoing = await http.pkgPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -75,9 +75,9 @@ class FastifyService {
                     request.params.version,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.send(stream.body);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.body);
             },
         );
 
