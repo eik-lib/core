@@ -47,7 +47,7 @@ class FastifyService {
         this.app.get(
             `/:org/${prop.base_pkg}/:name/:version/*`,
             async (request, reply) => {
-                const stream = await http.pkgGet.handler(
+                const outgoing = await http.pkgGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -56,9 +56,9 @@ class FastifyService {
                     request.params['*'],
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.send(stream);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
             },
         );
 
@@ -90,7 +90,7 @@ class FastifyService {
         this.app.get(
             `/:org/${prop.base_map}/:name/:version`,
             async (request, reply) => {
-                const stream = await http.mapGet.handler(
+                const outgoing = await http.mapGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -98,9 +98,9 @@ class FastifyService {
                     request.params.version,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.send(stream);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
             },
         );
 
@@ -109,7 +109,7 @@ class FastifyService {
         this.app.put(
             `/:org/${prop.base_map}/:name/:version`,
             async (request, reply) => {
-                const stream = await http.mapPut.handler(
+                const outgoing = await http.mapPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -117,9 +117,9 @@ class FastifyService {
                     request.params.version,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -132,7 +132,7 @@ class FastifyService {
         this.app.get(
             `/:org/${prop.base_pkg}/:name/v:alias/*`,
             async (request, reply) => {
-                const stream = await http.aliasGet.handler(
+                const outgoing = await http.aliasGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -142,9 +142,9 @@ class FastifyService {
                     request.params['*'],
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -153,7 +153,7 @@ class FastifyService {
         this.app.put(
             `/:org/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasPut.handler(
+                const outgoing = await http.aliasPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -162,9 +162,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -173,7 +173,7 @@ class FastifyService {
         this.app.post(
             `/:org/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasPost.handler(
+                const outgoing = await http.aliasPost.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -182,9 +182,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -193,7 +193,7 @@ class FastifyService {
         this.app.delete(
             `/:org/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasDel.handler(
+                const outgoing = await http.aliasDel.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -202,9 +202,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.send(stream);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.body);
             },
         );
 
@@ -217,7 +217,7 @@ class FastifyService {
         this.app.get(
             `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasGet.handler(
+                const outgoing = await http.aliasGet.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -226,9 +226,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -237,7 +237,7 @@ class FastifyService {
         this.app.put(
             `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasPut.handler(
+                const outgoing = await http.aliasPut.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -246,9 +246,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -257,7 +257,7 @@ class FastifyService {
         this.app.post(
             `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasPost.handler(
+                const outgoing = await http.aliasPost.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -266,9 +266,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.redirect(stream.location);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
             },
         );
 
@@ -277,7 +277,7 @@ class FastifyService {
         this.app.delete(
             `/:org/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const stream = await http.aliasDel.handler(
+                const outgoing = await http.aliasDel.handler(
                     this.sink,
                     request.req,
                     request.params.org,
@@ -286,9 +286,9 @@ class FastifyService {
                     request.params.alias,
                 );
 
-                reply.type(stream.mimeType);
-                reply.code(stream.statusCode);
-                reply.send(stream);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.body);
             },
         );
     }
