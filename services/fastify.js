@@ -8,7 +8,7 @@ const { http, sink, prop } = require('../');
 class FastifyService {
     constructor({ customSink, port = 4001, logger = console } = {}) {
         const app = fastify({ logger: abslog(logger) });
-        this.sink = customSink || new sink.GCS();
+        this.sink = customSink || new sink.FS();
         this.port = port;
         this.app = app;
 
