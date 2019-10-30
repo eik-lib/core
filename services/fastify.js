@@ -77,7 +77,7 @@ class FastifyService {
 
                 reply.type(stream.mimeType);
                 reply.code(stream.statusCode);
-                reply.send(stream);
+                reply.send(stream.body);
             },
         );
 
