@@ -5,7 +5,6 @@ const fetch = require('node-fetch');
 const FormData = require('form-data');
 const { join } = require('path');
 const { createReadStream } = require('fs');
-const extractBody = require('./utils/extract-body');
 const FastifyService = require('../../services/fastify');
 const SinkTest = require('../../fixtures/sink-test');
 
