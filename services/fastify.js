@@ -295,7 +295,8 @@ class FastifyService {
 
     async start() {
         try {
-            await this.app.listen(this.port);
+            const address = await this.app.listen(this.port);
+            return address;
         } catch (err) {
             this.app.log.error(err);
             throw err;

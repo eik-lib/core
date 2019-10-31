@@ -10,13 +10,13 @@ const SinkTest = require('../../fixtures/sink-test');
 
 test('Packages GET', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const res = await fetch(
-        'http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js',
+        `${address}/biz/pkg/fuzz/8.4.1/main/index.js`,
     );
     const body = await res.text();
     t.equals(res.status, 200, 'server should respond with 200 ok');
@@ -27,8 +27,8 @@ test('Packages GET', async t => {
 
 test('Packages PUT - all files extracted, files accessible after upload', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, logger: false, port: 0 });
+    const address = await service.start();
 
     const formData = new FormData();
     formData.append(
@@ -36,7 +36,7 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
-    const res = await fetch('http://localhost:4001/foo/pkg/bar/1.1.1', {
+    const res = await fetch(`${address}/foo/pkg/bar/1.1.1`, {
         method: 'PUT',
         body: formData,
         headers: formData.getHeaders(),
@@ -45,25 +45,25 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
     t.equals(res.status, 200, 'server PUT should respond with 200 ok');
 
     const file1 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js',
+        `${address}/foo/pkg/bar/1.1.1/main/index.js`,
     );
     const file2 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.js.map',
+        `${address}/foo/pkg/bar/1.1.1/main/index.js.map`
     );
     const file3 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js',
+        `${address}/foo/pkg/bar/1.1.1/ie11/index.js`,
     );
     const file4 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/ie11/index.js.map',
+        `${address}/foo/pkg/bar/1.1.1/ie11/index.js.map`,
     );
     const file5 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css',
+        `${address}/foo/pkg/bar/1.1.1/main/index.css`,
     );
     const file6 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/main/index.css.map',
+        `${address}/foo/pkg/bar/1.1.1/main/index.css.map`,
     );
     const file7 = await fetch(
-        'http://localhost:4001/foo/pkg/bar/1.1.1/assets.json',
+        `${address}/foo/pkg/bar/1.1.1/assets.json`,
     );
 
     t.equals(file1.status, 200, 'GET to index.js responded with 200 ok');
@@ -83,8 +83,8 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
 
 test('Packages PUT - all files extracted, correct response received', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     const formData = new FormData();
     formData.append(
@@ -92,7 +92,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
-    const res = await fetch('http://localhost:4001/biz/pkg/frazz/2.1.4', {
+    const res = await fetch(`${address}/biz/pkg/frazz/2.1.4`, {
         method: 'PUT',
         body: formData,
         headers: formData.getHeaders(),
@@ -180,8 +180,8 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
 test('Alias GET', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     sink.set(
         '/biz/pkg/fuzz/8.alias.json',
@@ -197,7 +197,7 @@ test('Alias GET', async t => {
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const res = await fetch(
-        'http://localhost:4001/biz/pkg/fuzz/v8/main/index.js',
+        `${address}/biz/pkg/fuzz/v8/main/index.js`,
     );
     const body = await res.text();
     t.equals(res.status, 200, 'server should respond with 200 ok');
@@ -208,8 +208,8 @@ test('Alias GET', async t => {
 
 test('Alias DELETE', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     sink.set(
         '/biz/pkg/fuzz/8.alias.json',
@@ -222,7 +222,7 @@ test('Alias DELETE', async t => {
     );
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
-    await fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
+    await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'DELETE',
     });
 
@@ -237,15 +237,15 @@ test('Alias DELETE', async t => {
 
 test('Alias PUT', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const formData = new FormData();
     formData.append('version', '8.4.1');
 
-    await fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
+    await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'PUT',
         body: formData,
         headers: formData.getHeaders(),
@@ -271,15 +271,15 @@ test('Alias PUT', async t => {
 
 test('Alias POST', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const formData = new FormData();
     formData.append('version', '8.4.1');
 
-    await fetch('http://localhost:4001/biz/pkg/fuzz/v8', {
+    await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'POST',
         body: formData,
         headers: formData.getHeaders(),
@@ -305,19 +305,19 @@ test('Alias POST', async t => {
 
 test('Map GET', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     sink.set(
         '/biz/map/buzz/4.2.2.json',
         JSON.stringify({
             imports: {
-                fuzz: 'http://localhost:4001/finn/pkg/fuzz/v8',
+                fuzz: `${address}/finn/pkg/fuzz/v8`,
             },
         }),
     );
 
-    const res = await fetch('http://localhost:4001/biz/map/buzz/4.2.2');
+    const res = await fetch(`${address}/biz/map/buzz/4.2.2`);
 
     const content = await res.text();
 
@@ -325,7 +325,7 @@ test('Map GET', async t => {
     t.same(
         content,
         JSON.stringify({
-            imports: { fuzz: 'http://localhost:4001/finn/pkg/fuzz/v8' },
+            imports: { fuzz: `${address}/finn/pkg/fuzz/v8` },
         }),
         'content should be an import map in JSON format',
     );
@@ -335,8 +335,8 @@ test('Map GET', async t => {
 
 test('Map PUT', async t => {
     const sink = new SinkTest();
-    const service = new FastifyService({ customSink: sink, logger: false });
-    await service.start();
+    const service = new FastifyService({ customSink: sink, port: 0, logger: false });
+    const address = await service.start();
 
     const formData = new FormData();
     formData.append(
@@ -345,7 +345,7 @@ test('Map PUT', async t => {
         {}
     );
 
-    const res = await fetch('http://localhost:4001/biz/map/buzz/4.2.2', {
+    const res = await fetch(`${address}/biz/map/buzz/4.2.2`, {
         method: 'PUT',
         body: formData,
         headers: formData.getHeaders(),

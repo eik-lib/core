@@ -9,6 +9,8 @@ class SinkTest {
     constructor({ rootPath = DEFAULT_ROOT_PATH } = {}) {
         this._rootPath = rootPath;
         this._state = new Map();
+
+        this._delayWrite = () => -1;
     }
 
     set(filePath, contents) {
@@ -40,8 +42,19 @@ class SinkTest {
         this._state = new Map(items);
     }
 
+    set delayWrite(fn) {
+        if (typeof fn !== "function") {
+            throw new TypeError('Value must be a function');
+        }
+        this._delayWrite = fn;
+    }
+
+
+    // Common SINK API
+
     write(filePath) {
         return new Promise((resolve, reject) => {
+
             const pathname = path.join(this._rootPath, filePath);
 
             if (pathname.indexOf(this._rootPath) !== 0) {
@@ -49,11 +62,23 @@ class SinkTest {
                 return;
             }
 
+            const delay = this._delayWrite;
             const buff = [];
+            let count = 0;
             const stream = new Writable({
                 write(chunk, encoding, cb) {
-                    buff.push(chunk);
-                    cb();
+                    const timeout = delay(count);
+                    count += 1;
+
+                    if (timeout < 0) {
+                        buff.push(chunk);
+                        cb();
+                    } else {
+                        setTimeout(() => {
+                            buff.push(chunk);
+                            cb();
+                        }, timeout);
+                    }
                 },
             });
 
