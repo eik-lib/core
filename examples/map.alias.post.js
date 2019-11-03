@@ -14,5 +14,21 @@ fetch('http://localhost:4001/biz/map/buzz/v4', {
     body: formData,
     headers: formData.getHeaders(),
 })
-    .then(res => res.json())
-    .then(obj => console.log(obj));
+    .then(res => {
+        let result = {};
+        switch (res.status) {
+            case 200:
+                result = res.json();
+                break;
+            case 404:
+                result = { status: res.status, message: 'Not found' };
+                break;
+            default:
+                result = { status: res.status };
+        }
+        return result;
+    })
+    .then(obj => console.log(obj))
+    .catch(error => {
+        console.log(error);
+    });
