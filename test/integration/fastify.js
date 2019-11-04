@@ -276,13 +276,22 @@ test('Alias POST', async t => {
 
     sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
-    const formData = new FormData();
-    formData.append('version', '8.4.1');
+    const initData = new FormData();
+    initData.append('version', '8.4.0');
+
+    await fetch(`${address}/biz/pkg/fuzz/v8`, {
+        method: 'PUT',
+        body: initData,
+        headers: initData.getHeaders(),
+    });
+
+    const updateData = new FormData();
+    updateData.append('version', '8.4.1');
 
     await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'POST',
-        body: formData,
-        headers: formData.getHeaders(),
+        body: updateData,
+        headers: updateData.getHeaders(),
     });
 
     const contents = sink.get('/biz/pkg/fuzz/8.alias.json');

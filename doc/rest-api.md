@@ -219,7 +219,7 @@ Form parameters:
 
 Status codes:
 
--   `201` if alias is successfully created
+-   `303` if alias is successfully created. `location` points to the alias
 -   `400` if validation in URL parameters or form fields fails
 -   `401` if user is not authorized
 -   `409` if alias already exist
@@ -255,8 +255,7 @@ Form parameters:
 
 Status codes:
 
--   `204` if alias is successfully updated
--   `400` if validation in URL parameters or form fields fails
+-   `303` if alias is successfully created. `location` points to the alias
 -   `401` if user is not authorized
 -   `404` if alias does not exist
 -   `502` if alias could not be altered by the sink
@@ -288,7 +287,6 @@ URL parameters:
 Status codes:
 
 -   `204` if alias is successfully deleted
--   `400` if validation in URL parameters or form fields fails
 -   `401` if user is not authorized
 -   `404` if alias does not exist
 -   `502` if alias could not be altered by the sink
