@@ -45,4 +45,3 @@ fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
 .catch(error => {
     console.log(error);
 });
-

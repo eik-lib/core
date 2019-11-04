@@ -152,7 +152,7 @@ class SinkTest {
                 return;
             }
 
-            if (this._state.has(filePath)) {
+            if (this._state.has(pathname)) {
                 resolve();
                 return;
             }
