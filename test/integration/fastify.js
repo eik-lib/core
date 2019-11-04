@@ -42,7 +42,7 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
         headers: formData.getHeaders(),
     });
 
-    t.equals(res.status, 200, 'server PUT should respond with 200 ok');
+    t.equals(res.status, 201, 'server PUT should respond with 201 ok');
 
     const file1 = await fetch(
         `${address}/foo/pkg/bar/1.1.1/main/index.js`,
@@ -99,7 +99,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
     });
     const obj = await res.json();
 
-    t.equals(res.status, 200, 'server should respond with 200 ok');
+    t.equals(res.status, 201, 'server should respond with 201 ok');
 
     t.equal(
         obj.files[0].pathname,
