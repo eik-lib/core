@@ -1,6 +1,6 @@
 # Asset Pipe REST API
 
-The asset service has the following URI structure
+The asset service has the following URI structure:
 
 ## Packages
 
