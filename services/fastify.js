@@ -40,6 +40,7 @@ class FastifyService {
         this._aliasDel = new http.AliasDel(this.sink, {}, logger);
         this._aliasGet = new http.AliasGet(this.sink, {}, logger);
         this._aliasPut = new http.AliasPut(this.sink, {}, logger);
+        this._pkgLog = new http.PkgLog(this.sink, {}, logger);
         this._pkgGet = new http.PkgGet(this.sink, {}, logger);
         this._pkgPut = new http.PkgPut(this.sink, {}, logger);
         this._mapGet = new http.MapGet(this.sink, {}, logger);
@@ -50,6 +51,23 @@ class FastifyService {
         //
         // Packages
         //
+
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1
+
+        this.app.get(
+            `/:org/${prop.base_pkg}/:name/:version`, async (request, reply) => {
+                const outgoing = await this._pkgLog.handler(
+                    request.req,
+                    request.params.org,
+                    request.params.name,
+                    request.params.version,
+                );
+
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
 
         // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
 
@@ -84,7 +102,7 @@ class FastifyService {
 
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
-                reply.send(outgoing.body);
+                reply.redirect(outgoing.location);
             },
         );
 
