@@ -150,6 +150,25 @@ class FastifyService {
         // Alias Packages
         //
 
+        // curl -X GET -L http://localhost:4001/biz/pkg/fuzz/v8
+
+        this.app.get(
+            `/:org/${prop.base_pkg}/:name/v:alias`,
+            async (request, reply) => {
+                const outgoing = await this._aliasGet.handler(
+                    request.req,
+                    request.params.org,
+                    prop.base_pkg,
+                    request.params.name,
+                    request.params.alias,
+                );
+
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
+            },
+        );
+
         // curl -X GET -L http://localhost:4001/biz/pkg/fuzz/v8/main/index.js
 
         this.app.get(

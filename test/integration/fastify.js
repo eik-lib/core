@@ -256,7 +256,6 @@ test('Alias PUT', async t => {
     t.same(
         contents,
         JSON.stringify({
-            pathname: '/biz/pkg/fuzz/8.4.1',
             version: '8.4.1',
             alias: '8',
             type: 'pkg',
@@ -299,7 +298,6 @@ test('Alias POST', async t => {
     t.same(
         contents,
         JSON.stringify({
-            pathname: '/biz/pkg/fuzz/8.4.1',
             version: '8.4.1',
             alias: '8',
             type: 'pkg',
