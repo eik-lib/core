@@ -18,7 +18,7 @@ fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
 .then(res => {
     let result = {};
     switch (res.status) {
-        case 201:
+        case 200:
             result = res.json();
             break;
         case 400:

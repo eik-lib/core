@@ -63,7 +63,7 @@ Form parameters:
 
 Status codes:
 
--   `201` if module is successfully uploaded
+-   `303` if module is successfully uploaded. `location` is root of module
 -   `400` if validation in URL parameters or form fields fails
 -   `401` if user is not authorized
 -   `409` if module already exist
