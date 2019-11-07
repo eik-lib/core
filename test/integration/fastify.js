@@ -316,7 +316,7 @@ test('Map GET', async t => {
     const address = await service.start();
 
     sink.set(
-        '/biz/map/buzz/4.2.2.json',
+        '/biz/map/buzz/4.2.2.import-map.json',
         JSON.stringify({
             imports: {
                 fuzz: `${address}/finn/pkg/fuzz/v8`,
@@ -358,7 +358,7 @@ test('Map PUT', async t => {
         headers: formData.getHeaders(),
     });
 
-    const content = sink.get('/biz/map/buzz/4.2.2.json');
+    const content = sink.get('/biz/map/buzz/4.2.2.import-map.json');
 
     t.same(
         JSON.parse(content),
