@@ -7,13 +7,13 @@ The asset service stores files in the following structure:
 └── :org
     ├── map
     │   └── :name
-    │       ├── :version.json
+    │       ├── :version.import-map.json
     │       └── :major.alias.json
     └── pkg
         └── :name
             ├── :version
             │   ├── *
-            ├── :version.log.json
+            ├── :version.package.json
             └── :major.alias.json
 ```
 
@@ -30,12 +30,12 @@ Parameters:
 Packages are stored under `/:root/:org/pkg/:name/:version/` and the structure of a package is
 arbitrary and untouched during upload by the service.
 
-The file structure of a package is stored in a log file at `/:root/:org/pkg/:name/:version.log.json`.
+The file structure of a package is stored in a package file at `/:root/:org/pkg/:name/:version.package.json`.
 
 ## Import Maps
 
-Import maps are stored under `/:root/:org/map/:name/:version.json`. The filename of import maps
-is strict and conforms to the version number it's given with a `.json` extension.
+Import maps are stored under `/:root/:org/map/:name/:version.import-map.json`. The filename of
+import maps is strict and conforms to the version number it's given with a `.json` extension.
 
 The filename of import maps prior to uploading to the service can be anything. The service will
 convert the file name according to the parameters given when uploading it.
