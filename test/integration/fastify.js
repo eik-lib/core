@@ -103,7 +103,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     t.equal(
         obj.files[0].pathname,
-        '/biz/pkg/frazz/2.1.4/main/index.js',
+        '/main/index.js',
         'JavaScript file pathname should match',
     );
 
@@ -115,7 +115,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     t.equal(
         obj.files[1].pathname,
-        '/biz/pkg/frazz/2.1.4/main/index.js.map',
+        '/main/index.js.map',
         'JavaScript file source map pathname should match',
     );
     t.equal(
@@ -126,7 +126,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     t.equal(
         obj.files[2].pathname,
-        '/biz/pkg/frazz/2.1.4/ie11/index.js',
+        '/ie11/index.js',
         'ie11 fallback bundle pathname should match',
     );
     t.equal(
@@ -137,7 +137,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     t.equal(
         obj.files[3].pathname,
-        '/biz/pkg/frazz/2.1.4/ie11/index.js.map',
+        '/ie11/index.js.map',
         'ie11 fallback bundle source map pathname should match',
     );
     t.equal(
@@ -148,14 +148,14 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     t.equal(
         obj.files[4].pathname,
-        '/biz/pkg/frazz/2.1.4/main/index.css',
+        '/main/index.css',
         'css file pathname should match',
     );
     t.equal(obj.files[4].mimeType, 'text/css', 'css file mime should match');
 
     t.equal(
         obj.files[5].pathname,
-        '/biz/pkg/frazz/2.1.4/main/index.css.map',
+        '/main/index.css.map',
         'css file source map pathname should match',
     );
     t.equal(
@@ -166,7 +166,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     t.equal(
         obj.files[6].pathname,
-        '/biz/pkg/frazz/2.1.4/assets.json',
+        '/assets.json',
         'assets.json pathname should match',
     );
     t.equal(
