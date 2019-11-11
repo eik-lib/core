@@ -1,6 +1,7 @@
 'use strict';
 
 const fastify = require('fastify');
+const cors = require('fastify-cors');
 const abslog = require('abslog');
 const path = require('path');
 const { http, sink, prop } = require('../');
@@ -11,6 +12,7 @@ class FastifyService {
         this.log = abslog(logger);
         this.port = port;
         this.app = fastify({ logger: false });
+        this.app.register(cors);
 
         const cred = path.join(__dirname, '../gcloud.json');
         process.env.GOOGLE_APPLICATION_CREDENTIALS = cred;
@@ -55,7 +57,8 @@ class FastifyService {
         // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1
 
         this.app.get(
-            `/:org/${prop.base_pkg}/:name/:version`, async (request, reply) => {
+            `/:org/${prop.base_pkg}/:name/:version`,
+            async (request, reply) => {
                 const outgoing = await this._pkgLog.handler(
                     request.req,
                     request.params.org,
