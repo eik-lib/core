@@ -3,7 +3,7 @@
 const { Writable, Readable } = require('stream');
 const path = require('path');
 
-const DEFAULT_ROOT_PATH = '/asset-pipe';
+const DEFAULT_ROOT_PATH = '/eik';
 
 class SinkTest {
     constructor({ rootPath = DEFAULT_ROOT_PATH } = {}) {

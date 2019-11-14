@@ -1,7 +1,7 @@
 {
-  "name": "@asset-pipe/core",
+  "name": "@eik/core",
   "version": "1.0.0-alpha.4",
-  "description": "Core package for Asset Pipe server",
+  "description": "Core server package",
   "main": "lib/main.js",
   "scripts": {
     "test": "tap test/**/*.js",

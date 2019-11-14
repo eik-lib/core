@@ -1,4 +1,4 @@
-# Asset Pipe File Structure
+# Eik Server File Structure
 
 The asset service stores files in the following structure:
 

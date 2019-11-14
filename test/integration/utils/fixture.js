@@ -8,7 +8,7 @@ const mkdirp = require('mkdirp');
 function fixture({ org, name, version, extras, content = '' } = {}) {
     const fullPath = join(
         tmpdir(),
-        'asset-pipe',
+        'eik-files',
         org,
         'pkg',
         name,
