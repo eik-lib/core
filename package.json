@@ -1,8 +1,11 @@
 {
   "name": "@eik/core",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.0",
   "description": "Core server package",
   "main": "lib/main.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "tap test/**/*.js",
     "start": "NODE_DEBUG=foo node services/fastify.js",
@@ -13,7 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@asset-pipe/common": "^4.0.0-alpha.4",
+    "@eik/common": "1.0.0-alpha.1",
     "abslog": "^2.4.0",
     "busboy": "^0.3.1",
     "fastify": "^2.10.0",
