@@ -1,9 +1,11 @@
 'use strict';
 
 const fastify = require('fastify');
-const cors = require('fastify-cors');
 const abslog = require('abslog');
+const cors = require('fastify-cors');
+const pino = require('pino')({ level: 'trace', prettyPrint: true });
 const path = require('path');
+
 const { http, sink, prop } = require('../');
 
 class FastifyService {
@@ -353,7 +355,7 @@ class FastifyService {
 module.exports = FastifyService;
 
 if (require.main === module) {
-    const service = new FastifyService();
+    const service = new FastifyService({ logger: pino });
     service.start().catch(() => {
         process.exit(1);
     });
