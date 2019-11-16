@@ -23,6 +23,8 @@
     "fastify-cors": "^2.2.0",
     "http-errors": "^1.7.3",
     "mime": "^2.4.4",
+    "pino": "^5.13.6",
+    "pino-pretty": "^3.3.0",
     "rimraf": "^3.0.0",
     "semver": "^6.3.0",
     "tar": "^5.0.5"
