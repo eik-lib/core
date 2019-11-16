@@ -24,7 +24,7 @@ test('Sink is slow and irregular - Writing medium sized package', async t => {
 
     const formData = new FormData();
     formData.append(
-        'filedata',
+        'package',
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
@@ -131,7 +131,7 @@ test('Sink is slow and irregular - Writing small sized package', async t => {
 
     const formData = new FormData();
     formData.append(
-        'filedata',
+        'package',
         createReadStream(join(__dirname, '../../fixtures/archive-small.tgz')),
     );
 
@@ -228,7 +228,7 @@ test('Sink is slow to construct writer - Writing medium sized package', async t 
 
     const formData = new FormData();
     formData.append(
-        'filedata',
+        'package',
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
@@ -335,7 +335,7 @@ test('Sink is slow to construct writer - Writing small sized package', async t =
 
     const formData = new FormData();
     formData.append(
-        'filedata',
+        'package',
         createReadStream(join(__dirname, '../../fixtures/archive-small.tgz')),
     );
 

@@ -8,7 +8,7 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 
 const formData = new FormData();
-formData.append('filedata', fs.createReadStream('../fixtures/archive.tgz'));
+formData.append('package', fs.createReadStream('../fixtures/archive.tgz'));
 
 fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1', {
     method: 'PUT',
