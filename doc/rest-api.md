@@ -59,7 +59,7 @@ URL parameters:
 
 Form parameters:
 
--   `:filedata` a `tar` or `tar.gz` containing the package
+-   `:package` a `tar` or `tar.gz` containing the package
 
 Status codes:
 
