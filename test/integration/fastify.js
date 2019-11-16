@@ -32,7 +32,7 @@ test('Packages PUT - all files extracted, files accessible after upload', async 
 
     const formData = new FormData();
     formData.append(
-        'filedata',
+        'package',
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
@@ -88,7 +88,7 @@ test('Packages PUT - all files extracted, correct response received', async t =>
 
     const formData = new FormData();
     formData.append(
-        'filedata',
+        'package',
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
