@@ -5,7 +5,8 @@ const FormData = require('form-data');
 const { test } = require('tap');
 const { join } = require('path');
 const fetch = require('node-fetch');
-const FastifyService = require('../../services/fastify');
+
+const Server = require('../../services/fastify');
 const Sink = require('../../fixtures/sink-test');
 
 test('Sink is slow and irregular - Writing medium sized package', async t => {
@@ -19,7 +20,7 @@ test('Sink is slow and irregular - Writing medium sized package', async t => {
         return Math.floor(Math.random() * max) + min;
     };
 
-    const service = new FastifyService({ customSink: sink, logger: false, port: 0 });
+    const service = new Server({ customSink: sink, logger: false, port: 0 });
     const address = await service.start();
 
     const formData = new FormData();
@@ -126,7 +127,7 @@ test('Sink is slow and irregular - Writing small sized package', async t => {
         return Math.floor(Math.random() * max) + min;
     };
 
-    const service = new FastifyService({ customSink: sink, logger: false, port: 0 });
+    const service = new Server({ customSink: sink, logger: false, port: 0 });
     const address = await service.start();
 
     const formData = new FormData();
@@ -223,7 +224,7 @@ test('Sink is slow to construct writer - Writing medium sized package', async t 
         return Math.floor(Math.random() * max) + min;
     };
 
-    const service = new FastifyService({ customSink: sink, logger: false, port: 0 });
+    const service = new Server({ customSink: sink, logger: false, port: 0 });
     const address = await service.start();
 
     const formData = new FormData();
@@ -330,7 +331,7 @@ test('Sink is slow to construct writer - Writing small sized package', async t =
         return Math.floor(Math.random() * max) + min;
     };
 
-    const service = new FastifyService({ customSink: sink, logger: false, port: 0 });
+    const service = new Server({ customSink: sink, logger: false, port: 0 });
     const address = await service.start();
 
     const formData = new FormData();
