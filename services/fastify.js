@@ -9,8 +9,9 @@ const path = require('path');
 const { http, sink, prop } = require('../');
 
 class FastifyService {
-    constructor({ customSink, port = 4001, logger } = {}) {
+    constructor({ customSink, port = 4001, logger, config = {} } = {}) {
         this.sink = customSink || new sink.FS();
+        // this.sink = customSink || new sink.MEM();
         this.log = abslog(logger);
         this.port = port;
         this.app = fastify({ logger: false });
@@ -40,15 +41,15 @@ class FastifyService {
 
         this.routes();
 
-        this._aliasPost = new http.AliasPost(this.sink, {}, logger);
-        this._aliasDel = new http.AliasDel(this.sink, {}, logger);
-        this._aliasGet = new http.AliasGet(this.sink, {}, logger);
-        this._aliasPut = new http.AliasPut(this.sink, {}, logger);
-        this._pkgLog = new http.PkgLog(this.sink, {}, logger);
-        this._pkgGet = new http.PkgGet(this.sink, {}, logger);
-        this._pkgPut = new http.PkgPut(this.sink, {}, logger);
-        this._mapGet = new http.MapGet(this.sink, {}, logger);
-        this._mapPut = new http.MapPut(this.sink, {}, logger);
+        this._aliasPost = new http.AliasPost(this.sink, config, logger);
+        this._aliasDel = new http.AliasDel(this.sink, config, logger);
+        this._aliasGet = new http.AliasGet(this.sink, config, logger);
+        this._aliasPut = new http.AliasPut(this.sink, config, logger);
+        this._pkgLog = new http.PkgLog(this.sink, config, logger);
+        this._pkgGet = new http.PkgGet(this.sink, config, logger);
+        this._pkgPut = new http.PkgPut(this.sink, config, logger);
+        this._mapGet = new http.MapGet(this.sink, config, logger);
+        this._mapPut = new http.MapPut(this.sink, config, logger);
     }
 
     routes() {
@@ -68,6 +69,7 @@ class FastifyService {
                     request.params.version,
                 );
 
+                reply.header('etag', outgoing.etag);
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
                 reply.send(outgoing.stream);
@@ -87,6 +89,7 @@ class FastifyService {
                     request.params['*'],
                 );
 
+                reply.header('etag', outgoing.etag);
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
                 reply.send(outgoing.stream);
@@ -127,6 +130,7 @@ class FastifyService {
                     request.params.version,
                 );
 
+                reply.header('etag', outgoing.etag);
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
                 reply.send(outgoing.stream);

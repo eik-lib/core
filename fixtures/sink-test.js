@@ -3,9 +3,12 @@
 const { Writable, Readable } = require('stream');
 const path = require('path');
 
-const DEFAULT_ROOT_PATH = '/eik';
+const ReadFile = require('../lib/classes/read-file');
+const Entry = require('../lib/sinks/mem-entry');
 
-class SinkTest {
+const DEFAULT_ROOT_PATH = '/';
+
+const SinkTest = class SinkTest {
     constructor({ rootPath = DEFAULT_ROOT_PATH } = {}) {
         this._rootPath = rootPath;
         this._state = new Map();
@@ -16,18 +19,22 @@ class SinkTest {
 
     set(filePath, contents) {
         const pathname = path.join(this._rootPath, filePath);
+        let entry;
+
         if (Array.isArray(contents)) {
-            this._state.set(pathname, contents);
+            entry = new Entry(contents);
         } else {
-            this._state.set(pathname, [contents]);
+            entry = new Entry([contents]);
         }
+
+        this._state.set(pathname, entry);
     }
 
     get(filePath) {
         const pathname = path.join(this._rootPath, filePath);
         if (this._state.has(pathname)) {
             const entry = this._state.get(pathname);
-            return entry.join('');
+            return entry.payload.join('');
         }
         return null;
     }
@@ -90,7 +97,8 @@ class SinkTest {
             });
 
             stream.on('finish', () => {
-                this._state.set(pathname, buff);
+                const entry = new Entry(buff);
+                this._state.set(pathname, entry);
             });
 
             const resolveDelay = this._writeDelayResolve();
@@ -113,17 +121,20 @@ class SinkTest {
                 return;
             }
 
-            const buff = this._state.get(pathname) || [];
-            const stream = new Readable({
+            const entry = this._state.get(pathname);
+            const payload = entry.payload || [];
+            const file = new ReadFile( { etag: entry.hash });
+
+            file.stream = new Readable({
                 read() {
-                    buff.forEach(item => {
+                    payload.forEach(item => {
                         this.push(item);
                     });
                     this.push(null);
                 },
-            });
+            });;
 
-            resolve(stream);
+            resolve(file);
 
             // TODO: Handle if stream never opens or errors, set a timeout which will reject with an error
         });
