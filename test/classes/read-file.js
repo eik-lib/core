@@ -6,7 +6,7 @@ const ReadFile = require('../../lib/classes/read-file');
 
 test('ReadFile() - Object type', (t) => {
     const obj = new ReadFile();
-    t.equal(Object.prototype.toString.call(obj), '[object ReadFile]', 'should be HttpIncoming');
+    t.equal(Object.prototype.toString.call(obj), '[object ReadFile]', 'should be ReadFile');
     t.end();
 });
 
