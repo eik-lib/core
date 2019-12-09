@@ -66,7 +66,7 @@ Status codes:
 -   `303` if module is successfully uploaded. `location` is root of module
 -   `400` if validation in URL parameters or form fields fails
 -   `401` if user is not authorized
--   `409` if module already exist
+-   `409` if module already exist or version in a major range is not newer than previous version in a major range
 -   `415` if file format of the uploaded file is unsupported
 -   `502` if package could not be written to the sink
 
@@ -76,6 +76,58 @@ Example:
 curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/finn/pkg/fuzz/8.4.1
 ```
 
+### Latest Package versions
+
+**Method:** `GET`
+
+Retrieves an overview of the latest major versions of a package.
+
+```bash
+https://:assetServerUrl:port/:org/pkg/:name
+```
+
+URL parameters:
+
+-   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
+-   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
+
+Status codes:
+
+-   `200` if file is successfully retrieved
+-   `404` if file is not found
+
+Example:
+
+```bash
+curl -X GET http://localhost:4001/finn/pkg/fuzz
+```
+
+### Package version overview
+
+**Method:** `GET`
+
+Retrieves an overview of the files of a package version.
+
+```bash
+https://:assetServerUrl:port/:org/pkg/:name/:version
+```
+
+URL parameters:
+
+-   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
+-   `:name` is the name of the package. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
+-   `:version` is the version of the package. Validator: Comply with [semver validation regex](https://semver.org/).
+
+Status codes:
+
+-   `200` if file is successfully retrieved
+-   `404` if file is not found
+
+Example:
+
+```bash
+curl -X GET http://localhost:4001/finn/pkg/fuzz
+```
 
 ## Import Maps
 
@@ -151,6 +203,31 @@ Example:
 curl -X PUT -i -F map=@import-map.json http://localhost:4001/finn/map/buzz/8.4.1
 ```
 
+### Latest Import Map versions
+
+**Method:** `GET`
+
+Retrieves an overview of the latest versions of a Import Map.
+
+```bash
+https://:assetServerUrl:port/:org/map/:name
+```
+
+URL parameters:
+
+-   `:org` is the name of your organisation. Validator: [`^[a-zA-Z0-9_-]+$`](https://regexper.com/#%5E%5Ba-zA-Z0-9_-%5D%2B%24).
+-   `:name` is the name of the import map. Validator: Comply with [npm package names](https://github.com/npm/validate-npm-package-name).
+
+Status codes:
+
+-   `200` if file is successfully retrieved
+-   `404` if file is not found
+
+Example:
+
+```bash
+curl -X GET http://localhost:4001/finn/map/buzz
+```
 
 ## Aliases
 
