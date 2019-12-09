@@ -8,13 +8,15 @@ The asset service stores files in the following structure:
     ├── map
     │   └── :name
     │       ├── :version.import-map.json
-    │       └── :major.alias.json
+    │       ├── :major.alias.json
+    │       └── versions.json
     └── pkg
         └── :name
             ├── :version
             │   ├── *
             ├── :version.package.json
-            └── :major.alias.json
+            ├── :major.alias.json
+            └── versions.json
 ```
 
 Parameters:

@@ -31,7 +31,7 @@ class FastifyService {
 
         // Error handling
         this.app.setErrorHandler((error, request, reply) => {
-            // app.log.error(error);
+            this.log.error(error);
             if (error.statusCode) {
                 reply.code(error.statusCode).send(error.message);
                 return;
@@ -41,6 +41,7 @@ class FastifyService {
 
         this.routes();
 
+        this._versionsGet = new http.VersionsGet(this.sink, config, logger);
         this._aliasPost = new http.AliasPost(this.sink, config, logger);
         this._aliasDel = new http.AliasDel(this.sink, config, logger);
         this._aliasGet = new http.AliasGet(this.sink, config, logger);
@@ -56,6 +57,25 @@ class FastifyService {
         //
         // Packages
         //
+
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz
+
+        this.app.get(
+            `/:org/${prop.base_pkg}/:name`,
+            async (request, reply) => {
+                const outgoing = await this._versionsGet.handler(
+                    request.req,
+                    request.params.org,
+                    prop.base_pkg,
+                    request.params.name,
+                );
+
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
 
         // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1
 
@@ -117,6 +137,25 @@ class FastifyService {
         //
         // Import Maps
         //
+
+        // curl -X GET http://localhost:4001/biz/map/buzz
+
+        this.app.get(
+            `/:org/${prop.base_map}/:name`,
+            async (request, reply) => {
+                const outgoing = await this._versionsGet.handler(
+                    request.req,
+                    request.params.org,
+                    prop.base_map,
+                    request.params.name,
+                );
+
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
 
         // curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
 
