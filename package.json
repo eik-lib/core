@@ -4,7 +4,8 @@
   "description": "Core server package",
   "main": "lib/main.js",
   "files": [
-    "lib"
+    "lib",
+    "services"
   ],
   "scripts": {
     "test": "tap test/**/*.js",
