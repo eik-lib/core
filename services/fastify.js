@@ -1,10 +1,14 @@
 'use strict';
 
+const { PassThrough } = require('stream');
 const fastify = require('fastify');
 const abslog = require('abslog');
 const cors = require('fastify-cors');
 const pino = require('pino')({ level: 'trace', prettyPrint: true });
 const path = require('path');
+const MetricsConsumer = require('@metrics/prometheus-consumer');
+const MetricsGuard = require('@metrics/guard');
+const prometheus = require('prom-client');
 
 const { http, sink, prop } = require('../');
 
@@ -16,6 +20,17 @@ class FastifyService {
         this.port = port;
         this.app = fastify({ logger: false });
         this.app.register(cors);
+
+        this.consumer = new MetricsConsumer({
+            client: prometheus,
+            // logger: this.log,
+        });
+        this.guard = new MetricsGuard({
+            // logger: this.log,
+        });
+
+        const { collectDefaultMetrics } = prometheus;
+        collectDefaultMetrics({ register: this.consumer.registry });
 
         const cred = path.join(__dirname, '../gcloud.json');
         process.env.GOOGLE_APPLICATION_CREDENTIALS = cred;
@@ -51,6 +66,52 @@ class FastifyService {
         this._pkgPut = new http.PkgPut(this.sink, config, logger);
         this._mapGet = new http.MapGet(this.sink, config, logger);
         this._mapPut = new http.MapPut(this.sink, config, logger);
+
+        const mergeStreams = (...streams) => {
+            const str = new PassThrough({ objectMode: true });
+            for (const stm of streams) {
+                stm.on('error', err => {
+                    this.log.error(err);
+                });
+                stm.pipe(str);
+            }
+            return str;
+        };
+
+        // pipe metrics
+        const handlerMetrics = mergeStreams(
+            this._versionsGet.metrics,
+            this._aliasPost.metrics,
+            this._aliasDel.metrics,
+            this._aliasGet.metrics,
+            this._aliasPut.metrics,
+            this._pkgLog.metrics,
+            this._pkgGet.metrics,
+            this._pkgPut.metrics,
+            this._mapGet.metrics,
+            this._mapPut.metrics,
+        ).on('error', err => {
+            this.log.error(err);
+        });
+
+        this.guard.on('error', err => {
+            this.log.error(err);
+        });
+        this.guard.on('warn', info => {
+            this.log.warn(
+                `WARN: metric "${info}" is creating a growing number of permutations`,
+            );
+        });
+        this.guard.on('drop', metric => {
+            this.log.error(
+                `CRITICAL: metric "${metric.name}" has created too many permutations. Metrics are now being dropped.`,
+            );
+        });
+        this.consumer.on('error', err => {
+            this.log.error(err);
+        });
+
+        handlerMetrics.pipe(this.guard).pipe(this.consumer);
     }
 
     routes() {
@@ -60,22 +121,19 @@ class FastifyService {
 
         // curl -X GET http://localhost:4001/biz/pkg/fuzz
 
-        this.app.get(
-            `/:org/${prop.base_pkg}/:name`,
-            async (request, reply) => {
-                const outgoing = await this._versionsGet.handler(
-                    request.req,
-                    request.params.org,
-                    prop.base_pkg,
-                    request.params.name,
-                );
+        this.app.get(`/:org/${prop.base_pkg}/:name`, async (request, reply) => {
+            const outgoing = await this._versionsGet.handler(
+                request.req,
+                request.params.org,
+                prop.base_pkg,
+                request.params.name,
+            );
 
-                reply.header('etag', outgoing.etag);
-                reply.type(outgoing.mimeType);
-                reply.code(outgoing.statusCode);
-                reply.send(outgoing.stream);
-            },
-        );
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
 
         // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1
 
@@ -140,22 +198,19 @@ class FastifyService {
 
         // curl -X GET http://localhost:4001/biz/map/buzz
 
-        this.app.get(
-            `/:org/${prop.base_map}/:name`,
-            async (request, reply) => {
-                const outgoing = await this._versionsGet.handler(
-                    request.req,
-                    request.params.org,
-                    prop.base_map,
-                    request.params.name,
-                );
+        this.app.get(`/:org/${prop.base_map}/:name`, async (request, reply) => {
+            const outgoing = await this._versionsGet.handler(
+                request.req,
+                request.params.org,
+                prop.base_map,
+                request.params.name,
+            );
 
-                reply.header('etag', outgoing.etag);
-                reply.type(outgoing.mimeType);
-                reply.code(outgoing.statusCode);
-                reply.send(outgoing.stream);
-            },
-        );
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
 
         // curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
 
@@ -373,6 +428,16 @@ class FastifyService {
                 reply.send(outgoing.body);
             },
         );
+
+        this.app.get('/_/metrics', (request, reply) => {
+            const merged = prometheus.Registry.merge([
+                this.consumer.registry,
+                prometheus.register,
+            ]);
+
+            reply.type(merged.contentType);
+            reply.send(merged.metrics());
+        });
     }
 
     async start() {
