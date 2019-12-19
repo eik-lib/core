@@ -17,7 +17,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "1.0.0-alpha.1",
+    "@eik/common": "1.0.0-alpha.2",
     "@metrics/client": "^2.5.0",
     "@metrics/guard": "^1.0.1",
     "@metrics/prometheus-consumer": "^2.2.2",
