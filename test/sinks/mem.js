@@ -6,11 +6,11 @@ const { test } = require('tap');
 const slug = require('unique-slug');
 const path = require('path');
 const fs = require('fs');
-const os = require('os');
 
 const Sink = require('../../lib/sinks/mem');
 
-const fixture = fs.readFileSync(path.join(__dirname, '../../fixtures/import-map.json')).toString();
+const DEFAULT_CONFIG = {};
+const FIXTURE = fs.readFileSync(path.join(__dirname, '../../fixtures/import-map.json')).toString();
 
 const readFileStream = (file = '../README.md') => {
     const pathname = path.join(__dirname, file);
@@ -45,10 +45,6 @@ const pipe = (...streams) => {
         });
     });
 }
-
-const DEFAULT_CONFIG = {
-    sinkFsRootPath: path.join(os.tmpdir(), '/eik-test-files')
-};
 
 test('Sink() - Object type', (t) => {
     const sink = new Sink(DEFAULT_CONFIG);
@@ -106,7 +102,7 @@ test('Sink() - .read() - File exists', async (t) => {
 
     const result = await pipeInto(readFrom.stream);
 
-    t.equal(result, fixture, 'should read file from sink which equals the fixture');
+    t.equal(result, FIXTURE, 'should read file from sink which equals the fixture');
 
     // Clean up sink
     await sink.delete(dir);

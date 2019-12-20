@@ -4,7 +4,7 @@ const { test } = require('tap');
 const fetch = require('node-fetch');
 
 const Server = require('../../services/fastify');
-const Sink = require('../../fixtures/sink-test');
+const Sink = require('../../lib/sinks/test');
 
 //
 // Package GET

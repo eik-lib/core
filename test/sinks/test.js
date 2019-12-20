@@ -8,12 +8,13 @@ const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-const Sink = require('../../lib/sinks/fs');
+const Sink = require('../../lib/sinks/test');
+
 
 const DEFAULT_CONFIG = {
-    sinkFsRootPath: path.join(os.tmpdir(), '/eik-test-files')
+    // sinkFsRootPath: path.join(os.tmpdir(), '/eik-test-files')
 };
-const FIXTURE = fs.readFileSync(path.join(__dirname, '../../fixtures/import-map.json')).toString();
+const fixture = fs.readFileSync(path.join(__dirname, '../../fixtures/import-map.json')).toString();
 
 const readFileStream = (file = '../README.md') => {
     const pathname = path.join(__dirname, file);
@@ -105,7 +106,7 @@ test('Sink() - .read() - File exists', async (t) => {
 
     const result = await pipeInto(readFrom.stream);
 
-    t.equal(result, FIXTURE, 'should read file from sink which equals the fixture');
+    t.equal(result, fixture, 'should read file from sink which equals the fixture');
 
     // Clean up sink
     await sink.delete(dir);
