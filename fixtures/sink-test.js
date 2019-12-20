@@ -1,9 +1,9 @@
 'use strict';
 
 const { Writable, Readable } = require('stream');
+const { ReadFile } = require('@eik/common');
 const path = require('path');
 
-const ReadFile = require('../lib/classes/read-file');
 const Entry = require('../lib/sinks/mem-entry');
 
 const DEFAULT_ROOT_PATH = '/';
