@@ -13,6 +13,7 @@ test('Asset() - Default property values', (t) => {
     const obj = new Asset();
     t.equal(obj.integrity, '', '.integrity should be empty String');
     t.equal(obj.pathname, '/', '.pathname should be "/"');
+    t.equal(obj.mimeType, '', '.mimetype should be empty String');
     t.equal(obj.version, '', '.version should be empty String');
     t.equal(obj.asset, '/', '.asset should be "/"');
     t.equal(obj.name, '', '.name should be empty String');
@@ -24,17 +25,20 @@ test('Asset() - Default property values', (t) => {
 
 test('Asset() - Set values to the arguments on the constructor', (t) => {
     const obj = new Asset({
-        pathname: '/foo',
+        pathname: '/foo/bar.js',
         version: '4.2.6',
         name: 'buzz',
         type: 'pkg',
         org: 'bizz',
     });
-    t.equal(obj.pathname, '/foo', '.pathname should contain value set on constructor');
+    t.equal(obj.integrity, '', '.integrity should be empty String');
+    t.equal(obj.pathname, '/foo/bar.js', '.pathname should contain value set on constructor');
+    t.equal(obj.mimeType, 'application/javascript', '.mimeType should contain value matching type of file set on "pathname"');
     t.equal(obj.version, '4.2.6', '.version should contain value set on constructor');
-    t.equal(obj.asset, '/foo', '.asset should contain same value as set on "pathname" on constructor');
+    t.equal(obj.asset, '/foo/bar.js', '.asset should contain same value as set on "pathname" on constructor');
     t.equal(obj.name, 'buzz', '.name should contain value set on constructor');
     t.equal(obj.type, 'pkg', '.type should contain value set on constructor');
+    t.equal(obj.size, -1, '.size should be the number -1');
     t.equal(obj.org, 'bizz', '.org should contain value set on constructor');
     t.end();
 });
@@ -72,5 +76,26 @@ test('Asset() - Set .size property', (t) => {
     const obj = new Asset();
     obj.size = 1234;
     t.equal(obj.size, 1234, '.size should contain value set on property');
+    t.end();
+});
+
+test('Asset() - Stringify object to JSON', (t) => {
+    const obj = new Asset({
+        pathname: '/foo/bar.js',
+        version: '4.2.6',
+        name: 'buzz',
+        type: 'pkg',
+        org: 'bizz',
+    });
+    obj.integrity = 'foo';
+    obj.size = 1234;
+
+    const o = JSON.parse(JSON.stringify(obj));
+
+    t.equal(o.integrity, 'foo', '.integrity should contain value set on origin object');
+    t.equal(o.pathname, '/foo/bar.js', '.pathname should contain value set on origin object');
+    t.equal(o.mimeType, 'application/javascript', '.mimeType should contain value matching type of file set on "pathname" on the origin object');
+    t.equal(o.type, 'pkg', '.type should contain value set on origin object');
+    t.equal(o.size, 1234, '.size should contain value set on origin object');
     t.end();
 });
