@@ -7,7 +7,7 @@ const { join } = require('path');
 const fetch = require('node-fetch');
 
 const Server = require('../../services/fastify');
-const Sink = require('../../fixtures/sink-test');
+const Sink = require('../../lib/sinks/test');
 
 test('Sink is slow and irregular - Writing medium sized package', async t => {
     const sink = new Sink();
