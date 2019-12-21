@@ -6,7 +6,6 @@ const { test } = require('tap');
 const slug = require('unique-slug');
 const path = require('path');
 const fs = require('fs');
-const os = require('os');
 
 const Sink = require('../../lib/sinks/test');
 
