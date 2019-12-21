@@ -1,13 +1,13 @@
 'use strict';
 
 const { Writable, pipeline } = require('stream');
+const { stream } = require('@eik/common');
 const { test } = require('tap');
 const slug = require('unique-slug');
 const path = require('path');
 const fs = require('fs');
 const os = require('os');
 
-const utils = require('../../lib/utils/utils');
 const Sink = require('../../lib/sinks/mem');
 
 const fixture = fs.readFileSync(path.join(__dirname, '../../fixtures/import-map.json')).toString();
@@ -101,7 +101,7 @@ test('Sink() - .read() - File exists', async (t) => {
 
     const readFrom = await sink.read(file);
 
-    t.true(utils.isReadableStream(readFrom.stream), 'should resolve with a ReadFile object which has a .stream property');
+    t.true(stream.isReadableStream(readFrom.stream), 'should resolve with a ReadFile object which has a .stream property');
     t.type(readFrom.etag, 'string', 'should resolve with a ReadFile object which has a .etag property');
 
     const result = await pipeInto(readFrom.stream);
