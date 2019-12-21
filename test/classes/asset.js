@@ -1,14 +1,76 @@
 'use strict';
 
-const tap = require('tap');
+const { test } = require('tap');
 const Asset = require('../../lib/classes/asset');
 
-//
-// Constructor
-//
-
-tap.test('Asset() - object type - should be Asset', (t) => {
+test('HttpIncoming() - Object type', (t) => {
     const obj = new Asset();
-    t.equal(Object.prototype.toString.call(obj), '[object Asset]');
+    t.equal(Object.prototype.toString.call(obj), '[object Asset]', 'should be Asset');
+    t.end();
+});
+
+test('Asset() - Default property values', (t) => {
+    const obj = new Asset();
+    t.equal(obj.integrity, '', '.integrity should be empty String');
+    t.equal(obj.pathname, '/', '.pathname should be "/"');
+    t.equal(obj.version, '', '.version should be empty String');
+    t.equal(obj.asset, '/', '.asset should be "/"');
+    t.equal(obj.name, '', '.name should be empty String');
+    t.equal(obj.type, '', '.type should be empty String');
+    t.equal(obj.size, -1, '.size should be the number -1');
+    t.equal(obj.org, '', '.org should be empty String');
+    t.end();
+});
+
+test('Asset() - Set values to the arguments on the constructor', (t) => {
+    const obj = new Asset({
+        pathname: '/foo',
+        version: '4.2.6',
+        name: 'buzz',
+        type: 'pkg',
+        org: 'bizz',
+    });
+    t.equal(obj.pathname, '/foo', '.pathname should contain value set on constructor');
+    t.equal(obj.version, '4.2.6', '.version should contain value set on constructor');
+    t.equal(obj.asset, '/foo', '.asset should contain same value as set on "pathname" on constructor');
+    t.equal(obj.name, 'buzz', '.name should contain value set on constructor');
+    t.equal(obj.type, 'pkg', '.type should contain value set on constructor');
+    t.equal(obj.org, 'bizz', '.org should contain value set on constructor');
+    t.end();
+});
+
+test('Asset() - Set values to the argument "type" on the constructor in upper case', (t) => {
+    const obj = new Asset({
+        type: 'PkG',
+    });
+    t.equal(obj.type, 'pkg', '.type should contain value set on property in lower case');
+    t.end();
+});
+
+test('Asset() - Set .integrity property', (t) => {
+    const obj = new Asset();
+    obj.integrity = 'foo';
+    t.equal(obj.integrity, 'foo', '.integrity should contain value set on property');
+    t.end();
+});
+
+test('Asset() - Set .type property', (t) => {
+    const obj = new Asset();
+    obj.type = 'pkg';
+    t.equal(obj.type, 'pkg', '.type should contain value set on property');
+    t.end();
+});
+
+test('Asset() - Set .type property with upper case characthers', (t) => {
+    const obj = new Asset();
+    obj.type = 'PkG';
+    t.equal(obj.type, 'pkg', '.type should contain value set on property in lower case');
+    t.end();
+});
+
+test('Asset() - Set .size property', (t) => {
+    const obj = new Asset();
+    obj.size = 1234;
+    t.equal(obj.size, 1234, '.size should contain value set on property');
     t.end();
 });
