@@ -98,6 +98,7 @@ test('Sink() - .read() - File exists', async (t) => {
     const readFrom = await sink.read(file);
 
     t.true(stream.isReadableStream(readFrom.stream), 'should resolve with a ReadFile object which has a .stream property');
+    t.type(readFrom.mimeType, 'string', 'should resolve with a ReadFile object which has a .mimeType property');
     t.type(readFrom.etag, 'string', 'should resolve with a ReadFile object which has a .etag property');
 
     const result = await pipeInto(readFrom.stream);
@@ -113,6 +114,46 @@ test('Sink() - .read() - File does NOT exist', (t) => {
     const sink = new Sink(DEFAULT_CONFIG);
     const dir = slug();
     t.rejects(sink.read(`/${dir}/foo/not-exist.json`), 'should reject');
+    t.end();
+});
+
+test('Sink() - .read() - value of .mimeType of known file type', async (t) => {
+    const sink = new Sink(DEFAULT_CONFIG);
+    const dir = slug();
+    const file = `${dir}/bar/map.json`;
+
+
+    const writeFrom = readFileStream('../../fixtures/import-map.json');
+    const writeTo = await sink.write(file);
+
+    await pipe(writeFrom, writeTo);
+
+    const readFrom = await sink.read(file);
+
+    t.equal(readFrom.mimeType, 'application/json', 'should resolve with a ReadFile object which has a value for .mimeType matching the file');
+
+    // Clean up sink
+    await sink.delete(dir);
+    t.end();
+});
+
+test('Sink() - .read() - value of .mimeType of unknown file type', async (t) => {
+    const sink = new Sink(DEFAULT_CONFIG);
+    const dir = slug();
+    const file = `${dir}/bar/map.foo`;
+
+
+    const writeFrom = readFileStream('../../fixtures/import-map.json');
+    const writeTo = await sink.write(file);
+
+    await pipe(writeFrom, writeTo);
+
+    const readFrom = await sink.read(file);
+
+    t.equal(readFrom.mimeType, 'application/octet-stream', 'should resolve with a ReadFile object where .mimeType is "application/octet-stream"');
+
+    // Clean up sink
+    await sink.delete(dir);
     t.end();
 });
 
