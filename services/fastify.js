@@ -11,6 +11,7 @@ const MetricsGuard = require('@metrics/guard');
 const prometheus = require('prom-client');
 
 const { http, sink, prop } = require('../');
+const utils = require('./fastify-utils');
 
 class FastifyService {
     constructor({ customSink, port = 4001, logger, config = {} } = {}) {
@@ -18,7 +19,12 @@ class FastifyService {
         // this.sink = customSink || new sink.MEM();
         this.log = abslog(logger);
         this.port = port;
-        this.app = fastify({ logger: false });
+        this.app = fastify({
+            ignoreTrailingSlash: true,
+            modifyCoreObjects: false,
+            trustProxy: true,
+            logger: false,
+        });
         this.app.register(cors);
 
         this.consumer = new MetricsConsumer({
@@ -119,8 +125,25 @@ class FastifyService {
         // Packages
         //
 
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz
+        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz/
 
+        this.app.get(`/:org/${prop.base_pkg}/:scope/:name`, async (request, reply) => {
+            const params = utils.sanitizeParameters('pkg', request.params);
+            const outgoing = await this._versionsGet.handler(
+                request.req,
+                params.org,
+                prop.base_pkg,
+                params.name,
+            );
+
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
+
+/*
         this.app.get(`/:org/${prop.base_pkg}/:name`, async (request, reply) => {
             const outgoing = await this._versionsGet.handler(
                 request.req,
@@ -134,9 +157,30 @@ class FastifyService {
             reply.code(outgoing.statusCode);
             reply.send(outgoing.stream);
         });
+*/
 
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1
+        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/
 
+        this.app.get(
+            `/:org/${prop.base_pkg}/:scope/:name/:version`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters('pkg', request.params);
+                const outgoing = await this._pkgLog.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                );
+
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
+
+/*
         this.app.get(
             `/:org/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
@@ -153,9 +197,29 @@ class FastifyService {
                 reply.send(outgoing.stream);
             },
         );
-
+*/
+        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/main/index.js
         // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
 
+        this.app.get(
+            `/:org/${prop.base_pkg}/:scope/:name/:version/*`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters('pkg', request.params);
+                const outgoing = await this._pkgGet.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                    params.extras,
+                );
+
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
+/*
         this.app.get(
             `/:org/${prop.base_pkg}/:name/:version/*`,
             async (request, reply) => {
@@ -173,9 +237,28 @@ class FastifyService {
                 reply.send(outgoing.stream);
             },
         );
+*/
+        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
+        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1/
 
-        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1
+        this.app.put(
+            `/:org/${prop.base_pkg}/:scope/:name/:version`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters('pkg', request.params);
+                const outgoing = await this._pkgPut.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                );
 
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
+            },
+        );
+
+/*
         this.app.put(
             `/:org/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
@@ -191,7 +274,7 @@ class FastifyService {
                 reply.redirect(outgoing.location);
             },
         );
-
+*/
         //
         // Import Maps
         //
