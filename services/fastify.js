@@ -75,6 +75,17 @@ class FastifyService {
 
         const mergeStreams = (...streams) => {
             const str = new PassThrough({ objectMode: true });
+
+            // Avoid hitting the max listeners limit when multiple
+            // streams is piped into the same stream.
+            str.on('pipe', () => {
+                str.setMaxListeners(str.getMaxListeners() + 1);
+            });
+
+            str.on('unpipe', () => {
+                str.setMaxListeners(str.getMaxListeners() - 1);
+            });
+
             for (const stm of streams) {
                 stm.on('error', err => {
                     this.log.error(err);
