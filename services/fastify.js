@@ -13,20 +13,30 @@ const prometheus = require('prom-client');
 const { http, sink, prop } = require('../');
 
 class FastifyService {
-    constructor({ customSink, port = 4001, logger, config = {} } = {}) {
+    constructor({
+        customSink,
+        port = 4001,
+        address = '0.0.0.0',
+        logger,
+        config = {},
+    } = {}) {
         this.sink = customSink || new sink.FS();
-        // this.sink = customSink || new sink.MEM();
-        this.log = abslog(logger);
+        if (logger === false) {
+            this.log = abslog();
+        } else {
+            this.log = abslog(logger);
+        }
         this.port = port;
-        this.app = fastify({ logger: false });
+        this.address = address;
+        this.app = fastify({ logger: logger ? this.log : false });
         this.app.register(cors);
 
         this.consumer = new MetricsConsumer({
             client: prometheus,
-            // logger: this.log,
+            logger: this.log,
         });
         this.guard = new MetricsGuard({
-            // logger: this.log,
+            logger: this.log,
         });
 
         const { collectDefaultMetrics } = prometheus;
@@ -442,7 +452,7 @@ class FastifyService {
 
     async start() {
         try {
-            const address = await this.app.listen(this.port);
+            const address = await this.app.listen(this.port, this.address);
             return address;
         } catch (err) {
             this.app.log.error(err);
