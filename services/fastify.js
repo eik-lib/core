@@ -10,7 +10,7 @@ const MetricsConsumer = require('@metrics/prometheus-consumer');
 const MetricsGuard = require('@metrics/guard');
 const prometheus = require('prom-client');
 
-const { http, sink, prop } = require('../');
+const { http, sink, prop } = require("..");
 
 class FastifyService {
     constructor({
