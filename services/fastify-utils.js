@@ -18,23 +18,25 @@ const sanitizeName = (scope, name) => {
 };
 module.exports.sanitizeName = sanitizeName;
 
-const sanitizeParameters = (type = '', params = {}) => {
-    if (params.scope && params.scope.startsWith('@')) {
+const sanitizeParameters = (url = '') => {
+    const paths = url.split('/');
+
+    if (paths[3] && paths[3].startsWith('@')) {
         return {
-            version: params.version,
-            extras: sanitizeExtras(params['*']),
-            name: sanitizeName(params.scope, params.name),
-            type,
-            org: params.org,
+            version: paths[5] || '',
+            extras: sanitizeExtras(paths.slice(6).join('/')),
+            name: sanitizeName(paths[3] || '', paths[4] || ''),
+            type: paths[2] || '',
+            org: paths[1] || '',
         };
     }
 
     return {
-        version: params.name,
-        extras: sanitizeExtras(params['*'], params.version),
-        name: sanitizeName(params.scope),
-        type,
-        org: params.org,
+        version: paths[4] || '',
+        extras: sanitizeExtras(paths.slice(5).join('/')),
+        name: sanitizeName(paths[3] || ''),
+        type: paths[2] || '',
+        org: paths[1] || '',
     };
 };
 module.exports.sanitizeParameters = sanitizeParameters;

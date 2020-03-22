@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "test": "tap test/**/*.js",
+    "test:snapshots:update": "tap test/integration/pkg.js --snapshot",
     "start": "NODE_DEBUG=foo node services/fastify.js",
     "lint:fix": "eslint --fix .",
     "lint": "eslint ."
@@ -25,6 +26,7 @@
     "busboy": "^0.3.1",
     "fastify": "^2.11.0",
     "fastify-cors": "^3.0.0",
+    "hasha": "^5.2.0",
     "http-errors": "^1.7.3",
     "mime": "^2.4.4",
     "pino": "^5.14.0",

@@ -17,7 +17,7 @@ class FastifyService {
     constructor({
         customSink,
         port = 4001,
-        address = '0.0.0.0',
+        address = 'localhost',
         logger,
         config = {},
     } = {}) {
@@ -27,9 +27,11 @@ class FastifyService {
         } else {
             this.log = abslog(logger);
         }
+        this.address = address;
         this.port = port;
         this.app = fastify({
             ignoreTrailingSlash: true,
+            prefixTrailingSlash: 'no-slash',
             modifyCoreObjects: false,
             trustProxy: true,
             logger: false,
@@ -145,156 +147,147 @@ class FastifyService {
         // Packages
         //
 
-        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/
+        // Get public package - scoped
+        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/main/index.js
+        this.app.get(`/:org/${prop.base_pkg}/@:scope/:name/:version/*`, async (request, reply) => {
+            const params = utils.sanitizeParameters(request.raw.url);
+            const outgoing = await this._pkgGet.handler(
+                request.req,
+                params.org,
+                params.name,
+                params.version,
+                params.extras,
+            );
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
 
-        this.app.get(`/:org/${prop.base_pkg}/:scope/:name`, async (request, reply) => {
-            const params = utils.sanitizeParameters('pkg', request.params);
+        // Get public package - non-scoped
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
+        this.app.get(`/:org/${prop.base_pkg}/:name/:version/*`, async (request, reply) => {
+            const params = utils.sanitizeParameters(request.raw.url);
+            const outgoing = await this._pkgGet.handler(
+                request.req,
+                params.org,
+                params.name,
+                params.version,
+                params.extras,
+            );
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
+
+        // Get package overview - scoped
+        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
+        this.app.get(
+            `/:org/${prop.base_pkg}/@:scope/:name/:version`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
+                const outgoing = await this._pkgLog.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                );
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
+
+        // Get package overview - non-scoped
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/
+        this.app.get(
+            `/:org/${prop.base_pkg}/:name/:version`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
+                const outgoing = await this._pkgLog.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                );
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
+
+        // Get package versions - scoped
+        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/
+        this.app.get(`/:org/${prop.base_pkg}/@:scope/:name`, async (request, reply) => {
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
                 params.org,
                 prop.base_pkg,
                 params.name,
             );
-
             reply.header('etag', outgoing.etag);
             reply.type(outgoing.mimeType);
             reply.code(outgoing.statusCode);
             reply.send(outgoing.stream);
         });
 
-/*
+        // Get package versions - non-scoped
+        // curl -X GET http://localhost:4001/biz/pkg/fuzz/
         this.app.get(`/:org/${prop.base_pkg}/:name`, async (request, reply) => {
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                request.params.org,
+                params.org,
                 prop.base_pkg,
-                request.params.name,
+                params.name,
             );
-
             reply.header('etag', outgoing.etag);
             reply.type(outgoing.mimeType);
             reply.code(outgoing.statusCode);
             reply.send(outgoing.stream);
         });
-*/
 
-        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/
-
-        this.app.get(
-            `/:org/${prop.base_pkg}/:scope/:name/:version`,
-            async (request, reply) => {
-                const params = utils.sanitizeParameters('pkg', request.params);
-                const outgoing = await this._pkgLog.handler(
-                    request.req,
-                    params.org,
-                    params.name,
-                    params.version,
-                );
-
-                reply.header('etag', outgoing.etag);
-                reply.type(outgoing.mimeType);
-                reply.code(outgoing.statusCode);
-                reply.send(outgoing.stream);
-            },
-        );
-
-/*
-        this.app.get(
-            `/:org/${prop.base_pkg}/:name/:version`,
-            async (request, reply) => {
-                const outgoing = await this._pkgLog.handler(
-                    request.req,
-                    request.params.org,
-                    request.params.name,
-                    request.params.version,
-                );
-
-                reply.header('etag', outgoing.etag);
-                reply.type(outgoing.mimeType);
-                reply.code(outgoing.statusCode);
-                reply.send(outgoing.stream);
-            },
-        );
-*/
-        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/main/index.js
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
-
-        this.app.get(
-            `/:org/${prop.base_pkg}/:scope/:name/:version/*`,
-            async (request, reply) => {
-                const params = utils.sanitizeParameters('pkg', request.params);
-                const outgoing = await this._pkgGet.handler(
-                    request.req,
-                    params.org,
-                    params.name,
-                    params.version,
-                    params.extras,
-                );
-
-                reply.header('etag', outgoing.etag);
-                reply.type(outgoing.mimeType);
-                reply.code(outgoing.statusCode);
-                reply.send(outgoing.stream);
-            },
-        );
-/*
-        this.app.get(
-            `/:org/${prop.base_pkg}/:name/:version/*`,
-            async (request, reply) => {
-                const outgoing = await this._pkgGet.handler(
-                    request.req,
-                    request.params.org,
-                    request.params.name,
-                    request.params.version,
-                    request.params['*'],
-                );
-
-                reply.header('etag', outgoing.etag);
-                reply.type(outgoing.mimeType);
-                reply.code(outgoing.statusCode);
-                reply.send(outgoing.stream);
-            },
-        );
-*/
+        // Put package - scoped
         // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
-        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1/
-
         this.app.put(
-            `/:org/${prop.base_pkg}/:scope/:name/:version`,
+            `/:org/${prop.base_pkg}/@:scope/:name/:version`,
             async (request, reply) => {
-                const params = utils.sanitizeParameters('pkg', request.params);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
                     params.org,
                     params.name,
                     params.version,
                 );
-
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
                 reply.redirect(outgoing.location);
             },
         );
 
-/*
+        // Put package - non-scoped
+        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1/
         this.app.put(
             `/:org/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
-                    request.params.org,
-                    request.params.name,
-                    request.params.version,
+                    params.org,
+                    params.name,
+                    params.version,
                 );
-
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
                 reply.redirect(outgoing.location);
             },
         );
-*/
+
+
         //
         // Import Maps
         //
