@@ -292,34 +292,18 @@ class FastifyService {
         // Import Maps
         //
 
-        // curl -X GET http://localhost:4001/biz/map/buzz
-
-        this.app.get(`/:org/${prop.base_map}/:name`, async (request, reply) => {
-            const outgoing = await this._versionsGet.handler(
-                request.req,
-                request.params.org,
-                prop.base_map,
-                request.params.name,
-            );
-
-            reply.header('etag', outgoing.etag);
-            reply.type(outgoing.mimeType);
-            reply.code(outgoing.statusCode);
-            reply.send(outgoing.stream);
-        });
-
-        // curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
-
+        // Get map - scoped
+        // curl -X GET http://localhost:4001/biz/map/@cuz/buzz/4.2.2
         this.app.get(
-            `/:org/${prop.base_map}/:name/:version`,
+            `/:org/${prop.base_map}/@:scope/:name/:version`,
             async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapGet.handler(
                     request.req,
-                    request.params.org,
-                    request.params.name,
-                    request.params.version,
+                    params.org,
+                    params.name,
+                    params.version,
                 );
-
                 reply.header('etag', outgoing.etag);
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
@@ -327,23 +311,103 @@ class FastifyService {
             },
         );
 
-        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/buzz/4.2.2
-
-        this.app.put(
+        // Get map - non-scoped
+        // curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
+        this.app.get(
             `/:org/${prop.base_map}/:name/:version`,
             async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
+                const outgoing = await this._mapGet.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                );
+                reply.header('etag', outgoing.etag);
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.send(outgoing.stream);
+            },
+        );
+
+        // Get map versions - scoped
+        // curl -X GET http://localhost:4001/biz/map/@cuz/buzz
+        this.app.get(`/:org/${prop.base_map}/@:scope/:name`, async (request, reply) => {
+            const params = utils.sanitizeParameters(request.raw.url);
+            const outgoing = await this._versionsGet.handler(
+                request.req,
+                params.org,
+                prop.base_map,
+                params.name,
+            );
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
+
+        // Get map versions - non-scoped
+        // curl -X GET http://localhost:4001/biz/map/buzz
+        this.app.get(`/:org/${prop.base_map}/:name`, async (request, reply) => {
+            const params = utils.sanitizeParameters(request.raw.url);
+            const outgoing = await this._versionsGet.handler(
+                request.req,
+                params.org,
+                prop.base_map,
+                params.name,
+            );
+            reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send(outgoing.stream);
+        });
+
+        // Put map - scoped
+        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/@cuz/buzz/4.2.2
+        this.app.put(
+            `/:org/${prop.base_map}/@:scope/:name/:version`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
-                    request.params.org,
-                    request.params.name,
-                    request.params.version,
+                    params.org,
+                    params.name,
+                    params.version,
                 );
-
                 reply.type(outgoing.mimeType);
                 reply.code(outgoing.statusCode);
                 reply.redirect(outgoing.location);
             },
         );
+
+        // Put map - non-scoped
+        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/buzz/4.2.2
+        this.app.put(
+            `/:org/${prop.base_map}/:name/:version`,
+            async (request, reply) => {
+                const params = utils.sanitizeParameters(request.raw.url);
+                const outgoing = await this._mapPut.handler(
+                    request.req,
+                    params.org,
+                    params.name,
+                    params.version,
+                );
+                reply.type(outgoing.mimeType);
+                reply.code(outgoing.statusCode);
+                reply.redirect(outgoing.location);
+            },
+        );
+
+
+
+
+
+
+
+
+
+
+
 
         //
         // Alias Packages

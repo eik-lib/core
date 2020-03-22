@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "test": "tap test/**/*.js",
-    "test:snapshots:update": "tap test/integration/pkg.js --snapshot",
+    "test:snapshots:update": "tap test/**/*.js --snapshot",
     "start": "NODE_DEBUG=foo node services/fastify.js",
     "lint:fix": "eslint --fix .",
     "lint": "eslint ."

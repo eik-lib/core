@@ -4,7 +4,9 @@
  * Re-generate by setting TAP_SNAPSHOT=1 and running tests.
  * Make sure to inspect the output below.  Do not ignore changes!
  */
+
 'use strict'
+
 exports[`test/integration/pkg.js TAP packages - get package overview - non scoped > on GET, response should match snapshot 1`] = `
 Object {
   "files": Array [
@@ -63,29 +65,6 @@ Object {
   "name": "fuzz",
   "org": "biz",
   "version": "8.4.1",
-}
-`
-
-exports[`test/integration/pkg.js TAP packages - get package overview - non scoped > on GET, response should match snapshot 2`] = `
-Object {
-  "name": "fuzz",
-  "org": "biz",
-  "versions": Array [
-    Array [
-      8,
-      Object {
-        "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
-        "version": "8.5.1",
-      },
-    ],
-    Array [
-      7,
-      Object {
-        "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
-        "version": "7.3.2",
-      },
-    ],
-  ],
 }
 `
 
@@ -150,7 +129,30 @@ Object {
 }
 `
 
-exports[`test/integration/pkg.js TAP packages - get package overview - scoped > on GET, response should match snapshot 2`] = `
+exports[`test/integration/pkg.js TAP packages - get package versions - non scoped > on GET, response should match snapshot 1`] = `
+Object {
+  "name": "fuzz",
+  "org": "biz",
+  "versions": Array [
+    Array [
+      8,
+      Object {
+        "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
+        "version": "8.5.1",
+      },
+    ],
+    Array [
+      7,
+      Object {
+        "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
+        "version": "7.3.2",
+      },
+    ],
+  ],
+}
+`
+
+exports[`test/integration/pkg.js TAP packages - get package versions - scoped > on GET, response should match snapshot 1`] = `
 Object {
   "name": "@cuz/fuzz",
   "org": "biz",

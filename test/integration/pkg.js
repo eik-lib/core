@@ -138,7 +138,7 @@ test('packages - get package overview - non scoped', async (t) => {
     await service.stop();
 });
 
-test('packages - get package overview - scoped', async (t) => {
+test('packages - get package versions - scoped', async (t) => {
     const sink = new Sink();
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
@@ -184,7 +184,7 @@ test('packages - get package overview - scoped', async (t) => {
     await service.stop();
 });
 
-test('packages - get package overview - non scoped', async (t) => {
+test('packages - get package versions - non scoped', async (t) => {
     const sink = new Sink();
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
