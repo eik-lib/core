@@ -18,6 +18,14 @@ const sanitizeName = (scope, name) => {
 };
 module.exports.sanitizeName = sanitizeName;
 
+const sanitizeAlias = (alias = '') => {
+    if (alias.startsWith('v')) {
+        return alias.slice(1);
+    }
+    return alias;
+};
+module.exports.sanitizeAlias = sanitizeAlias;
+
 const sanitizeParameters = (url = '') => {
     const paths = url.split('/');
 
@@ -25,6 +33,7 @@ const sanitizeParameters = (url = '') => {
         return {
             version: paths[5] || '',
             extras: sanitizeExtras(paths.slice(6).join('/')),
+            alias: sanitizeAlias(paths[5]),
             name: sanitizeName(paths[3] || '', paths[4] || ''),
             type: paths[2] || '',
             org: paths[1] || '',
@@ -34,6 +43,7 @@ const sanitizeParameters = (url = '') => {
     return {
         version: paths[4] || '',
         extras: sanitizeExtras(paths.slice(5).join('/')),
+        alias: sanitizeAlias(paths[4]),
         name: sanitizeName(paths[3] || ''),
         type: paths[2] || '',
         org: paths[1] || '',
