@@ -28,7 +28,7 @@
     "fastify-cors": "3.0.2",
     "http-errors": "1.7.3",
     "mime": "2.4.4",
-    "pino": "5.17.0",
+    "pino": "6.0.0",
     "pino-pretty": "3.6.1",
     "prom-client": "12.0.0",
     "rimraf": "3.0.2",
