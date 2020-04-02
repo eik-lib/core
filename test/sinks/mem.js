@@ -59,7 +59,7 @@ test('Sink() - .write()', async (t) => {
     const file = `${dir}/bar/map.json`;
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     t.resolves(pipe(writeFrom, writeTo), 'should write file to sink');
 
@@ -72,12 +72,12 @@ test('Sink() - .write() - directory traversal prevention', async (t) => {
     const sink = new Sink(DEFAULT_CONFIG);
     const dir = slug();
 
-    t.rejects(sink.write(`../../${dir}/sensitive.data`), new Error('Directory traversal'), 'should reject on ../../ at beginning of filepath');
-    t.rejects(sink.write(`../${dir}/sensitive.data`), new Error('Directory traversal'), 'should reject on ../ at beginning of filepath');
-    t.rejects(sink.write(`/${dir}/../../../foo/sensitive.data`), new Error('Directory traversal'), 'should reject on path traversal in the middle of filepath');
-    t.resolves(sink.write(`./${dir}/sensitive.data`), 'should resolve on ./ at beginning of filepath');
-    t.resolves(sink.write(`/${dir}/sensitive.data`), 'should resolve on / at beginning of filepath');
-    t.resolves(sink.write(`//${dir}/sensitive.data`), 'should resolve on // at beginning of filepath');
+    t.rejects(sink.write(`../../${dir}/sensitive.data`, 'application/octet-stream'), new Error('Directory traversal'), 'should reject on ../../ at beginning of filepath');
+    t.rejects(sink.write(`../${dir}/sensitive.data`, 'application/octet-stream'), new Error('Directory traversal'), 'should reject on ../ at beginning of filepath');
+    t.rejects(sink.write(`/${dir}/../../../foo/sensitive.data`, 'application/octet-stream'), new Error('Directory traversal'), 'should reject on path traversal in the middle of filepath');
+    t.resolves(sink.write(`./${dir}/sensitive.data`, 'application/octet-stream'), 'should resolve on ./ at beginning of filepath');
+    t.resolves(sink.write(`/${dir}/sensitive.data`, 'application/octet-stream'), 'should resolve on / at beginning of filepath');
+    t.resolves(sink.write(`//${dir}/sensitive.data`, 'application/octet-stream'), 'should resolve on // at beginning of filepath');
 
     // Clean up sink
     await sink.delete(dir);
@@ -91,7 +91,7 @@ test('Sink() - .read() - File exists', async (t) => {
 
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     await pipe(writeFrom, writeTo);
 
@@ -124,33 +124,13 @@ test('Sink() - .read() - value of .mimeType of known file type', async (t) => {
 
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     await pipe(writeFrom, writeTo);
 
     const readFrom = await sink.read(file);
 
     t.equal(readFrom.mimeType, 'application/json', 'should resolve with a ReadFile object which has a value for .mimeType matching the file');
-
-    // Clean up sink
-    await sink.delete(dir);
-    t.end();
-});
-
-test('Sink() - .read() - value of .mimeType of unknown file type', async (t) => {
-    const sink = new Sink(DEFAULT_CONFIG);
-    const dir = slug();
-    const file = `${dir}/bar/map.foo`;
-
-
-    const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
-
-    await pipe(writeFrom, writeTo);
-
-    const readFrom = await sink.read(file);
-
-    t.equal(readFrom.mimeType, 'application/octet-stream', 'should resolve with a ReadFile object where .mimeType is "application/octet-stream"');
 
     // Clean up sink
     await sink.delete(dir);
@@ -164,7 +144,7 @@ test('Sink() - .delete() - Delete existing file', async (t) => {
     const file = `${dir}/bar/map.json`;
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     await pipe(writeFrom, writeTo);
 
@@ -185,7 +165,7 @@ test('Sink() - .read() - directory traversal prevention', async (t) => {
     const file = `${dir}/map.json`;
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     await pipe(writeFrom, writeTo);
 
@@ -214,11 +194,11 @@ test('Sink() - .delete() - Delete file in tree structure', async (t) => {
     const fileB = `${dir}/b/map.json`;
 
     const writeFromA = readFileStream('../../fixtures/import-map.json');
-    const writeToA = await sink.write(fileA);
+    const writeToA = await sink.write(fileA, 'application/json');
     await pipe(writeFromA, writeToA);
 
     const writeFromB = readFileStream('../../fixtures/import-map.json');
-    const writeToB = await sink.write(fileB);
+    const writeToB = await sink.write(fileB, 'application/json');
     await pipe(writeFromB, writeToB);
 
     await sink.delete(fileA);
@@ -238,11 +218,11 @@ test('Sink() - .delete() - Delete files recursively', async (t) => {
     const fileB = `${dir}/b/map.json`;
 
     const writeFromA = readFileStream('../../fixtures/import-map.json');
-    const writeToA = await sink.write(fileA);
+    const writeToA = await sink.write(fileA, 'application/json');
     await pipe(writeFromA, writeToA);
 
     const writeFromB = readFileStream('../../fixtures/import-map.json');
-    const writeToB = await sink.write(fileB);
+    const writeToB = await sink.write(fileB, 'application/json');
     await pipe(writeFromB, writeToB);
 
     await sink.delete(dir);
@@ -276,7 +256,7 @@ test('Sink() - .exist() - Check existing file', async (t) => {
     const file = `${dir}/map.json`;
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     await pipe(writeFrom, writeTo);
 
@@ -299,7 +279,7 @@ test('Sink() - .exist() - directory traversal prevention', async (t) => {
     const file = `${dir}/map.json`;
 
     const writeFrom = readFileStream('../../fixtures/import-map.json');
-    const writeTo = await sink.write(file);
+    const writeTo = await sink.write(file, 'application/json');
 
     await pipe(writeFrom, writeTo);
 
