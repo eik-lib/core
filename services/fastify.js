@@ -5,7 +5,6 @@ const fastify = require('fastify');
 const abslog = require('abslog');
 const cors = require('fastify-cors');
 const pino = require('pino')({ level: 'trace', prettyPrint: true });
-const path = require('path');
 const MetricsConsumer = require('@metrics/prometheus-consumer');
 const MetricsGuard = require('@metrics/guard');
 const prometheus = require('prom-client');
@@ -48,9 +47,6 @@ class FastifyService {
 
         const { collectDefaultMetrics } = prometheus;
         collectDefaultMetrics({ register: this.consumer.registry });
-
-        const cred = path.join(__dirname, '../gcloud.json');
-        process.env.GOOGLE_APPLICATION_CREDENTIALS = cred;
 
         // Handle multipart upload
         const _multipart = Symbol('multipart');
