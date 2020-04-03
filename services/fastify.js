@@ -4,10 +4,6 @@ const { PassThrough } = require('stream');
 const fastify = require('fastify');
 const abslog = require('abslog');
 const cors = require('fastify-cors');
-const pino = require('pino')({ level: 'trace', prettyPrint: true });
-const MetricsConsumer = require('@metrics/prometheus-consumer');
-const MetricsGuard = require('@metrics/guard');
-const prometheus = require('prom-client');
 
 const { http, sink, prop } = require('..');
 const utils = require('./fastify-utils');
@@ -21,11 +17,7 @@ class FastifyService {
         config = {},
     } = {}) {
         this.sink = customSink || new sink.FS();
-        if (logger === false) {
-            this.log = abslog();
-        } else {
-            this.log = abslog(logger);
-        }
+        this.log = abslog(logger);
         this.address = address;
         this.port = port;
         this.app = fastify({
@@ -36,17 +28,6 @@ class FastifyService {
             logger: false,
         });
         this.app.register(cors);
-
-        this.consumer = new MetricsConsumer({
-            client: prometheus,
-            logger: this.log,
-        });
-        this.guard = new MetricsGuard({
-            logger: this.log,
-        });
-
-        const { collectDefaultMetrics } = prometheus;
-        collectDefaultMetrics({ register: this.consumer.registry });
 
         // Handle multipart upload
         const _multipart = Symbol('multipart');
@@ -103,7 +84,7 @@ class FastifyService {
         };
 
         // pipe metrics
-        const handlerMetrics = mergeStreams(
+        this.metrics = mergeStreams(
             this._versionsGet.metrics,
             this._aliasPost.metrics,
             this._aliasDel.metrics,
@@ -117,25 +98,6 @@ class FastifyService {
         ).on('error', err => {
             this.log.error(err);
         });
-
-        this.guard.on('error', err => {
-            this.log.error(err);
-        });
-        this.guard.on('warn', info => {
-            this.log.warn(
-                `WARN: metric "${info}" is creating a growing number of permutations`,
-            );
-        });
-        this.guard.on('drop', metric => {
-            this.log.error(
-                `CRITICAL: metric "${metric.name}" has created too many permutations. Metrics are now being dropped.`,
-            );
-        });
-        this.consumer.on('error', err => {
-            this.log.error(err);
-        });
-
-        handlerMetrics.pipe(this.guard).pipe(this.consumer);
     }
 
     routes() {
@@ -746,16 +708,6 @@ class FastifyService {
                 reply.send(outgoing.body);
             },
         );
-
-        this.app.get('/_/metrics', (request, reply) => {
-            const merged = prometheus.Registry.merge([
-                this.consumer.registry,
-                prometheus.register,
-            ]);
-
-            reply.type(merged.contentType);
-            reply.send(merged.metrics());
-        });
     }
 
     async start() {
@@ -781,7 +733,7 @@ class FastifyService {
 module.exports = FastifyService;
 
 if (require.main === module) {
-    const service = new FastifyService({ logger: pino });
+    const service = new FastifyService();
     service.start().catch(() => {
         process.exit(1);
     });
