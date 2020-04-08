@@ -4,11 +4,12 @@ const { PassThrough } = require('stream');
 const fastify = require('fastify');
 const abslog = require('abslog');
 const cors = require('fastify-cors');
+const jwt = require('fastify-jwt');
 
 const { http, sink, prop } = require('..');
 const utils = require('./fastify-utils');
 
-class FastifyService {
+const FastifyService = class FastifyService {
     constructor({
         customSink,
         port = 4001,
@@ -27,7 +28,17 @@ class FastifyService {
             trustProxy: true,
             logger: false,
         });
+
         this.app.register(cors);
+        this.app.register(jwt, {
+            secret: 'supersecret',
+            messages: {
+                badRequestErrorMessage: 'Format is Authorization: Bearer [token]',
+                noAuthorizationInHeaderMessage: 'Autorization header is missing!',
+                authorizationTokenExpiredMessage: 'Authorization token expired',
+                authorizationTokenInvalid: 'Authorization token is invalid'
+            }
+        });
 
         // Handle multipart upload
         const _multipart = Symbol('multipart');
@@ -55,6 +66,7 @@ class FastifyService {
         this._aliasDel = new http.AliasDel(this.sink, config, logger);
         this._aliasGet = new http.AliasGet(this.sink, config, logger);
         this._aliasPut = new http.AliasPut(this.sink, config, logger);
+        this._authPost = new http.AuthPost(config, logger);
         this._pkgLog = new http.PkgLog(this.sink, config, logger);
         this._pkgGet = new http.PkgGet(this.sink, config, logger);
         this._pkgPut = new http.PkgPut(this.sink, config, logger);
@@ -90,6 +102,7 @@ class FastifyService {
             this._aliasDel.metrics,
             this._aliasGet.metrics,
             this._aliasPut.metrics,
+            this._authPost.metrics,
             this._pkgLog.metrics,
             this._pkgGet.metrics,
             this._pkgPut.metrics,
@@ -101,6 +114,29 @@ class FastifyService {
     }
 
     routes() {
+        //
+        // Authentication
+        //
+
+        // curl -X POST -i -F key=foo http://localhost:4001/biz/auth/login
+
+        this.app.post(`/:org/${prop.base_auth}/login`, async (request, reply) => {
+            // const params = utils.sanitizeParameters(request.raw.url);
+            const outgoing = await this._authPost.handler(
+                request.req,
+                'finn',
+            );
+
+            const token = this.app.jwt.sign(outgoing.body, {
+                expiresIn: '7d',
+            });
+
+            // reply.header('etag', outgoing.etag);
+            reply.type(outgoing.mimeType);
+            reply.code(outgoing.statusCode);
+            reply.send({ token });
+        });
+
         //
         // Packages
         //
