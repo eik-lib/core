@@ -6,19 +6,37 @@
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 
-const formData = new FormData();
-formData.append('version', '4.4.2');
+const authenticate = async (address) => {
+    const formData = new FormData();
+    formData.append('key', 'change_me');
 
-fetch('http://localhost:4001/biz/map/buzz/v4', {
-    method: 'POST',
-    body: formData,
-    headers: formData.getHeaders(),
-})
-.then(res => {
+    const res = await fetch(`${address}/biz/auth/login`, {
+        method: 'POST',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    return res.json();
+}
+
+const post = async (address) => {
+    const auth = await authenticate(address);
+
+    const formData = new FormData();
+    formData.append('version', '4.4.2');
+
+    const headers = {'Authorization': `Bearer ${auth.token}`, ...formData.getHeaders()};
+
+    const res = await fetch(`${address}/biz/map/buzz/v4`, {
+        method: 'POST',
+        body: formData,
+        headers,
+    })
+
     let result = {};
     switch (res.status) {
         case 200:
-            result = res.json();
+            result = await res.json();
             break;
         case 401:
             result = { status: res.status, message: 'Unauthorized' };
@@ -32,9 +50,7 @@ fetch('http://localhost:4001/biz/map/buzz/v4', {
         default:
             result = { status: res.status };
     }
-    return result;
-})
-.then(obj => console.log(obj))
-.catch(error => {
-    console.log(error);
-});
+    console.log(result);
+}
+
+post('http://localhost:4001');

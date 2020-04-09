@@ -3,12 +3,34 @@
 
 'use strict';
 
+const FormData = require('form-data');
 const fetch = require('node-fetch');
 
-fetch('http://localhost:4001/biz/map/buzz/v4', {
-    method: 'DELETE',
-})
-.then(res => {
+const authenticate = async (address) => {
+    const formData = new FormData();
+    formData.append('key', 'change_me');
+
+    const res = await fetch(`${address}/biz/auth/login`, {
+        method: 'POST',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    return res.json();
+}
+
+const del = async (address) => {
+    const auth = await authenticate(address);
+
+    const headers = {
+        'Authorization': `Bearer ${auth.token}`
+    };
+
+    const res = await fetch(`${address}/biz/map/buzz/v4`, {
+        method: 'DELETE',
+        headers,
+    })
+
     let result = {};
     switch (res.status) {
         case 204:
@@ -26,9 +48,7 @@ fetch('http://localhost:4001/biz/map/buzz/v4', {
         default:
             result = { status: res.status };
     }
-    return result;
-})
-.then(obj => console.log(obj))
-.catch(error => {
-    console.log(error);
-});
+    console.log(result);
+}
+
+del('http://localhost:4001');

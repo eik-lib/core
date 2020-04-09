@@ -30,15 +30,29 @@ const FastifyService = class FastifyService {
         });
 
         this.app.register(cors);
+
+        // Authentication
         this.app.register(jwt, {
             secret: 'supersecret',
             messages: {
-                badRequestErrorMessage: 'Format is Authorization: Bearer [token]',
+                badRequestErrorMessage: 'Autorization header is malformatted. Format is "Authorization: Bearer [token]"',
                 noAuthorizationInHeaderMessage: 'Autorization header is missing!',
                 authorizationTokenExpiredMessage: 'Authorization token expired',
                 authorizationTokenInvalid: 'Authorization token is invalid'
             }
         });
+
+        this.app.decorate('authenticate', async (request, reply) => {
+            try {
+              await request.jwtVerify()
+            } catch (error) {
+              reply.send(error)
+            }
+        });
+
+        this.authOptions = {
+            preValidation: [this.app.authenticate]
+        }
 
         // Handle multipart upload
         const _multipart = Symbol('multipart');
@@ -249,6 +263,7 @@ const FastifyService = class FastifyService {
         // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
         this.app.put(
             `/:org/${prop.base_pkg}/@:scope/:name/:version`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
@@ -267,6 +282,7 @@ const FastifyService = class FastifyService {
         // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1/
         this.app.put(
             `/:org/${prop.base_pkg}/:name/:version`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
@@ -360,6 +376,7 @@ const FastifyService = class FastifyService {
         // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/@cuz/buzz/4.2.2
         this.app.put(
             `/:org/${prop.base_map}/@:scope/:name/:version`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
@@ -378,6 +395,7 @@ const FastifyService = class FastifyService {
         // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/buzz/4.2.2
         this.app.put(
             `/:org/${prop.base_map}/:name/:version`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
@@ -478,6 +496,7 @@ const FastifyService = class FastifyService {
 
         this.app.put(
             `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
@@ -497,6 +516,7 @@ const FastifyService = class FastifyService {
 
         this.app.put(
             `/:org/${prop.base_pkg}/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
@@ -516,6 +536,7 @@ const FastifyService = class FastifyService {
 
         this.app.post(
             `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
@@ -535,6 +556,7 @@ const FastifyService = class FastifyService {
 
         this.app.post(
             `/:org/${prop.base_pkg}/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
@@ -554,6 +576,7 @@ const FastifyService = class FastifyService {
 
         this.app.delete(
             `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
@@ -573,6 +596,7 @@ const FastifyService = class FastifyService {
 
         this.app.delete(
             `/:org/${prop.base_pkg}/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
@@ -635,6 +659,7 @@ const FastifyService = class FastifyService {
 
         this.app.put(
             `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
@@ -654,6 +679,7 @@ const FastifyService = class FastifyService {
 
         this.app.put(
             `/:org/${prop.base_map}/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
@@ -673,6 +699,7 @@ const FastifyService = class FastifyService {
 
         this.app.post(
             `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
@@ -692,6 +719,7 @@ const FastifyService = class FastifyService {
 
         this.app.post(
             `/:org/${prop.base_map}/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
@@ -711,6 +739,7 @@ const FastifyService = class FastifyService {
 
         this.app.delete(
             `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
@@ -730,6 +759,7 @@ const FastifyService = class FastifyService {
 
         this.app.delete(
             `/:org/${prop.base_map}/:name/v:alias`,
+            this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
