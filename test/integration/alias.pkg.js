@@ -1,10 +1,7 @@
-/* eslint-disable no-console */
-/* eslint-disable import/no-extraneous-dependencies */
-
 'use strict';
 
+const { test, beforeEach, afterEach } = require('tap');
 const FormData = require('form-data');
-const { test } = require('tap');
 const fetch = require('node-fetch');
 const path = require('path');
 const fs = require('fs');
@@ -14,10 +11,39 @@ const Sink = require('../../lib/sinks/test');
 
 const FIXTURE_PKG = path.resolve(__dirname, '../../fixtures/archive.tgz');
 
-test('alias package - put alias, then get file overview through alias - scoped', async (t) => {
+beforeEach(async (done, t) => {
     const sink = new Sink();
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
+
+    const formData = new FormData();
+    formData.append('key', 'change_me');
+
+    const res = await fetch(`${address}/biz/auth/login`, {
+        method: 'POST',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    const { token } = await res.json();
+    const headers = { 'Authorization': `Bearer ${token}` };
+
+    t.context = { // eslint-disable-line no-param-reassign
+        service,
+        address,
+        headers,
+    };
+
+    done();
+});
+
+afterEach(async (done, t) => {
+    await t.context.service.stop();
+    done();
+});
+
+test('alias package - put alias, then get file overview through alias - scoped', async (t) => {
+    const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
     pkgFormData.append('package', fs.createReadStream(FIXTURE_PKG));
@@ -26,7 +52,7 @@ test('alias package - put alias, then get file overview through alias - scoped',
     const uploaded = await fetch(`${address}/biz/pkg/@cuz/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormData,
-        headers: pkgFormData.getHeaders(),
+        headers: { ...headers, ...pkgFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -40,7 +66,7 @@ test('alias package - put alias, then get file overview through alias - scoped',
     const alias = await fetch(`${address}/biz/pkg/@cuz/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormData,
-        headers: aliasFormData.getHeaders(),
+        headers: { ...headers, ...aliasFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -65,14 +91,10 @@ test('alias package - put alias, then get file overview through alias - scoped',
 
     t.equals(downloaded.status, 200, 'on GET of file, server should respond with 200 ok');
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then get file overview through alias - non scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
     pkgFormData.append('package', fs.createReadStream(FIXTURE_PKG));
@@ -81,7 +103,7 @@ test('alias package - put alias, then get file overview through alias - non scop
     const uploaded = await fetch(`${address}/biz/pkg/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormData,
-        headers: pkgFormData.getHeaders(),
+        headers: { ...headers, ...pkgFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -95,7 +117,7 @@ test('alias package - put alias, then get file overview through alias - non scop
     const alias = await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormData,
-        headers: aliasFormData.getHeaders(),
+        headers: { ...headers, ...aliasFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -120,14 +142,10 @@ test('alias package - put alias, then get file overview through alias - non scop
 
     t.equals(downloaded.status, 200, 'on GET of file, server should respond with 200 ok');
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then get file through alias - scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
     pkgFormData.append('package', fs.createReadStream(FIXTURE_PKG));
@@ -136,7 +154,7 @@ test('alias package - put alias, then get file through alias - scoped', async (t
     const uploaded = await fetch(`${address}/biz/pkg/@cuz/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormData,
-        headers: pkgFormData.getHeaders(),
+        headers: { ...headers, ...pkgFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -150,7 +168,7 @@ test('alias package - put alias, then get file through alias - scoped', async (t
     const alias = await fetch(`${address}/biz/pkg/@cuz/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormData,
-        headers: aliasFormData.getHeaders(),
+        headers: { ...headers, ...aliasFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -175,14 +193,10 @@ test('alias package - put alias, then get file through alias - scoped', async (t
 
     t.equals(downloaded.status, 200, 'on GET of file, server should respond with 200 ok');
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then get file through alias - non scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
     pkgFormData.append('package', fs.createReadStream(FIXTURE_PKG));
@@ -191,7 +205,7 @@ test('alias package - put alias, then get file through alias - non scoped', asyn
     const uploaded = await fetch(`${address}/biz/pkg/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormData,
-        headers: pkgFormData.getHeaders(),
+        headers: { ...headers, ...pkgFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -205,7 +219,7 @@ test('alias package - put alias, then get file through alias - non scoped', asyn
     const alias = await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormData,
-        headers: aliasFormData.getHeaders(),
+        headers: { ...headers, ...aliasFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -230,14 +244,10 @@ test('alias package - put alias, then get file through alias - non scoped', asyn
 
     t.equals(downloaded.status, 200, 'on GET of file, server should respond with 200 ok');
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then update alias, then get file through alias - scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     // PUT packages on server
     const pkgFormDataA = new FormData();
@@ -245,7 +255,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     await fetch(`${address}/biz/pkg/@cuz/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormDataA,
-        headers: pkgFormDataA.getHeaders(),
+        headers: { ...headers, ...pkgFormDataA.getHeaders()},
         redirect: 'manual',
     });
 
@@ -254,7 +264,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     await fetch(`${address}/biz/pkg/@cuz/fuzz/8.8.9`, {
         method: 'PUT',
         body: pkgFormDataB,
-        headers: pkgFormDataB.getHeaders(),
+        headers: { ...headers, ...pkgFormDataB.getHeaders()},
         redirect: 'manual',
     });
 
@@ -265,7 +275,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     const aliasA = await fetch(`${address}/biz/pkg/@cuz/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormDataA,
-        headers: aliasFormDataA.getHeaders(),
+        headers: { ...headers, ...aliasFormDataA.getHeaders()},
     });
 
     const aliasResponseA = await aliasA.json();
@@ -280,21 +290,17 @@ test('alias package - put alias, then update alias, then get file through alias 
     const aliasB = await fetch(`${address}/biz/pkg/@cuz/fuzz/v8`, {
         method: 'POST',
         body: aliasFormDataB,
-        headers: aliasFormDataB.getHeaders(),
+        headers: { ...headers, ...aliasFormDataB.getHeaders()},
     });
 
     const aliasResponseB = await aliasB.json();
 
     t.equals(aliasResponseB.version, '8.8.9', 'on POST of alias, alias should redirect to updated "version"');
     t.equals(aliasResponseB.name, '@cuz/fuzz', 'on POST of alias, alias should redirect to set "name"');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then update alias, then get file through alias - non scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     // PUT packages on server
     const pkgFormDataA = new FormData();
@@ -302,7 +308,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     await fetch(`${address}/biz/pkg/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormDataA,
-        headers: pkgFormDataA.getHeaders(),
+        headers: { ...headers, ...pkgFormDataA.getHeaders()},
         redirect: 'manual',
     });
 
@@ -311,7 +317,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     await fetch(`${address}/biz/pkg/fuzz/8.8.9`, {
         method: 'PUT',
         body: pkgFormDataB,
-        headers: pkgFormDataB.getHeaders(),
+        headers: { ...headers, ...pkgFormDataB.getHeaders()},
         redirect: 'manual',
     });
 
@@ -322,7 +328,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     const aliasA = await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormDataA,
-        headers: aliasFormDataA.getHeaders(),
+        headers: { ...headers, ...aliasFormDataA.getHeaders()},
     });
 
     const aliasResponseA = await aliasA.json();
@@ -337,21 +343,17 @@ test('alias package - put alias, then update alias, then get file through alias 
     const aliasB = await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'POST',
         body: aliasFormDataB,
-        headers: aliasFormDataB.getHeaders(),
+        headers: { ...headers, ...aliasFormDataB.getHeaders()},
     });
 
     const aliasResponseB = await aliasB.json();
 
     t.equals(aliasResponseB.version, '8.8.9', 'on POST of alias, alias should redirect to updated "version"');
     t.equals(aliasResponseB.name, 'fuzz', 'on POST of alias, alias should redirect to set "name"');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then delete alias, then get file through alias - scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
     pkgFormData.append('package', fs.createReadStream(FIXTURE_PKG));
@@ -360,7 +362,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     const uploaded = await fetch(`${address}/biz/pkg/@cuz/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormData,
-        headers: pkgFormData.getHeaders(),
+        headers: { ...headers, ...pkgFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -374,7 +376,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     const alias = await fetch(`${address}/biz/pkg/@cuz/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormData,
-        headers: aliasFormData.getHeaders(),
+        headers: { ...headers, ...aliasFormData.getHeaders()},
     });
 
     const aliasResponse = await alias.json();
@@ -385,6 +387,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     // DELETE alias on server
     const deleted = await fetch(`${address}/biz/pkg/@cuz/fuzz/v8`, {
         method: 'DELETE',
+        headers,
     });
 
     t.equals(deleted.status, 204, 'on DELETE of alias, server should respond with a 204 Deleted');
@@ -396,14 +399,10 @@ test('alias package - put alias, then delete alias, then get file through alias 
     });
 
     t.equals(errored.status, 404, 'on GET of file through deleted alias, server should respond with a 404 Not Found');
-
-    await service.stop();
 });
 
 test('alias package - put alias, then delete alias, then get file through alias - non scoped', async (t) => {
-    const sink = new Sink();
-    const service = new Server({ customSink: sink, port: 0, logger: false });
-    const address = await service.start();
+    const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
     pkgFormData.append('package', fs.createReadStream(FIXTURE_PKG));
@@ -412,7 +411,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     const uploaded = await fetch(`${address}/biz/pkg/fuzz/8.4.1`, {
         method: 'PUT',
         body: pkgFormData,
-        headers: pkgFormData.getHeaders(),
+        headers: { ...headers, ...pkgFormData.getHeaders()},
         redirect: 'manual',
     });
 
@@ -426,7 +425,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     const alias = await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'PUT',
         body: aliasFormData,
-        headers: aliasFormData.getHeaders(),
+        headers: { ...headers, ...aliasFormData.getHeaders()},
     });
 
     const aliasResponse = await alias.json();
@@ -437,6 +436,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     // DELETE alias on server
     const deleted = await fetch(`${address}/biz/pkg/fuzz/v8`, {
         method: 'DELETE',
+        headers,
     });
 
     t.equals(deleted.status, 204, 'on DELETE of alias, server should respond with a 204 Deleted');
@@ -448,6 +448,4 @@ test('alias package - put alias, then delete alias, then get file through alias 
     });
 
     t.equals(errored.status, 404, 'on GET of file through deleted alias, server should respond with a 404 Not Found');
-
-    await service.stop();
 });
