@@ -42,6 +42,40 @@ afterEach(async (done, t) => {
     done();
 });
 
+test('packages - no auth token on PUT - scoped', async (t) => {
+    const { address } = t.context;
+
+    const formData = new FormData();
+    formData.append('package', fs.createReadStream(FIXTURE_PKG));
+
+    // PUT files on server
+    const uploaded = await fetch(`${address}/biz/pkg/@cuz/fuzz/1.4.8`, {
+        method: 'PUT',
+        body: formData,
+        redirect: 'manual',
+        headers: formData.getHeaders(),
+    });
+
+    t.equals(uploaded.status, 401, 'on PUT of package, server should respond with a 401 Unauthorized');
+});
+
+test('packages - no auth token on PUT - non scoped', async (t) => {
+    const { address } = t.context;
+
+    const formData = new FormData();
+    formData.append('package', fs.createReadStream(FIXTURE_PKG));
+
+    // PUT files on server
+    const uploaded = await fetch(`${address}/biz/pkg/fuzz/1.4.8`, {
+        method: 'PUT',
+        body: formData,
+        redirect: 'manual',
+        headers: formData.getHeaders(),
+    });
+
+    t.equals(uploaded.status, 401, 'on PUT of package, server should respond with a 401 Unauthorized');
+});
+
 test('packages - put pkg -> get file - scoped successfully uploaded', async (t) => {
     const { headers, address } = t.context;
 

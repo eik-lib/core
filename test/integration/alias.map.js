@@ -43,6 +43,94 @@ afterEach(async (done, t) => {
     done();
 });
 
+test('alias map - no auth token on PUT - scoped', async (t) => {
+    const { address } = t.context;
+
+    // PUT alias on server
+    const aliasFormData = new FormData();
+    aliasFormData.append('version', '8.4.1');
+
+    const alias = await fetch(`${address}/biz/map/@cuz/fuzz/v8`, {
+        method: 'PUT',
+        body: aliasFormData,
+        headers: aliasFormData.getHeaders(),
+    });
+
+    t.equals(alias.status, 401, 'on PUT of alias, server should respond with a 401 Unauthorized');
+});
+
+test('alias map - no auth token on PUT - non scoped', async (t) => {
+    const { address } = t.context;
+
+    // PUT alias on server
+    const aliasFormData = new FormData();
+    aliasFormData.append('version', '8.4.1');
+
+    const alias = await fetch(`${address}/biz/map/fuzz/v8`, {
+        method: 'PUT',
+        body: aliasFormData,
+        headers: aliasFormData.getHeaders(),
+    });
+
+    t.equals(alias.status, 401, 'on PUT of alias, server should respond with a 401 Unauthorized');
+});
+
+test('alias map - no auth token on POST - scoped', async (t) => {
+    const { address } = t.context;
+
+    // POST alias on server
+    const aliasFormData = new FormData();
+    aliasFormData.append('version', '8.4.1');
+
+    const alias = await fetch(`${address}/biz/map/@cuz/fuzz/v8`, {
+        method: 'POST',
+        body: aliasFormData,
+        headers: aliasFormData.getHeaders(),
+    });
+
+    t.equals(alias.status, 401, 'on POST of alias, server should respond with a 401 Unauthorized');
+});
+
+test('alias map - no auth token on POST - non scoped', async (t) => {
+    const { address } = t.context;
+
+    // PUT alias on server
+    const aliasFormData = new FormData();
+    aliasFormData.append('version', '8.4.1');
+
+    const alias = await fetch(`${address}/biz/map/fuzz/v8`, {
+        method: 'POST',
+        body: aliasFormData,
+        headers: aliasFormData.getHeaders(),
+    });
+
+    t.equals(alias.status, 401, 'on POST of alias, server should respond with a 401 Unauthorized');
+});
+
+test('alias map - no auth token on DELETE - scoped', async (t) => {
+    const { address } = t.context;
+
+    // DELETE alias on server
+
+    const alias = await fetch(`${address}/biz/map/@cuz/fuzz/v8`, {
+        method: 'DELETE',
+    });
+
+    t.equals(alias.status, 401, 'on POST of alias, server should respond with a 401 Unauthorized');
+});
+
+test('alias map - no auth token on POST - non scoped', async (t) => {
+    const { address } = t.context;
+
+    // PUT alias on server
+
+    const alias = await fetch(`${address}/biz/map/fuzz/v8`, {
+        method: 'DELETE',
+    });
+
+    t.equals(alias.status, 401, 'on POST of alias, server should respond with a 401 Unauthorized');
+});
+
 test('alias map - put alias, then get map through alias - scoped', async (t) => {
     const { headers, address } = t.context;
 

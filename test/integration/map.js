@@ -45,6 +45,40 @@ afterEach(async (done, t) => {
     done();
 });
 
+test('import-map - no auth token on PUT - scoped', async (t) => {
+    const { address } = t.context;
+
+    const formData = new FormData();
+    formData.append('map', fs.createReadStream(FIXTURE_MAP));
+
+    // PUT map on server
+    const uploaded = await fetch(`${address}/biz/map/@cuz/buzz/4.2.2`, {
+        method: 'PUT',
+        body: formData,
+        headers: formData.getHeaders(),
+        redirect: 'manual',
+    });
+
+    t.equals(uploaded.status, 401, 'on PUT of map, server should respond with a 401 Unauthorized');
+});
+
+test('import-map - no auth token on PUT - non scoped', async (t) => {
+    const { address } = t.context;
+
+    const formData = new FormData();
+    formData.append('map', fs.createReadStream(FIXTURE_MAP));
+
+    // PUT map on server
+    const uploaded = await fetch(`${address}/biz/map/buzz/4.2.2`, {
+        method: 'PUT',
+        body: formData,
+        headers: formData.getHeaders(),
+        redirect: 'manual',
+    });
+
+    t.equals(uploaded.status, 401, 'on PUT of map, server should respond with a 401 Unauthorized');
+});
+
 test('import-map - put map -> get map - scoped successfully uploaded', async (t) => {
     const { headers, address } = t.context;
 
