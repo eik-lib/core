@@ -50,3 +50,38 @@ const sanitizeParameters = (url = '') => {
     };
 };
 module.exports.sanitizeParameters = sanitizeParameters;
+
+
+
+
+
+
+
+
+
+
+
+const sanitizeParametersX = (url = '') => {
+    const paths = url.split('/');
+
+    if (paths[2] && paths[2].startsWith('@')) {
+        return {
+            version: paths[4] || '',
+            extras: sanitizeExtras(paths.slice(5).join('/')),
+            alias: sanitizeAlias(paths[4]),
+            name: sanitizeName(paths[2] || '', paths[3] || ''),
+            type: paths[1] || '',
+            // org: paths[1] || '',
+        };
+    }
+
+    return {
+        version: paths[3] || '',
+        extras: sanitizeExtras(paths.slice(4).join('/')),
+        alias: sanitizeAlias(paths[3]),
+        name: sanitizeName(paths[2] || ''),
+        type: paths[1] || '',
+        // org: paths[1] || '',
+    };
+};
+module.exports.sanitizeParametersX = sanitizeParametersX;

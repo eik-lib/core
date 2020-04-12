@@ -63,7 +63,7 @@ Object {
   "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
   "meta": Array [],
   "name": "fuzz",
-  "org": "biz",
+  "org": "local",
   "version": "8.4.1",
 }
 `
@@ -124,7 +124,7 @@ Object {
   "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
   "meta": Array [],
   "name": "@cuz/fuzz",
-  "org": "biz",
+  "org": "local",
   "version": "8.4.1",
 }
 `

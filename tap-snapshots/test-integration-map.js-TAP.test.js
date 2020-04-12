@@ -10,7 +10,7 @@
 exports[`test/integration/map.js TAP import-map - get map versions - non scoped > on GET of map versions, response should match snapshot 1`] = `
 Object {
   "name": "buzz",
-  "org": "biz",
+  "org": "local",
   "versions": Array [
     Array [
       5,
@@ -33,7 +33,7 @@ Object {
 exports[`test/integration/map.js TAP import-map - get map versions - scoped > on GET of map versions, response should match snapshot 1`] = `
 Object {
   "name": "@cuz/buzz",
-  "org": "biz",
+  "org": "local",
   "versions": Array [
     Array [
       5,

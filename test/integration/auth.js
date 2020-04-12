@@ -15,7 +15,7 @@ test('auth - authenticate - legal "key" value', async (t) => {
     const formData = new FormData();
     formData.append('key', 'change_me');
 
-    const response = await fetch(`${address}/biz/auth/login`, {
+    const response = await fetch(`${address}/auth/login`, {
         method: 'POST',
         body: formData,
         headers: formData.getHeaders(),
@@ -37,7 +37,7 @@ test('auth - authenticate - illegal "key" value', async (t) => {
     const formData = new FormData();
     formData.append('key', 'error_me');
 
-    const response = await fetch(`${address}/biz/auth/login`, {
+    const response = await fetch(`${address}/auth/login`, {
         method: 'POST',
         body: formData,
         headers: formData.getHeaders(),
