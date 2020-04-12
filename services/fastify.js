@@ -135,7 +135,6 @@ const FastifyService = class FastifyService {
         // curl -X POST -i -F key=foo http://localhost:4001/auth/login
 
         this.app.post(`/${prop.base_auth}/login`, async (request, reply) => {
-            // const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._authPost.handler(
                 request.req,
             );
@@ -157,10 +156,9 @@ const FastifyService = class FastifyService {
         // Get public package - scoped
         // curl -X GET http://localhost:4001/pkg/@cuz/fuzz/8.4.1/main/index.js
         this.app.get(`/${prop.base_pkg}/@:scope/:name/:version/*`, async (request, reply) => {
-            const params = utils.sanitizeParametersX(request.raw.url);
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._pkgGet.handler(
                 request.req,
-                // params.org,
                 params.name,
                 params.version,
                 params.extras,
@@ -174,10 +172,9 @@ const FastifyService = class FastifyService {
         // Get public package - non-scoped
         // curl -X GET http://localhost:4001/pkg/fuzz/8.4.1/main/index.js
         this.app.get(`/${prop.base_pkg}/:name/:version/*`, async (request, reply) => {
-            const params = utils.sanitizeParametersX(request.raw.url);
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._pkgGet.handler(
                 request.req,
-                // params.org,
                 params.name,
                 params.version,
                 params.extras,
@@ -193,10 +190,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_pkg}/@:scope/:name/:version`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgLog.handler(
                     request.req,
-                    // params.org,
                     params.name,
                     params.version,
                 );
@@ -212,10 +208,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgLog.handler(
                     request.req,
-                    // params.org,
                     params.name,
                     params.version,
                 );
@@ -229,10 +224,9 @@ const FastifyService = class FastifyService {
         // Get package versions - scoped
         // curl -X GET http://localhost:4001/pkg/@cuz/fuzz/
         this.app.get(`/${prop.base_pkg}/@:scope/:name`, async (request, reply) => {
-            const params = utils.sanitizeParametersX(request.raw.url);
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                // params.org,
                 prop.base_pkg,
                 params.name,
             );
@@ -245,10 +239,9 @@ const FastifyService = class FastifyService {
         // Get package versions - non-scoped
         // curl -X GET http://localhost:4001/pkg/fuzz/
         this.app.get(`/${prop.base_pkg}/:name`, async (request, reply) => {
-            const params = utils.sanitizeParametersX(request.raw.url);
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                // params.org,
                 prop.base_pkg,
                 params.name,
             );
@@ -264,10 +257,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/@:scope/:name/:version`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
-//                    params.org,
                     params.name,
                     params.version,
                 );
@@ -283,10 +275,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/:name/:version`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
-//                    params.org,
                     params.name,
                     params.version,
                 );
@@ -306,10 +297,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_map}/@:scope/:name/:version`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapGet.handler(
                     request.req,
-                    // params.org,
                     params.name,
                     params.version,
                 );
@@ -325,10 +315,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_map}/:name/:version`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapGet.handler(
                     request.req,
-                    // params.org,
                     params.name,
                     params.version,
                 );
@@ -342,10 +331,9 @@ const FastifyService = class FastifyService {
         // Get map versions - scoped
         // curl -X GET http://localhost:4001/map/@cuz/buzz
         this.app.get(`/${prop.base_map}/@:scope/:name`, async (request, reply) => {
-            const params = utils.sanitizeParametersX(request.raw.url);
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                // params.org,
                 prop.base_map,
                 params.name,
             );
@@ -358,10 +346,9 @@ const FastifyService = class FastifyService {
         // Get map versions - non-scoped
         // curl -X GET http://localhost:4001/map/buzz
         this.app.get(`/${prop.base_map}/:name`, async (request, reply) => {
-            const params = utils.sanitizeParametersX(request.raw.url);
+            const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                // params.org,
                 prop.base_map,
                 params.name,
             );
@@ -377,10 +364,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/@:scope/:name/:version`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
-                    // params.org,
                     params.name,
                     params.version,
                 );
@@ -396,10 +382,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/:name/:version`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
-                    // params.org,
                     params.name,
                     params.version,
                 );
@@ -418,10 +403,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_pkg}/@:scope/:name/v:alias`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -437,10 +421,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -456,10 +439,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_pkg}/@:scope/:name/v:alias/*`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -476,10 +458,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_pkg}/:name/v:alias/*`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -497,10 +478,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -517,10 +497,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -537,10 +516,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -557,10 +535,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -577,10 +554,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -597,10 +573,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_pkg}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    // params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -621,10 +596,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_map}/@:scope/:name/v:alias`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -640,10 +614,9 @@ const FastifyService = class FastifyService {
         this.app.get(
             `/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -660,10 +633,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -680,10 +652,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -700,10 +671,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -720,10 +690,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -740,10 +709,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -760,10 +728,9 @@ const FastifyService = class FastifyService {
             `/${prop.base_map}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
-                const params = utils.sanitizeParametersX(request.raw.url);
+                const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    // params.org,
                     prop.base_map,
                     params.name,
                     params.alias,

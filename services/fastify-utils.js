@@ -29,41 +29,6 @@ module.exports.sanitizeAlias = sanitizeAlias;
 const sanitizeParameters = (url = '') => {
     const paths = url.split('/');
 
-    if (paths[3] && paths[3].startsWith('@')) {
-        return {
-            version: paths[5] || '',
-            extras: sanitizeExtras(paths.slice(6).join('/')),
-            alias: sanitizeAlias(paths[5]),
-            name: sanitizeName(paths[3] || '', paths[4] || ''),
-            type: paths[2] || '',
-            org: paths[1] || '',
-        };
-    }
-
-    return {
-        version: paths[4] || '',
-        extras: sanitizeExtras(paths.slice(5).join('/')),
-        alias: sanitizeAlias(paths[4]),
-        name: sanitizeName(paths[3] || ''),
-        type: paths[2] || '',
-        org: paths[1] || '',
-    };
-};
-module.exports.sanitizeParameters = sanitizeParameters;
-
-
-
-
-
-
-
-
-
-
-
-const sanitizeParametersX = (url = '') => {
-    const paths = url.split('/');
-
     if (paths[2] && paths[2].startsWith('@')) {
         return {
             version: paths[4] || '',
@@ -71,7 +36,6 @@ const sanitizeParametersX = (url = '') => {
             alias: sanitizeAlias(paths[4]),
             name: sanitizeName(paths[2] || '', paths[3] || ''),
             type: paths[1] || '',
-            // org: paths[1] || '',
         };
     }
 
@@ -81,7 +45,6 @@ const sanitizeParametersX = (url = '') => {
         alias: sanitizeAlias(paths[3]),
         name: sanitizeName(paths[2] || ''),
         type: paths[1] || '',
-        // org: paths[1] || '',
     };
 };
-module.exports.sanitizeParametersX = sanitizeParametersX;
+module.exports.sanitizeParameters = sanitizeParameters;
