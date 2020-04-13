@@ -7,19 +7,37 @@ const FormData = require('form-data');
 const fetch = require('node-fetch');
 const fs = require('fs');
 
-const formData = new FormData();
-formData.append('package', fs.createReadStream('../fixtures/archive.tgz'));
+const authenticate = async (address) => {
+    const formData = new FormData();
+    formData.append('key', 'change_me');
 
-fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1/', {
-    method: 'PUT',
-    body: formData,
-    headers: formData.getHeaders(),
-})
-.then(res => {
+    const res = await fetch(`${address}/biz/auth/login`, {
+        method: 'POST',
+        body: formData,
+        headers: formData.getHeaders(),
+    });
+
+    return res.json();
+}
+
+const put = async (address) => {
+    const auth = await authenticate(address);
+
+    const formData = new FormData();
+    formData.append('package', fs.createReadStream('../fixtures/archive.tgz'));
+
+    const headers = {'Authorization': `Bearer ${auth.token}`, ...formData.getHeaders()};
+
+    const res = await fetch(`${address}/biz/pkg/fuzz/8.4.1`, {
+        method: 'PUT',
+        body: formData,
+        headers,
+    });
+
     let result = {};
     switch (res.status) {
         case 200:
-            result = res.json();
+            result = await res.json();
             break;
         case 400:
             result = { status: res.status, message: 'Invalid URL parameter' };
@@ -39,9 +57,7 @@ fetch('http://localhost:4001/biz/pkg/fuzz/8.4.1/', {
         default:
             result = { status: res.status };
     }
-    return result;
-})
-.then(obj => console.log(obj))
-.catch(error => {
-    console.log(error);
-});
+    console.log(result);
+}
+
+put('http://localhost:4001');
