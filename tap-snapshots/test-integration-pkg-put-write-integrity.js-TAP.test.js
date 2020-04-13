@@ -63,7 +63,7 @@ Object {
   "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
   "meta": Array [],
   "name": "frazz",
-  "org": "biz",
+  "org": "local",
   "version": "2.1.4",
 }
 `
@@ -117,7 +117,7 @@ Object {
   "integrity": "sha512-xY8OwknhnxEdnMDXVX/wy4NSy4OdRbRf6BGv+LFGchCj2boq/JzOqhhS8ZSdkwqim0l4x2acXOR/tHRgrWqwJQ==",
   "meta": Array [],
   "name": "brazz",
-  "org": "biz",
+  "org": "local",
   "version": "7.1.3",
 }
 `
@@ -178,7 +178,7 @@ Object {
   "integrity": "sha512-nOnJP41e2MTxtqvsZW7ueINwP+GIVTgN5l+Y1KA9QcMH6SSaweFqBmxglGj3/07MQSOru7DBZk/IWAOmle5urg==",
   "meta": Array [],
   "name": "frazz",
-  "org": "biz",
+  "org": "local",
   "version": "2.1.4",
 }
 `
@@ -232,7 +232,7 @@ Object {
   "integrity": "sha512-xY8OwknhnxEdnMDXVX/wy4NSy4OdRbRf6BGv+LFGchCj2boq/JzOqhhS8ZSdkwqim0l4x2acXOR/tHRgrWqwJQ==",
   "meta": Array [],
   "name": "brazz",
-  "org": "biz",
+  "org": "local",
   "version": "7.1.3",
 }
 `

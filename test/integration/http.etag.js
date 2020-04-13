@@ -15,8 +15,8 @@ test('ETag - pkg:get - ETag and "If-None-Match" is matching', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1/main/index.js`;
-    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1/main/index.js`;
+    sink.set('/local/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -47,8 +47,8 @@ test('ETag - pkg:get - ETag and "If-None-Match" is NOT matching', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1/main/index.js`;
-    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1/main/index.js`;
+    sink.set('/local/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -79,8 +79,8 @@ test('ETag - pkg:get - "If-None-Match" is NOT set on request', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1/main/index.js`;
-    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1/main/index.js`;
+    sink.set('/local/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -108,8 +108,8 @@ test('ETag - pkg:get - ETags is configured to not be set', async t => {
     const service = new Server({ customSink: sink, port: 0, config: { etag: false }, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1/main/index.js`;
-    sink.set('/biz/pkg/fuzz/8.4.1/main/index.js', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1/main/index.js`;
+    sink.set('/local/pkg/fuzz/8.4.1/main/index.js', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -145,8 +145,8 @@ test('ETag - pkg:log - ETag and "If-None-Match" is matching', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1`;
-    sink.set('/biz/pkg/fuzz/8.4.1.package.json', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1`;
+    sink.set('/local/pkg/fuzz/8.4.1.package.json', 'hello world');
 
 
     const resA = await fetch(url, {
@@ -178,8 +178,8 @@ test('ETag - pkg:log - ETag and "If-None-Match" is NOT matching', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1`;
-    sink.set('/biz/pkg/fuzz/8.4.1.package.json', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1`;
+    sink.set('/local/pkg/fuzz/8.4.1.package.json', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -210,8 +210,8 @@ test('ETag - pkg:log - "If-None-Match" is NOT set on request', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1`;
-    sink.set('/biz/pkg/fuzz/8.4.1.package.json', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1`;
+    sink.set('/local/pkg/fuzz/8.4.1.package.json', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -239,8 +239,8 @@ test('ETag - pkg:log - ETags is configured to not be set', async t => {
     const service = new Server({ customSink: sink, port: 0, config: { etag: false }, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/pkg/fuzz/8.4.1`;
-    sink.set('/biz/pkg/fuzz/8.4.1.package.json', 'hello world');
+    const url = `${address}/pkg/fuzz/8.4.1`;
+    sink.set('/local/pkg/fuzz/8.4.1.package.json', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -276,8 +276,8 @@ test('ETag - map:get - ETag and "If-None-Match" is matching', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/map/buzz/4.2.2`;
-    sink.set('/biz/map/buzz/4.2.2.import-map.json', 'hello world');
+    const url = `${address}/map/buzz/4.2.2`;
+    sink.set('/local/map/buzz/4.2.2.import-map.json', 'hello world');
 
 
     const resA = await fetch(url, {
@@ -309,8 +309,8 @@ test('ETag - map:get - ETag and "If-None-Match" is NOT matching', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/map/buzz/4.2.2`;
-    sink.set('/biz/map/buzz/4.2.2.import-map.json', 'hello world');
+    const url = `${address}/map/buzz/4.2.2`;
+    sink.set('/local/map/buzz/4.2.2.import-map.json', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -341,8 +341,8 @@ test('ETag - map:get - "If-None-Match" is NOT set on request', async t => {
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/map/buzz/4.2.2`;
-    sink.set('/biz/map/buzz/4.2.2.import-map.json', 'hello world');
+    const url = `${address}/map/buzz/4.2.2`;
+    sink.set('/local/map/buzz/4.2.2.import-map.json', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',
@@ -370,8 +370,8 @@ test('ETag - map:get - ETags is configured to not be set', async t => {
     const service = new Server({ customSink: sink, port: 0, config: { etag: false }, logger: false });
     const address = await service.start();
 
-    const url = `${address}/biz/map/buzz/4.2.2`;
-    sink.set('/biz/map/buzz/4.2.2.import-map.json', 'hello world');
+    const url = `${address}/map/buzz/4.2.2`;
+    sink.set('/local/map/buzz/4.2.2.import-map.json', 'hello world');
 
     const resA = await fetch(url, {
         method: 'GET',

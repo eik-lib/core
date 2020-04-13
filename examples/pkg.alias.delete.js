@@ -10,7 +10,7 @@ const authenticate = async (address) => {
     const formData = new FormData();
     formData.append('key', 'change_me');
 
-    const res = await fetch(`${address}/biz/auth/login`, {
+    const res = await fetch(`${address}/auth/login`, {
         method: 'POST',
         body: formData,
         headers: formData.getHeaders(),
@@ -26,7 +26,7 @@ const del = async (address) => {
         'Authorization': `Bearer ${auth.token}`
     };
 
-    const res = await fetch(`${address}/biz/pkg/fuzz/v8`, {
+    const res = await fetch(`${address}/pkg/fuzz/v8`, {
         method: 'DELETE',
         headers,
     })

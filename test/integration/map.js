@@ -19,7 +19,7 @@ beforeEach(async (done, t) => {
     const formData = new FormData();
     formData.append('key', 'change_me');
 
-    const res = await fetch(`${address}/biz/auth/login`, {
+    const res = await fetch(`${address}/auth/login`, {
         method: 'POST',
         body: formData,
         headers: formData.getHeaders(),
@@ -49,7 +49,7 @@ test('import-map - no auth token on PUT - scoped', async (t) => {
     formData.append('map', fs.createReadStream(FIXTURE_MAP));
 
     // PUT map on server
-    const uploaded = await fetch(`${address}/biz/map/@cuz/buzz/4.2.2`, {
+    const uploaded = await fetch(`${address}/map/@cuz/buzz/4.2.2`, {
         method: 'PUT',
         body: formData,
         headers: formData.getHeaders(),
@@ -66,7 +66,7 @@ test('import-map - no auth token on PUT - non scoped', async (t) => {
     formData.append('map', fs.createReadStream(FIXTURE_MAP));
 
     // PUT map on server
-    const uploaded = await fetch(`${address}/biz/map/buzz/4.2.2`, {
+    const uploaded = await fetch(`${address}/map/buzz/4.2.2`, {
         method: 'PUT',
         body: formData,
         headers: formData.getHeaders(),
@@ -83,7 +83,7 @@ test('import-map - put map -> get map - scoped successfully uploaded', async (t)
     formData.append('map', fs.createReadStream(FIXTURE_MAP));
 
     // PUT map on server
-    const uploaded = await fetch(`${address}/biz/map/@cuz/buzz/4.2.2`, {
+    const uploaded = await fetch(`${address}/map/@cuz/buzz/4.2.2`, {
         method: 'PUT',
         body: formData,
         headers: { ...headers, ...formData.getHeaders()},
@@ -91,10 +91,10 @@ test('import-map - put map -> get map - scoped successfully uploaded', async (t)
     });
 
     t.equals(uploaded.status, 303, 'on PUT of map, server should respond with a 303 redirect');
-    t.equals(uploaded.headers.get('location'), `${address}/biz/map/@cuz/buzz/4.2.2`, 'on PUT of map, server should respond with a location header');
+    t.equals(uploaded.headers.get('location'), `${address}/map/@cuz/buzz/4.2.2`, 'on PUT of map, server should respond with a location header');
 
     // GET map from server
-    const downloaded = await fetch(`${address}/biz/map/@cuz/buzz/4.2.2`, {
+    const downloaded = await fetch(`${address}/map/@cuz/buzz/4.2.2`, {
         method: 'GET',
     });
 
@@ -111,7 +111,7 @@ test('import-map - put map -> get map - non scoped successfully uploaded', async
     formData.append('map', fs.createReadStream(FIXTURE_MAP));
 
     // PUT map on server
-    const uploaded = await fetch(`${address}/biz/map/buzz/4.2.2`, {
+    const uploaded = await fetch(`${address}/map/buzz/4.2.2`, {
         method: 'PUT',
         body: formData,
         headers: { ...headers, ...formData.getHeaders()},
@@ -119,10 +119,10 @@ test('import-map - put map -> get map - non scoped successfully uploaded', async
     });
 
     t.equals(uploaded.status, 303, 'on PUT of map, server should respond with a 303 redirect');
-    t.equals(uploaded.headers.get('location'), `${address}/biz/map/buzz/4.2.2`, 'on PUT of map, server should respond with a location header');
+    t.equals(uploaded.headers.get('location'), `${address}/map/buzz/4.2.2`, 'on PUT of map, server should respond with a location header');
 
     // GET map from server
-    const downloaded = await fetch(`${address}/biz/map/buzz/4.2.2`, {
+    const downloaded = await fetch(`${address}/map/buzz/4.2.2`, {
         method: 'GET',
     });
 
@@ -139,7 +139,7 @@ test('import-map - get map versions - scoped', async (t) => {
 
     const formDataA = new FormData();
     formDataA.append('map', fs.createReadStream(FIXTURE_MAP));
-    await fetch(`${address}/biz/map/@cuz/buzz/4.2.2`, {
+    await fetch(`${address}/map/@cuz/buzz/4.2.2`, {
         method: 'PUT',
         body: formDataA,
         headers: { ...headers, ...formDataA.getHeaders()},
@@ -148,7 +148,7 @@ test('import-map - get map versions - scoped', async (t) => {
 
     const formDataB = new FormData();
     formDataB.append('map', fs.createReadStream(FIXTURE_MAP));
-    await fetch(`${address}/biz/map/@cuz/buzz/5.2.2`, {
+    await fetch(`${address}/map/@cuz/buzz/5.2.2`, {
         method: 'PUT',
         body: formDataB,
         headers: { ...headers, ...formDataB.getHeaders()},
@@ -157,7 +157,7 @@ test('import-map - get map versions - scoped', async (t) => {
 
     const formDataC = new FormData();
     formDataC.append('map', fs.createReadStream(FIXTURE_MAP));
-    await fetch(`${address}/biz/map/@cuz/buzz/4.9.2`, {
+    await fetch(`${address}/map/@cuz/buzz/4.9.2`, {
         method: 'PUT',
         body: formDataC,
         headers: { ...headers, ...formDataC.getHeaders()},
@@ -165,7 +165,7 @@ test('import-map - get map versions - scoped', async (t) => {
     });
 
     // GET map from server
-    const downloaded = await fetch(`${address}/biz/map/@cuz/buzz`, {
+    const downloaded = await fetch(`${address}/map/@cuz/buzz`, {
         method: 'GET',
     });
 
@@ -182,7 +182,7 @@ test('import-map - get map versions - non scoped', async (t) => {
 
     const formDataA = new FormData();
     formDataA.append('map', fs.createReadStream(FIXTURE_MAP));
-    await fetch(`${address}/biz/map/buzz/4.2.2`, {
+    await fetch(`${address}/map/buzz/4.2.2`, {
         method: 'PUT',
         body: formDataA,
         headers: { ...headers, ...formDataA.getHeaders()},
@@ -191,7 +191,7 @@ test('import-map - get map versions - non scoped', async (t) => {
 
     const formDataB = new FormData();
     formDataB.append('map', fs.createReadStream(FIXTURE_MAP));
-    await fetch(`${address}/biz/map/buzz/5.2.2`, {
+    await fetch(`${address}/map/buzz/5.2.2`, {
         method: 'PUT',
         body: formDataB,
         headers: { ...headers, ...formDataB.getHeaders()},
@@ -200,7 +200,7 @@ test('import-map - get map versions - non scoped', async (t) => {
 
     const formDataC = new FormData();
     formDataC.append('map', fs.createReadStream(FIXTURE_MAP));
-    await fetch(`${address}/biz/map/buzz/4.9.2`, {
+    await fetch(`${address}/map/buzz/4.9.2`, {
         method: 'PUT',
         body: formDataC,
         headers: { ...headers, ...formDataC.getHeaders()},
@@ -208,7 +208,7 @@ test('import-map - get map versions - non scoped', async (t) => {
     });
 
     // GET map from server
-    const downloaded = await fetch(`${address}/biz/map/buzz`, {
+    const downloaded = await fetch(`${address}/map/buzz`, {
         method: 'GET',
     });
 

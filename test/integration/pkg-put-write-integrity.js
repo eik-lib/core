@@ -13,7 +13,7 @@ const authentication = async (address) => {
     const formData = new FormData();
     formData.append('key', 'change_me');
 
-    const res = await fetch(`${address}/biz/auth/login`, {
+    const res = await fetch(`${address}/auth/login`, {
         method: 'POST',
         body: formData,
         headers: formData.getHeaders(),
@@ -45,7 +45,7 @@ test('Sink is slow and irregular - Writing medium sized package', async t => {
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
-    const res = await fetch(`${address}/biz/pkg/frazz/2.1.4`, {
+    const res = await fetch(`${address}/pkg/frazz/2.1.4`, {
         method: 'PUT',
         body: formData,
         headers: { ...headers, ...formData.getHeaders()},
@@ -79,7 +79,7 @@ test('Sink is slow and irregular - Writing small sized package', async t => {
         createReadStream(join(__dirname, '../../fixtures/archive-small.tgz')),
     );
 
-    const res = await fetch(`${address}/biz/pkg/brazz/7.1.3`, {
+    const res = await fetch(`${address}/pkg/brazz/7.1.3`, {
         method: 'PUT',
         body: formData,
         // headers: formData.getHeaders(),
@@ -114,7 +114,7 @@ test('Sink is slow to construct writer - Writing medium sized package', async t 
         createReadStream(join(__dirname, '../../fixtures/archive.tgz')),
     );
 
-    const res = await fetch(`${address}/biz/pkg/frazz/2.1.4`, {
+    const res = await fetch(`${address}/pkg/frazz/2.1.4`, {
         method: 'PUT',
         body: formData,
         headers: { ...headers, ...formData.getHeaders()},
@@ -148,7 +148,7 @@ test('Sink is slow to construct writer - Writing small sized package', async t =
         createReadStream(join(__dirname, '../../fixtures/archive-small.tgz')),
     );
 
-    const res = await fetch(`${address}/biz/pkg/brazz/7.1.3`, {
+    const res = await fetch(`${address}/pkg/brazz/7.1.3`, {
         method: 'PUT',
         body: formData,
         headers: { ...headers, ...formData.getHeaders()},

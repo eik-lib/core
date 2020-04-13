@@ -132,13 +132,11 @@ const FastifyService = class FastifyService {
         // Authentication
         //
 
-        // curl -X POST -i -F key=foo http://localhost:4001/biz/auth/login
+        // curl -X POST -i -F key=foo http://localhost:4001/auth/login
 
-        this.app.post(`/:org/${prop.base_auth}/login`, async (request, reply) => {
-            // const params = utils.sanitizeParameters(request.raw.url);
+        this.app.post(`/${prop.base_auth}/login`, async (request, reply) => {
             const outgoing = await this._authPost.handler(
                 request.req,
-                'finn',
             );
 
             const token = this.app.jwt.sign(outgoing.body, {
@@ -156,12 +154,11 @@ const FastifyService = class FastifyService {
         //
 
         // Get public package - scoped
-        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/main/index.js
-        this.app.get(`/:org/${prop.base_pkg}/@:scope/:name/:version/*`, async (request, reply) => {
+        // curl -X GET http://localhost:4001/pkg/@cuz/fuzz/8.4.1/main/index.js
+        this.app.get(`/${prop.base_pkg}/@:scope/:name/:version/*`, async (request, reply) => {
             const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._pkgGet.handler(
                 request.req,
-                params.org,
                 params.name,
                 params.version,
                 params.extras,
@@ -173,12 +170,11 @@ const FastifyService = class FastifyService {
         });
 
         // Get public package - non-scoped
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/main/index.js
-        this.app.get(`/:org/${prop.base_pkg}/:name/:version/*`, async (request, reply) => {
+        // curl -X GET http://localhost:4001/pkg/fuzz/8.4.1/main/index.js
+        this.app.get(`/${prop.base_pkg}/:name/:version/*`, async (request, reply) => {
             const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._pkgGet.handler(
                 request.req,
-                params.org,
                 params.name,
                 params.version,
                 params.extras,
@@ -190,14 +186,13 @@ const FastifyService = class FastifyService {
         });
 
         // Get package overview - scoped
-        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
+        // curl -X GET http://localhost:4001/pkg/@cuz/fuzz/8.4.1/
         this.app.get(
-            `/:org/${prop.base_pkg}/@:scope/:name/:version`,
+            `/${prop.base_pkg}/@:scope/:name/:version`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgLog.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -209,14 +204,13 @@ const FastifyService = class FastifyService {
         );
 
         // Get package overview - non-scoped
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/8.4.1/
+        // curl -X GET http://localhost:4001/pkg/fuzz/8.4.1/
         this.app.get(
-            `/:org/${prop.base_pkg}/:name/:version`,
+            `/${prop.base_pkg}/:name/:version`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgLog.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -228,12 +222,11 @@ const FastifyService = class FastifyService {
         );
 
         // Get package versions - scoped
-        // curl -X GET http://localhost:4001/biz/pkg/@cuz/fuzz/
-        this.app.get(`/:org/${prop.base_pkg}/@:scope/:name`, async (request, reply) => {
+        // curl -X GET http://localhost:4001/pkg/@cuz/fuzz/
+        this.app.get(`/${prop.base_pkg}/@:scope/:name`, async (request, reply) => {
             const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                params.org,
                 prop.base_pkg,
                 params.name,
             );
@@ -244,12 +237,11 @@ const FastifyService = class FastifyService {
         });
 
         // Get package versions - non-scoped
-        // curl -X GET http://localhost:4001/biz/pkg/fuzz/
-        this.app.get(`/:org/${prop.base_pkg}/:name`, async (request, reply) => {
+        // curl -X GET http://localhost:4001/pkg/fuzz/
+        this.app.get(`/${prop.base_pkg}/:name`, async (request, reply) => {
             const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                params.org,
                 prop.base_pkg,
                 params.name,
             );
@@ -260,15 +252,14 @@ const FastifyService = class FastifyService {
         });
 
         // Put package - scoped
-        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/@cuz/fuzz/8.4.1/
+        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/pkg/@cuz/fuzz/8.4.1/
         this.app.put(
-            `/:org/${prop.base_pkg}/@:scope/:name/:version`,
+            `/${prop.base_pkg}/@:scope/:name/:version`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -279,15 +270,14 @@ const FastifyService = class FastifyService {
         );
 
         // Put package - non-scoped
-        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/biz/pkg/fuzz/8.4.1/
+        // curl -X PUT -i -F filedata=@archive.tgz http://localhost:4001/pkg/fuzz/8.4.1/
         this.app.put(
-            `/:org/${prop.base_pkg}/:name/:version`,
+            `/${prop.base_pkg}/:name/:version`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -303,14 +293,13 @@ const FastifyService = class FastifyService {
         //
 
         // Get map - scoped
-        // curl -X GET http://localhost:4001/biz/map/@cuz/buzz/4.2.2
+        // curl -X GET http://localhost:4001/map/@cuz/buzz/4.2.2
         this.app.get(
-            `/:org/${prop.base_map}/@:scope/:name/:version`,
+            `/${prop.base_map}/@:scope/:name/:version`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapGet.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -322,14 +311,13 @@ const FastifyService = class FastifyService {
         );
 
         // Get map - non-scoped
-        // curl -X GET http://localhost:4001/biz/map/buzz/4.2.2
+        // curl -X GET http://localhost:4001/map/buzz/4.2.2
         this.app.get(
-            `/:org/${prop.base_map}/:name/:version`,
+            `/${prop.base_map}/:name/:version`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapGet.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -341,12 +329,11 @@ const FastifyService = class FastifyService {
         );
 
         // Get map versions - scoped
-        // curl -X GET http://localhost:4001/biz/map/@cuz/buzz
-        this.app.get(`/:org/${prop.base_map}/@:scope/:name`, async (request, reply) => {
+        // curl -X GET http://localhost:4001/map/@cuz/buzz
+        this.app.get(`/${prop.base_map}/@:scope/:name`, async (request, reply) => {
             const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                params.org,
                 prop.base_map,
                 params.name,
             );
@@ -357,12 +344,11 @@ const FastifyService = class FastifyService {
         });
 
         // Get map versions - non-scoped
-        // curl -X GET http://localhost:4001/biz/map/buzz
-        this.app.get(`/:org/${prop.base_map}/:name`, async (request, reply) => {
+        // curl -X GET http://localhost:4001/map/buzz
+        this.app.get(`/${prop.base_map}/:name`, async (request, reply) => {
             const params = utils.sanitizeParameters(request.raw.url);
             const outgoing = await this._versionsGet.handler(
                 request.req,
-                params.org,
                 prop.base_map,
                 params.name,
             );
@@ -373,15 +359,14 @@ const FastifyService = class FastifyService {
         });
 
         // Put map - scoped
-        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/@cuz/buzz/4.2.2
+        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/map/@cuz/buzz/4.2.2
         this.app.put(
-            `/:org/${prop.base_map}/@:scope/:name/:version`,
+            `/${prop.base_map}/@:scope/:name/:version`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -392,15 +377,14 @@ const FastifyService = class FastifyService {
         );
 
         // Put map - non-scoped
-        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/biz/map/buzz/4.2.2
+        // curl -X PUT -i -F map=@import-map.json http://localhost:4001/map/buzz/4.2.2
         this.app.put(
-            `/:org/${prop.base_map}/:name/:version`,
+            `/${prop.base_map}/:name/:version`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
-                    params.org,
                     params.name,
                     params.version,
                 );
@@ -414,15 +398,14 @@ const FastifyService = class FastifyService {
         // Alias Packages
         //
 
-        // curl -X GET -L http://localhost:4001/biz/pkg/@cuz/fuzz/v8
+        // curl -X GET -L http://localhost:4001/pkg/@cuz/fuzz/v8
 
         this.app.get(
-            `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            `/${prop.base_pkg}/@:scope/:name/v:alias`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -433,15 +416,14 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X GET -L http://localhost:4001/biz/pkg/fuzz/v8
+        // curl -X GET -L http://localhost:4001/pkg/fuzz/v8
 
         this.app.get(
-            `/:org/${prop.base_pkg}/:name/v:alias`,
+            `/${prop.base_pkg}/:name/v:alias`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -452,15 +434,14 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X GET -L http://localhost:4001/biz/pkg/@cuz/fuzz/v8/main/index.js
+        // curl -X GET -L http://localhost:4001/pkg/@cuz/fuzz/v8/main/index.js
 
         this.app.get(
-            `/:org/${prop.base_pkg}/@:scope/:name/v:alias/*`,
+            `/${prop.base_pkg}/@:scope/:name/v:alias/*`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -472,15 +453,14 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X GET -L http://localhost:4001/biz/pkg/fuzz/v8/main/index.js
+        // curl -X GET -L http://localhost:4001/pkg/fuzz/v8/main/index.js
 
         this.app.get(
-            `/:org/${prop.base_pkg}/:name/v:alias/*`,
+            `/${prop.base_pkg}/:name/v:alias/*`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -492,16 +472,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X PUT -i -F version=8.4.1 http://localhost:4001/biz/pkg/@cuz/fuzz/v8
+        // curl -X PUT -i -F version=8.4.1 http://localhost:4001/pkg/@cuz/fuzz/v8
 
         this.app.put(
-            `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            `/${prop.base_pkg}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -512,16 +491,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X PUT -i -F version=8.4.1 http://localhost:4001/biz/pkg/fuzz/v8
+        // curl -X PUT -i -F version=8.4.1 http://localhost:4001/pkg/fuzz/v8
 
         this.app.put(
-            `/:org/${prop.base_pkg}/:name/v:alias`,
+            `/${prop.base_pkg}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -532,16 +510,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X POST -i -F version=8.4.1 http://localhost:4001/biz/pkg/@cuz/lit-html/v8
+        // curl -X POST -i -F version=8.4.1 http://localhost:4001/pkg/@cuz/lit-html/v8
 
         this.app.post(
-            `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            `/${prop.base_pkg}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -552,16 +529,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X POST -i -F version=8.4.1 http://localhost:4001/biz/pkg/lit-html/v8
+        // curl -X POST -i -F version=8.4.1 http://localhost:4001/pkg/lit-html/v8
 
         this.app.post(
-            `/:org/${prop.base_pkg}/:name/v:alias`,
+            `/${prop.base_pkg}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -572,16 +548,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X DELETE http://localhost:4001/biz/pkg/@cuz/fuzz/v8
+        // curl -X DELETE http://localhost:4001/pkg/@cuz/fuzz/v8
 
         this.app.delete(
-            `/:org/${prop.base_pkg}/@:scope/:name/v:alias`,
+            `/${prop.base_pkg}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -592,16 +567,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X DELETE http://localhost:4001/biz/pkg/fuzz/v8
+        // curl -X DELETE http://localhost:4001/pkg/fuzz/v8
 
         this.app.delete(
-            `/:org/${prop.base_pkg}/:name/v:alias`,
+            `/${prop.base_pkg}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    params.org,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -617,15 +591,14 @@ const FastifyService = class FastifyService {
         // Alias Import Maps
         //
 
-        // curl -X GET -L http://localhost:4001/biz/map/@cuz/buzz/v4
+        // curl -X GET -L http://localhost:4001/map/@cuz/buzz/v4
 
         this.app.get(
-            `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            `/${prop.base_map}/@:scope/:name/v:alias`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -636,15 +609,14 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X GET -L http://localhost:4001/biz/map/buzz/v4
+        // curl -X GET -L http://localhost:4001/map/buzz/v4
 
         this.app.get(
-            `/:org/${prop.base_map}/:name/v:alias`,
+            `/${prop.base_map}/:name/v:alias`,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasGet.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -655,16 +627,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X PUT -i -F version=4.2.2 http://localhost:4001/biz/map/@cuz/buzz/v4
+        // curl -X PUT -i -F version=4.2.2 http://localhost:4001/map/@cuz/buzz/v4
 
         this.app.put(
-            `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            `/${prop.base_map}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -675,16 +646,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X PUT -i -F version=4.2.2 http://localhost:4001/biz/map/buzz/v4
+        // curl -X PUT -i -F version=4.2.2 http://localhost:4001/map/buzz/v4
 
         this.app.put(
-            `/:org/${prop.base_map}/:name/v:alias`,
+            `/${prop.base_map}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -695,16 +665,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X POST -i -F version=4.4.2 http://localhost:4001/biz/map/@cuz/buzz/v4
+        // curl -X POST -i -F version=4.4.2 http://localhost:4001/map/@cuz/buzz/v4
 
         this.app.post(
-            `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            `/${prop.base_map}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -715,16 +684,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X POST -i -F version=4.4.2 http://localhost:4001/biz/map/buzz/v4
+        // curl -X POST -i -F version=4.4.2 http://localhost:4001/map/buzz/v4
 
         this.app.post(
-            `/:org/${prop.base_map}/:name/v:alias`,
+            `/${prop.base_map}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -735,16 +703,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X DELETE http://localhost:4001/biz/map/@cuz/buzz/v4
+        // curl -X DELETE http://localhost:4001/map/@cuz/buzz/v4
 
         this.app.delete(
-            `/:org/${prop.base_map}/@:scope/:name/v:alias`,
+            `/${prop.base_map}/@:scope/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -755,16 +722,15 @@ const FastifyService = class FastifyService {
             },
         );
 
-        // curl -X DELETE http://localhost:4001/biz/map/buzz/v4
+        // curl -X DELETE http://localhost:4001/map/buzz/v4
 
         this.app.delete(
-            `/:org/${prop.base_map}/:name/v:alias`,
+            `/${prop.base_map}/:name/v:alias`,
             this.authOptions,
             async (request, reply) => {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
-                    params.org,
                     prop.base_map,
                     params.name,
                     params.alias,
