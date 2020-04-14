@@ -1,9 +1,10 @@
 'use strict';
 
-const { test, beforeEach, afterEach } = require('tap');
+// const { test, beforeEach, afterEach } = require('tap');
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const path = require('path');
+const tap = require('tap');
 const fs = require('fs');
 
 const Server = require('../../services/fastify');
@@ -11,7 +12,13 @@ const Sink = require('../../lib/sinks/test');
 
 const FIXTURE_PKG = path.resolve(__dirname, '../../fixtures/archive.tgz');
 
-beforeEach(async (done, t) => {
+// Ignore the timestamp for "created" field in the snapshots
+tap.cleanSnapshot = (s) => {
+    const regex = /"created": [0-9]+,/gi;
+    return s.replace(regex, '"created": -1,');
+};
+
+tap.beforeEach(async (done, t) => {
     const sink = new Sink();
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
@@ -37,12 +44,12 @@ beforeEach(async (done, t) => {
     done();
 });
 
-afterEach(async (done, t) => {
+tap.afterEach(async (done, t) => {
     await t.context.service.stop();
     done();
 });
 
-test('alias package - no auth token on PUT - scoped', async (t) => {
+tap.test('alias package - no auth token on PUT - scoped', async (t) => {
     const { address } = t.context;
 
     // PUT alias on server
@@ -58,7 +65,7 @@ test('alias package - no auth token on PUT - scoped', async (t) => {
     t.equals(alias.status, 401, 'on PUT of alias, server should respond with a 401 Unauthorized');
 });
 
-test('alias package - no auth token on PUT - non scoped', async (t) => {
+tap.test('alias package - no auth token on PUT - non scoped', async (t) => {
     const { address } = t.context;
 
     // PUT alias on server
@@ -74,7 +81,7 @@ test('alias package - no auth token on PUT - non scoped', async (t) => {
     t.equals(alias.status, 401, 'on PUT of alias, server should respond with a 401 Unauthorized');
 });
 
-test('alias package - no auth token on POST - scoped', async (t) => {
+tap.test('alias package - no auth token on POST - scoped', async (t) => {
     const { address } = t.context;
 
     // POST alias on server
@@ -90,7 +97,7 @@ test('alias package - no auth token on POST - scoped', async (t) => {
     t.equals(alias.status, 401, 'on POST of alias, server should respond with a 401 Unauthorized');
 });
 
-test('alias package - no auth token on POST - non scoped', async (t) => {
+tap.test('alias package - no auth token on POST - non scoped', async (t) => {
     const { address } = t.context;
 
     // POST alias on server
@@ -106,7 +113,7 @@ test('alias package - no auth token on POST - non scoped', async (t) => {
     t.equals(alias.status, 401, 'on POST of alias, server should respond with a 401 Unauthorized');
 });
 
-test('alias package - no auth token on DELETE - scoped', async (t) => {
+tap.test('alias package - no auth token on DELETE - scoped', async (t) => {
     const { address } = t.context;
 
     // DELETE alias on server
@@ -117,7 +124,7 @@ test('alias package - no auth token on DELETE - scoped', async (t) => {
     t.equals(alias.status, 401, 'on DELETE of alias, server should respond with a 401 Unauthorized');
 });
 
-test('alias package - no auth token on DELETE - non scoped', async (t) => {
+tap.test('alias package - no auth token on DELETE - non scoped', async (t) => {
     const { address } = t.context;
 
     // DELETE alias on server
@@ -128,7 +135,7 @@ test('alias package - no auth token on DELETE - non scoped', async (t) => {
     t.equals(alias.status, 401, 'on DELETE of alias, server should respond with a 401 Unauthorized');
 });
 
-test('alias package - put alias, then get file overview through alias - scoped', async (t) => {
+tap.test('alias package - put alias, then get file overview through alias - scoped', async (t) => {
     const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
@@ -179,7 +186,7 @@ test('alias package - put alias, then get file overview through alias - scoped',
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
 });
 
-test('alias package - put alias, then get file overview through alias - non scoped', async (t) => {
+tap.test('alias package - put alias, then get file overview through alias - non scoped', async (t) => {
     const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
@@ -230,7 +237,7 @@ test('alias package - put alias, then get file overview through alias - non scop
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
 });
 
-test('alias package - put alias, then get file through alias - scoped', async (t) => {
+tap.test('alias package - put alias, then get file through alias - scoped', async (t) => {
     const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
@@ -281,7 +288,7 @@ test('alias package - put alias, then get file through alias - scoped', async (t
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
 });
 
-test('alias package - put alias, then get file through alias - non scoped', async (t) => {
+tap.test('alias package - put alias, then get file through alias - non scoped', async (t) => {
     const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
@@ -332,7 +339,7 @@ test('alias package - put alias, then get file through alias - non scoped', asyn
     t.matchSnapshot(downloadedResponse, 'on GET of file, response should match snapshot');
 });
 
-test('alias package - put alias, then update alias, then get file through alias - scoped', async (t) => {
+tap.test('alias package - put alias, then update alias, then get file through alias - scoped', async (t) => {
     const { headers, address } = t.context;
 
     // PUT packages on server
@@ -385,7 +392,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     t.equals(aliasResponseB.name, '@cuz/fuzz', 'on POST of alias, alias should redirect to set "name"');
 });
 
-test('alias package - put alias, then update alias, then get file through alias - non scoped', async (t) => {
+tap.test('alias package - put alias, then update alias, then get file through alias - non scoped', async (t) => {
     const { headers, address } = t.context;
 
     // PUT packages on server
@@ -438,7 +445,7 @@ test('alias package - put alias, then update alias, then get file through alias 
     t.equals(aliasResponseB.name, 'fuzz', 'on POST of alias, alias should redirect to set "name"');
 });
 
-test('alias package - put alias, then delete alias, then get file through alias - scoped', async (t) => {
+tap.test('alias package - put alias, then delete alias, then get file through alias - scoped', async (t) => {
     const { headers, address } = t.context;
 
     const pkgFormData = new FormData();
@@ -487,7 +494,7 @@ test('alias package - put alias, then delete alias, then get file through alias 
     t.equals(errored.status, 404, 'on GET of file through deleted alias, server should respond with a 404 Not Found');
 });
 
-test('alias package - put alias, then delete alias, then get file through alias - non scoped', async (t) => {
+tap.test('alias package - put alias, then delete alias, then get file through alias - non scoped', async (t) => {
     const { headers, address } = t.context;
 
     const pkgFormData = new FormData();

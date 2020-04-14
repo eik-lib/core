@@ -4,9 +4,15 @@
  * Re-generate by setting TAP_SNAPSHOT=1 and running tests.
  * Make sure to inspect the output below.  Do not ignore changes!
  */
+
 'use strict'
+
 exports[`test/integration/pkg.js TAP packages - get package overview - non scoped > on GET, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
   "created": -1,
   "files": Array [
     Object {
@@ -70,6 +76,10 @@ Object {
 
 exports[`test/integration/pkg.js TAP packages - get package overview - scoped > on GET, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
   "created": -1,
   "files": Array [
     Object {

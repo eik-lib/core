@@ -139,11 +139,14 @@ const FastifyService = class FastifyService {
                 request.req,
             );
 
-            const token = this.app.jwt.sign(outgoing.body, {
+            // Workaround due to .jwt.sign() being able to only
+            // deal with object literals for some reason :/
+            const body = JSON.parse(JSON.stringify(outgoing.body));
+
+            const token = this.app.jwt.sign(body, {
                 expiresIn: '7d',
             });
 
-            // reply.header('etag', outgoing.etag);
             reply.type(outgoing.mimeType);
             reply.code(outgoing.statusCode);
             reply.send({ token });
@@ -260,6 +263,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
+                    request.user,
                     params.name,
                     params.version,
                 );
@@ -278,6 +282,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._pkgPut.handler(
                     request.req,
+                    request.user,
                     params.name,
                     params.version,
                 );
@@ -367,6 +372,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
+                    request.user,
                     params.name,
                     params.version,
                 );
@@ -385,6 +391,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._mapPut.handler(
                     request.req,
+                    request.user,
                     params.name,
                     params.version,
                 );
@@ -481,6 +488,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
+                    request.user,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -500,6 +508,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
+                    request.user,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -519,6 +528,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
+                    request.user,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -538,6 +548,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
+                    request.user,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -557,6 +568,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
+                    request.user,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -576,6 +588,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
+                    request.user,
                     prop.base_pkg,
                     params.name,
                     params.alias,
@@ -636,6 +649,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
+                    request.user,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -655,6 +669,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPut.handler(
                     request.req,
+                    request.user,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -674,6 +689,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
+                    request.user,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -693,6 +709,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasPost.handler(
                     request.req,
+                    request.user,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -712,6 +729,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
+                    request.user,
                     prop.base_map,
                     params.name,
                     params.alias,
@@ -731,6 +749,7 @@ const FastifyService = class FastifyService {
                 const params = utils.sanitizeParameters(request.raw.url);
                 const outgoing = await this._aliasDel.handler(
                     request.req,
+                    request.user,
                     prop.base_map,
                     params.name,
                     params.alias,

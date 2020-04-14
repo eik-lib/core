@@ -2,12 +2,18 @@
 
 const { createReadStream } = require('fs');
 const FormData = require('form-data');
-const { test } = require('tap');
 const { join } = require('path');
 const fetch = require('node-fetch');
+const tap = require('tap');
 
 const Server = require('../../services/fastify');
 const Sink = require('../../lib/sinks/test');
+
+// Ignore the timestamp for "created" field in the snapshots
+tap.cleanSnapshot = (s) => {
+    const regex = /"created": [0-9]+,/gi;
+    return s.replace(regex, '"created": -1,');
+};
 
 const authentication = async (address) => {
     const formData = new FormData();
@@ -23,7 +29,7 @@ const authentication = async (address) => {
     return { 'Authorization': `Bearer ${token}` };
 }
 
-test('Sink is slow and irregular - Writing medium sized package', async t => {
+tap.test('Sink is slow and irregular - Writing medium sized package', async t => {
     const sink = new Sink();
 
     // Simulate a slow write process by delaying each chunk written
@@ -57,7 +63,7 @@ test('Sink is slow and irregular - Writing medium sized package', async t => {
     await service.stop();
 });
 
-test('Sink is slow and irregular - Writing small sized package', async t => {
+tap.test('Sink is slow and irregular - Writing small sized package', async t => {
     const sink = new Sink();
 
     // Simulate a slow write process by delaying each chunk written
@@ -92,7 +98,7 @@ test('Sink is slow and irregular - Writing small sized package', async t => {
     await service.stop();
 });
 
-test('Sink is slow to construct writer - Writing medium sized package', async t => {
+tap.test('Sink is slow to construct writer - Writing medium sized package', async t => {
     const sink = new Sink();
 
     // Simulate a slow creation of the sink write operation by delaying
@@ -126,7 +132,7 @@ test('Sink is slow to construct writer - Writing medium sized package', async t 
     await service.stop();
 });
 
-test('Sink is slow to construct writer - Writing small sized package', async t => {
+tap.test('Sink is slow to construct writer - Writing small sized package', async t => {
     const sink = new Sink();
 
     // Simulate a slow creation of the sink write operation by delaying
