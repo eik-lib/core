@@ -29,7 +29,7 @@
     "mime": "2.4.4",
     "original-url": "1.2.3",
     "rimraf": "3.0.2",
-    "semver": "7.2.3",
+    "semver": "7.3.0",
     "tar": "6.0.1"
   },
   "devDependencies": {
