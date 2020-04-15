@@ -1,9 +1,9 @@
 'use strict';
 
-const { test, beforeEach, afterEach } = require('tap');
 const FormData = require('form-data');
 const fetch = require('node-fetch');
 const path = require('path');
+const tap = require('tap');
 const fs = require('fs');
 
 const Server = require('../../services/fastify');
@@ -11,7 +11,13 @@ const Sink = require('../../lib/sinks/test');
 
 const FIXTURE_PKG = path.resolve(__dirname, '../../fixtures/archive.tgz');
 
-beforeEach(async (done, t) => {
+// Ignore the timestamp for "created" field in the snapshots
+tap.cleanSnapshot = (s) => {
+    const regex = /"created": [0-9]+,/gi;
+    return s.replace(regex, '"created": -1,');
+};
+
+tap.beforeEach(async (done, t) => {
     const sink = new Sink();
     const service = new Server({ customSink: sink, port: 0, logger: false });
     const address = await service.start();
@@ -37,12 +43,12 @@ beforeEach(async (done, t) => {
     done();
 });
 
-afterEach(async (done, t) => {
+tap.afterEach(async (done, t) => {
     await t.context.service.stop();
     done();
 });
 
-test('packages - no auth token on PUT - scoped', async (t) => {
+tap.test('packages - no auth token on PUT - scoped', async (t) => {
     const { address } = t.context;
 
     const formData = new FormData();
@@ -59,7 +65,7 @@ test('packages - no auth token on PUT - scoped', async (t) => {
     t.equals(uploaded.status, 401, 'on PUT of package, server should respond with a 401 Unauthorized');
 });
 
-test('packages - no auth token on PUT - non scoped', async (t) => {
+tap.test('packages - no auth token on PUT - non scoped', async (t) => {
     const { address } = t.context;
 
     const formData = new FormData();
@@ -76,7 +82,7 @@ test('packages - no auth token on PUT - non scoped', async (t) => {
     t.equals(uploaded.status, 401, 'on PUT of package, server should respond with a 401 Unauthorized');
 });
 
-test('packages - put pkg -> get file - scoped successfully uploaded', async (t) => {
+tap.test('packages - put pkg -> get file - scoped successfully uploaded', async (t) => {
     const { headers, address } = t.context;
 
     const formData = new FormData();
@@ -103,7 +109,7 @@ test('packages - put pkg -> get file - scoped successfully uploaded', async (t) 
     t.matchSnapshot(downloadedResponse, 'on GET of package, response should match snapshot');
 });
 
-test('packages - put pkg -> get file - non scoped successfully uploaded', async (t) => {
+tap.test('packages - put pkg -> get file - non scoped successfully uploaded', async (t) => {
     const { headers, address } = t.context;
 
     const formData = new FormData();
@@ -130,7 +136,7 @@ test('packages - put pkg -> get file - non scoped successfully uploaded', async 
     t.matchSnapshot(downloadedResponse, 'on GET of package, response should match snapshot');
 });
 
-test('packages - get package overview - scoped', async (t) => {
+tap.test('packages - get package overview - scoped', async (t) => {
     const { headers, address } = t.context;
 
     const formData = new FormData();
@@ -157,7 +163,7 @@ test('packages - get package overview - scoped', async (t) => {
     t.matchSnapshot(downloadedResponse, 'on GET, response should match snapshot');
 });
 
-test('packages - get package overview - non scoped', async (t) => {
+tap.test('packages - get package overview - non scoped', async (t) => {
     const { headers, address } = t.context;
 
     const formData = new FormData();
@@ -184,7 +190,7 @@ test('packages - get package overview - non scoped', async (t) => {
     t.matchSnapshot(downloadedResponse, 'on GET, response should match snapshot');
 });
 
-test('packages - get package versions - scoped', async (t) => {
+tap.test('packages - get package versions - scoped', async (t) => {
     const { headers, address } = t.context;
 
     // PUT files on server
@@ -226,7 +232,7 @@ test('packages - get package versions - scoped', async (t) => {
     t.matchSnapshot(downloadedResponse, 'on GET, response should match snapshot');
 });
 
-test('packages - get package versions - non scoped', async (t) => {
+tap.test('packages - get package versions - non scoped', async (t) => {
     const { headers, address } = t.context;
 
     // PUT files on server

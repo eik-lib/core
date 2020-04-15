@@ -9,6 +9,11 @@
 
 exports[`test/integration/pkg.js TAP packages - get package overview - non scoped > on GET, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
+  "created": -1,
   "files": Array [
     Object {
       "integrity": "sha512-T2qS6EBvOIu10bhUas3FhD39KkwIiXxplJ13q2EdXcA7nlYljlLKaymKhqz49f7qrEKhdISc4q5N+bk0Y1Y/NA==",
@@ -64,12 +69,18 @@ Object {
   "meta": Array [],
   "name": "fuzz",
   "org": "local",
+  "type": "package",
   "version": "8.4.1",
 }
 `
 
 exports[`test/integration/pkg.js TAP packages - get package overview - scoped > on GET, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
+  "created": -1,
   "files": Array [
     Object {
       "integrity": "sha512-T2qS6EBvOIu10bhUas3FhD39KkwIiXxplJ13q2EdXcA7nlYljlLKaymKhqz49f7qrEKhdISc4q5N+bk0Y1Y/NA==",
@@ -125,6 +136,7 @@ Object {
   "meta": Array [],
   "name": "@cuz/fuzz",
   "org": "local",
+  "type": "package",
   "version": "8.4.1",
 }
 `

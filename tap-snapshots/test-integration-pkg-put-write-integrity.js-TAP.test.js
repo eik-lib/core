@@ -9,6 +9,11 @@
 
 exports[`test/integration/pkg-put-write-integrity.js TAP Sink is slow and irregular - Writing medium sized package > on GET of package, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
+  "created": -1,
   "files": Array [
     Object {
       "integrity": "sha512-T2qS6EBvOIu10bhUas3FhD39KkwIiXxplJ13q2EdXcA7nlYljlLKaymKhqz49f7qrEKhdISc4q5N+bk0Y1Y/NA==",
@@ -64,12 +69,18 @@ Object {
   "meta": Array [],
   "name": "frazz",
   "org": "local",
+  "type": "package",
   "version": "2.1.4",
 }
 `
 
 exports[`test/integration/pkg-put-write-integrity.js TAP Sink is slow and irregular - Writing small sized package > on GET of package, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
+  "created": -1,
   "files": Array [
     Object {
       "integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
@@ -118,12 +129,18 @@ Object {
   "meta": Array [],
   "name": "brazz",
   "org": "local",
+  "type": "package",
   "version": "7.1.3",
 }
 `
 
 exports[`test/integration/pkg-put-write-integrity.js TAP Sink is slow to construct writer - Writing medium sized package > on GET of package, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
+  "created": -1,
   "files": Array [
     Object {
       "integrity": "sha512-T2qS6EBvOIu10bhUas3FhD39KkwIiXxplJ13q2EdXcA7nlYljlLKaymKhqz49f7qrEKhdISc4q5N+bk0Y1Y/NA==",
@@ -179,12 +196,18 @@ Object {
   "meta": Array [],
   "name": "frazz",
   "org": "local",
+  "type": "package",
   "version": "2.1.4",
 }
 `
 
 exports[`test/integration/pkg-put-write-integrity.js TAP Sink is slow to construct writer - Writing small sized package > on GET of package, response should match snapshot 1`] = `
 Object {
+  "author": Object {
+    "name": "Generic User",
+    "user": "generic_user",
+  },
+  "created": -1,
   "files": Array [
     Object {
       "integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
@@ -233,6 +256,7 @@ Object {
   "meta": Array [],
   "name": "brazz",
   "org": "local",
+  "type": "package",
   "version": "7.1.3",
 }
 `
