@@ -18,8 +18,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "1.0.0-alpha.4",
     "@metrics/client": "2.5.0",
+    "@eik/common": "1.0.0-alpha.6",
+    "@eik/sink": "1.0.0",
     "abslog": "2.4.0",
     "busboy": "0.3.1",
     "fastify": "2.13.1",
