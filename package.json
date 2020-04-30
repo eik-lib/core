@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "@metrics/client": "2.5.0",
-    "@eik/common": "1.0.0-alpha.6",
+    "@eik/common": "1.0.0-alpha.7",
     "@eik/sink": "1.0.0",
     "original-url": "1.2.3",
     "http-errors": "1.7.3",
