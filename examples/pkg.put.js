@@ -24,11 +24,11 @@ const put = async (address) => {
     const auth = await authenticate(address);
 
     const formData = new FormData();
-    formData.append('package', fs.createReadStream('../fixtures/archive.tgz'));
+    formData.append('package', fs.createReadStream('./lit-html.tar'));
 
     const headers = {'Authorization': `Bearer ${auth.token}`, ...formData.getHeaders()};
 
-    const res = await fetch(`${address}/pkg/fuzz/8.4.1`, {
+    const res = await fetch(`${address}/npm/lit-html/1.2.1`, {
         method: 'PUT',
         body: formData,
         headers,

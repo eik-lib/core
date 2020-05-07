@@ -23,11 +23,11 @@ const put = async (address) => {
     const auth = await authenticate(address);
 
     const formData = new FormData();
-    formData.append('version', '8.4.1');
+    formData.append('version', '1.2.1');
 
     const headers = {'Authorization': `Bearer ${auth.token}`, ...formData.getHeaders()};
 
-    const res = await fetch(`${address}/pkg/fuzz/v8`, {
+    const res = await fetch(`${address}/npm/lit-html/v1`, {
         method: 'PUT',
         body: formData,
         headers,
