@@ -24,9 +24,7 @@ const Request = class Request extends PassThrough {
         headers = {}
     } = {}) {
         super();
-        this.headers = Object.assign({
-            host: 'localhost'
-        }, headers);
+        this.headers = {host: 'localhost', ...headers};
     }
 }
 
