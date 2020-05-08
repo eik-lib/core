@@ -13,7 +13,7 @@ test('Asset() - Default property values', (t) => {
     const obj = new Asset();
     t.equal(obj.integrity, '', '.integrity should be empty String');
     t.equal(obj.pathname, '/', '.pathname should be "/"');
-    t.equal(obj.mimeType, '', '.mimetype should be empty String');
+    t.equal(obj.mimeType, 'application/octet-stream', '.mimetype should be "application/octet-stream"');
     t.equal(obj.version, '', '.version should be empty String');
     t.equal(obj.asset, '/', '.asset should be "/"');
     t.equal(obj.name, '', '.name should be empty String');
