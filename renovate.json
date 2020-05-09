@@ -5,7 +5,7 @@
   ],
   "packageRules": [{
     "depTypeList": ["dependencies"],
-    "automerge": false,
+    "automerge": true,
     "major": {
       "automerge": false
     }
