@@ -17,16 +17,17 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@metrics/client": "2.5.0",
     "@eik/common": "1.0.0-alpha.7",
     "@eik/sink": "1.0.0",
-    "original-url": "1.2.3",
-    "http-errors": "1.7.3",
+    "@metrics/client": "2.5.0",
     "abslog": "2.4.0",
     "busboy": "0.3.1",
+    "http-errors": "1.7.3",
+    "mime": "2.4.5",
+    "original-url": "1.2.3",
     "rimraf": "3.0.2",
     "semver": "7.3.2",
-    "mime": "2.4.5",
+    "ssri": "8.0.0",
     "tar": "6.0.2"
   },
   "devDependencies": {
