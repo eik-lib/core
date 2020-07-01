@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/eik-lib/core/compare/v1.0.1...v1.0.2) (2020-07-01)
+
+
+### Bug Fixes
+
+* Add buckets to histograms ([#144](https://github.com/eik-lib/core/issues/144)) ([bed07bd](https://github.com/eik-lib/core/commit/bed07bd22602d60dcb059bfea3325f48d87f9aa8))
+
 ## [1.0.1](https://github.com/eik-lib/core/compare/v1.0.0...v1.0.1) (2020-06-30)
 
 
