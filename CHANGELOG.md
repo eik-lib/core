@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/eik-lib/core/compare/v1.0.2...v1.0.3) (2020-07-06)
+
+
+### Bug Fixes
+
+* Add type as label to histograms ([#145](https://github.com/eik-lib/core/issues/145)) ([a829a72](https://github.com/eik-lib/core/commit/a829a722181f24fd5e7bd7032f90b5cf85ab926f))
+
 ## [1.0.2](https://github.com/eik-lib/core/compare/v1.0.1...v1.0.2) (2020-07-01)
 
 
