@@ -1,6 +1,6 @@
 {
   "name": "@eik/core",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "Core server package",
   "main": "lib/main.js",
   "files": [
@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@eik/common": "1.0.0-alpha.7",
-    "@eik/sink": "1.0.2",
+    "@eik/sink": "1.1.0",
     "@metrics/client": "2.5.0",
     "abslog": "2.4.0",
     "busboy": "0.3.1",
@@ -39,7 +39,7 @@
     "@semantic-release/github": "7.0.7",
     "@semantic-release/npm": "7.0.5",
     "@semantic-release/release-notes-generator": "9.0.1",
-    "eslint": "7.3.1",
+    "eslint": "7.4.0",
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-import": "2.22.0",
