@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@eik/common": "1.0.0-alpha.7",
-    "@eik/sink": "1.0.2",
+    "@eik/sink": "1.1.0",
     "@metrics/client": "2.5.0",
     "abslog": "2.4.0",
     "busboy": "0.3.1",
