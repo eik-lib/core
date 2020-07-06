@@ -321,3 +321,34 @@ test('Sink() - .exist() - directory traversal prevention', async (t) => {
     await sink.delete(dir);
     t.end();
 });
+
+test('Sink() - .metrics - all successfull operations', async (t) => {
+    const sink = new Sink(DEFAULT_CONFIG);
+    const dir = slug();
+    const file = `${dir}/bar/map.json`;
+
+    const metrics = [];
+    const to = new Writable({
+        objectMode: true,
+        write(chunk, encoding, callback) {
+            metrics.push(chunk);
+            callback();
+        },
+    });
+    sink.metrics.pipe(to);
+
+    // write, check, read and delete file
+    const writeFrom = readFileStream('../../fixtures/import-map.json');
+    const writeTo = await sink.write(file, 'application/json');
+    await pipe(writeFrom, writeTo);
+
+    await sink.exist(file)
+
+    const readFrom = await sink.read(file);
+    await pipeInto(readFrom.stream);
+
+    await sink.delete(dir);
+
+    t.matchSnapshot(metrics, 'metrics should match snapshot');
+    t.end();
+});
