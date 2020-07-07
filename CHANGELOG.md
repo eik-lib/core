@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/eik-lib/core/compare/v1.0.4...v1.1.0) (2020-07-07)
+
+
+### Features
+
+* Gather metrics from sinks ([#148](https://github.com/eik-lib/core/issues/148)) ([7d1792c](https://github.com/eik-lib/core/commit/7d1792c828ba6bf13a561c666ff9be10394acab9))
+
 ## [1.0.4](https://github.com/eik-lib/core/compare/v1.0.3...v1.0.4) (2020-07-06)
 
 
