@@ -8,10 +8,98 @@
 'use strict'
 
 exports[`test/sinks/test.js TAP Sink() - .metrics - all successfull operations > metrics should match snapshot 1`] = `
-Array [
-  Metric {},
-  Metric {},
-  Metric {},
-  Metric {},
+[
+  {
+    "name": "eik_core_sink_test",
+    "description": "Counter measuring access to the in memory test storage sink",
+    "timestamp": -1,
+    "type": 2,
+    "value": 1,
+    "labels": [
+      {
+        "name": "operation",
+        "value": "write"
+      },
+      {
+        "name": "success",
+        "value": true
+      },
+      {
+        "name": "access",
+        "value": true
+      }
+    ],
+    "time": null,
+    "meta": {}
+  },
+  {
+    "name": "eik_core_sink_test",
+    "description": "Counter measuring access to the in memory test storage sink",
+    "timestamp": -1,
+    "type": 2,
+    "value": 1,
+    "labels": [
+      {
+        "name": "operation",
+        "value": "exist"
+      },
+      {
+        "name": "success",
+        "value": true
+      },
+      {
+        "name": "access",
+        "value": true
+      }
+    ],
+    "time": null,
+    "meta": {}
+  },
+  {
+    "name": "eik_core_sink_test",
+    "description": "Counter measuring access to the in memory test storage sink",
+    "timestamp": -1,
+    "type": 2,
+    "value": 1,
+    "labels": [
+      {
+        "name": "operation",
+        "value": "read"
+      },
+      {
+        "name": "success",
+        "value": true
+      },
+      {
+        "name": "access",
+        "value": true
+      }
+    ],
+    "time": null,
+    "meta": {}
+  },
+  {
+    "name": "eik_core_sink_test",
+    "description": "Counter measuring access to the in memory test storage sink",
+    "timestamp": -1,
+    "type": 2,
+    "value": 1,
+    "labels": [
+      {
+        "name": "operation",
+        "value": "delete"
+      },
+      {
+        "name": "success",
+        "value": true
+      },
+      {
+        "name": "access",
+        "value": true
+      }
+    ],
+    "time": null,
+    "meta": {}
+  }
 ]
 `
