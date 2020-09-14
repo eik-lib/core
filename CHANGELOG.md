@@ -1,3 +1,10 @@
+## [1.1.5](https://github.com/eik-lib/core/compare/v1.1.4...v1.1.5) (2020-09-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/common to v1.2.0 ([d7890cc](https://github.com/eik-lib/core/commit/d7890cceec683d3ce482f2eca558f5cc54e85da4))
+
 ## [1.1.4](https://github.com/eik-lib/core/compare/v1.1.3...v1.1.4) (2020-09-10)
 
 
