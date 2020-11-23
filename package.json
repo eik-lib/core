@@ -48,7 +48,7 @@
     "mkdirp": "1.0.4",
     "node-fetch": "2.6.1",
     "prettier": "2.2.0",
-    "semantic-release": "17.2.3",
+    "semantic-release": "17.3.0",
     "tap": "14.11.0"
   }
 }
