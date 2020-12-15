@@ -44,8 +44,7 @@ const readFileStream = (file = '../README.md') => {
     return fs.createReadStream(pathname);
 };
 
-const pipeInto = (...streams) => {
-    return new Promise((resolve, reject) => {
+const pipeInto = (...streams) => new Promise((resolve, reject) => {
         const buffer = [];
 
         const to = new Writable({
@@ -61,17 +60,14 @@ const pipeInto = (...streams) => {
             const str = buffer.join('').toString();
             return resolve(str);
         });
-    });
-}
+    })
 
-const pipe = (...streams) => {
-    return new Promise((resolve, reject) => {
+const pipe = (...streams) => new Promise((resolve, reject) => {
         pipeline(...streams, error => {
             if (error) return reject(error);
             return resolve();
         });
-    });
-}
+    })
 
 tap.test('Sink() - Object type', (t) => {
     const sink = new Sink(DEFAULT_CONFIG);
