@@ -1,3 +1,10 @@
+## [1.1.9](https://github.com/eik-lib/core/compare/v1.1.8...v1.1.9) (2020-12-16)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mime to v2.4.7 ([088de36](https://github.com/eik-lib/core/commit/088de36ee90c7994923e1f940e084e24d19ceda4))
+
 ## [1.1.8](https://github.com/eik-lib/core/compare/v1.1.7...v1.1.8) (2020-12-14)
 
 
