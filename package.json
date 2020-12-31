@@ -18,7 +18,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "1.3.2",
+    "@eik/common": "1.3.3",
     "@eik/sink": "1.1.0",
     "@metrics/client": "2.5.0",
     "abslog": "2.4.0",
