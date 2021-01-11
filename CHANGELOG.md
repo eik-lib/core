@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/eik-lib/core/compare/v1.1.12...v1.2.0) (2021-01-11)
+
+
+### Features
+
+* Decode URL encoded URL parameters ([#201](https://github.com/eik-lib/core/issues/201)) ([f3977f5](https://github.com/eik-lib/core/commit/f3977f51a31d8306453ff68e44728de703a1c2f5))
+
 ## [1.1.12](https://github.com/eik-lib/core/compare/v1.1.11...v1.1.12) (2021-01-07)
 
 
