@@ -67,6 +67,24 @@ tap.test('pkg.put() - Successful upload of .tar file', async (t) => {
     t.end();
 });
 
+tap.test('pkg.put() - URL parameters is URL encoded', async (t) => {
+    const sink = new Sink();
+    const h = new Handler({ sink });
+
+    const formData = new FormData();
+    formData.append('package', fs.createReadStream(FIXTURE_TAR));
+
+    const headers = formData.getHeaders();
+    const req = new Request({ headers });
+    formData.pipe(req);
+
+    const res = await h.handler(req, 'anton', 'pkg', '%40foo%2Fbar-lib', '8%2E1%2E4%2D1');
+
+    t.equal(res.statusCode, 303, 'should respond with expected status code');
+    t.equal(res.location, '/pkg/@foo/bar-lib/8.1.4-1', '.location should be decoded');
+    t.end();
+});
+
 tap.test('pkg.put() - Successful upload of .tar.gz file', async (t) => {
     const sink = new Sink();
     const h = new Handler({ sink });
