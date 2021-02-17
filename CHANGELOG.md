@@ -1,3 +1,10 @@
+## [1.2.11](https://github.com/eik-lib/core/compare/v1.2.10...v1.2.11) (2021-02-17)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mime to v2.5.2 ([03a99b1](https://github.com/eik-lib/core/commit/03a99b15f3ab4e5479b358269d611cea949e6c37))
+
 ## [1.2.10](https://github.com/eik-lib/core/compare/v1.2.9...v1.2.10) (2021-02-11)
 
 
