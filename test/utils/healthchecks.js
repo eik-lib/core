@@ -8,7 +8,7 @@ const Sink = require('../../lib/sinks/test');
 tap.test('HealthCheck() - Object type', (t) => {
     const health = new HealthCheck();
     const name = Object.prototype.toString.call(health);
-    t.true(name.startsWith('[object HealthCheck'), 'should begin with HealthCheck');
+    t.ok(name.startsWith('[object HealthCheck'), 'should begin with HealthCheck');
     t.end();
 });
 

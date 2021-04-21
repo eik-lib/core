@@ -9,8 +9,8 @@
     "lib"
   ],
   "scripts": {
-    "test": "tap test/**/*.js",
-    "test:snapshots:update": "tap test/**/*.js --snapshot",
+    "test": "tap --no-check-coverage",
+    "test:snapshots:update": "tap --snapshot",
     "lint:fix": "eslint --fix .",
     "lint": "eslint ."
   },

@@ -63,7 +63,7 @@ test('HttpOutgoing() - Set .mimeType to legal value', (t) => {
 test('HttpOutgoing() - Set .stream to legal value', (t) => {
     const obj = new HttpOutgoing();
     obj.stream = new Readable();
-    t.true(obj.stream instanceof Readable, '.stream should be the set value');
+    t.ok(obj.stream instanceof Readable, '.stream should be the set value');
     t.end();
 });
 
