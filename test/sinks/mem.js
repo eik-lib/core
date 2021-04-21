@@ -72,7 +72,7 @@ const pipe = (...streams) => new Promise((resolve, reject) => {
 tap.test('Sink() - Object type', (t) => {
     const sink = new Sink(DEFAULT_CONFIG);
     const name = Object.prototype.toString.call(sink);
-    t.true(name.startsWith('[object Sink'), 'should begin with Sink');
+    t.ok(name.startsWith('[object Sink'), 'should begin with Sink');
     t.end();
 });
 
@@ -129,7 +129,7 @@ tap.test('Sink() - .read() - File exists', async (t) => {
 
     const readFrom = await sink.read(file);
 
-    t.true(stream.isReadableStream(readFrom.stream), 'should resolve with a ReadFile object which has a .stream property');
+    t.ok(stream.isReadableStream(readFrom.stream), 'should resolve with a ReadFile object which has a .stream property');
     t.type(readFrom.mimeType, 'string', 'should resolve with a ReadFile object which has a .mimeType property');
     t.type(readFrom.etag, 'string', 'should resolve with a ReadFile object which has a .etag property');
 

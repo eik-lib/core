@@ -9,8 +9,8 @@
     "lib"
   ],
   "scripts": {
-    "test": "tap test/**/*.js",
-    "test:snapshots:update": "tap test/**/*.js --snapshot",
+    "test": "tap --no-check-coverage",
+    "test:snapshots:update": "tap --snapshot",
     "lint:fix": "eslint --fix .",
     "lint": "eslint ."
   },
@@ -49,6 +49,6 @@
     "node-fetch": "2.6.1",
     "prettier": "2.2.1",
     "semantic-release": "17.4.2",
-    "tap": "14.11.0"
+    "tap": "15.0.4"
   }
 }
