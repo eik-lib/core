@@ -1,3 +1,10 @@
+## [1.2.16](https://github.com/eik-lib/core/compare/v1.2.15...v1.2.16) (2021-08-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency tar to v6.1.4 ([1fbe14a](https://github.com/eik-lib/core/commit/1fbe14aee73e192445c424f66a63898b717aa1f0))
+
 ## [1.2.15](https://github.com/eik-lib/core/compare/v1.2.14...v1.2.15) (2021-08-02)
 
 
