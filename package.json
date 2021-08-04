@@ -1,6 +1,6 @@
 {
   "name": "@eik/core",
-  "version": "1.2.17",
+  "version": "1.2.18",
   "description": "Core server package",
   "main": "lib/main.js",
   "files": [
