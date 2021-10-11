@@ -1,3 +1,10 @@
+## [1.2.24](https://github.com/eik-lib/core/compare/v1.2.23...v1.2.24) (2021-10-11)
+
+
+### Bug Fixes
+
+* prevent unexisting aliases ([#276](https://github.com/eik-lib/core/issues/276)) ([a5b9601](https://github.com/eik-lib/core/commit/a5b960170e4b9bae26b0200184d0dcfc981b7d34))
+
 ## [1.2.23](https://github.com/eik-lib/core/compare/v1.2.22...v1.2.23) (2021-10-08)
 
 
