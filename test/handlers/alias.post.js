@@ -39,22 +39,23 @@ tap.test('alias.post() - URL parameters is URL encoded', async (t) => {
     t.end();
 });
 
-tap.test('alias.post() - Prevent unexisting alias', async (t) => {
-    const sink = new Sink();
-    sink.set('/local/pkg/@foo/bar-lib/8.alias.json', 'payload');
+tap.test('alias.post() - Prevent non-existing package to map to alias', async (t) => {
+        const sink = new Sink();
+        sink.set('/local/pkg/@foo/bar-lib/8.alias.json', 'payload');
 
-    const h = new Handler({ sink });
+        const h = new Handler({ sink });
 
-    const formData = new FormData();
-    formData.append('version', '8.1.4-1');
+        const formData = new FormData();
+        formData.append('version', '8.1.4-1');
 
-    const headers = formData.getHeaders();
-    const req = new Request({ headers });
-    formData.pipe(req);
+        const headers = formData.getHeaders();
+        const req = new Request({ headers });
+        formData.pipe(req);
 
-    const res = h.handler(req, 'anton', 'pkg', '%40foo%2Fbar-lib', '8');
+        const res = h.handler(req, 'anton', 'pkg', '%40foo%2Fbar-lib', '8');
 
-    t.rejects(res, HttpError.NotFound);
+        t.rejects(res, HttpError.NotFound);
 
-    t.end();
-});
+        t.end();
+    },
+);
