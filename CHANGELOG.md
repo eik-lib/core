@@ -1,3 +1,10 @@
+## [1.2.25](https://github.com/eik-lib/core/compare/v1.2.24...v1.2.25) (2021-10-12)
+
+
+### Bug Fixes
+
+* Check for existing import-map and npm package before POSTing og PUTing alias ([#277](https://github.com/eik-lib/core/issues/277)) ([a6c65ef](https://github.com/eik-lib/core/commit/a6c65ef361c9b8d9e831343fc30435a6833ad22c))
+
 ## [1.2.24](https://github.com/eik-lib/core/compare/v1.2.23...v1.2.24) (2021-10-11)
 
 
