@@ -1,3 +1,10 @@
+## [1.2.28](https://github.com/eik-lib/core/compare/v1.2.27...v1.2.28) (2021-11-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency http-errors to v1.8.1 ([665552b](https://github.com/eik-lib/core/commit/665552b16c27bf3dd6ba5b6214c223d4ce023f99))
+
 ## [1.2.27](https://github.com/eik-lib/core/compare/v1.2.26...v1.2.27) (2021-11-03)
 
 
