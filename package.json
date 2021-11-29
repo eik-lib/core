@@ -45,6 +45,6 @@
     "node-fetch": "2.6.6",
     "prettier": "2.4.1",
     "semantic-release": "18.0.1",
-    "tap": "15.1.2"
+    "tap": "15.1.5"
   }
 }
