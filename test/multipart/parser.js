@@ -139,9 +139,7 @@ tap.test('Parser() - Request is empty', async (t) => {
 
     formData.pipe(req);
 
-    const result = await multipart.parse(incoming);
-
-    t.same(result, [], 'should return an empty Array')
+    t.rejects(multipart.parse(incoming), new Error('Unexpected end of form'), 'should reject with orignal error');
     t.end();
 });
 
