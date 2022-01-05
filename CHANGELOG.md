@@ -1,3 +1,10 @@
+## [1.2.29](https://github.com/eik-lib/core/compare/v1.2.28...v1.2.29) (2022-01-05)
+
+
+### Bug Fixes
+
+* Upgrade to major version 1.3.0 of Busboy ([#296](https://github.com/eik-lib/core/issues/296)) ([295eec0](https://github.com/eik-lib/core/commit/295eec01d9c97d421f68cd3ecfd05e083716c462))
+
 ## [1.2.28](https://github.com/eik-lib/core/compare/v1.2.27...v1.2.28) (2021-11-15)
 
 
