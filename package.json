@@ -3,6 +3,7 @@
   "version": "1.2.28",
   "description": "Core server package",
   "main": "lib/main.js",
+  "type": "module",
   "files": [
     "CHANGELOG.md",
     "package.json",

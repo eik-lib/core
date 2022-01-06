@@ -1,15 +1,13 @@
-'use strict';
+import { PassThrough } from 'node:stream';
+import FormData from 'form-data';
+import path from 'node:path';
+import tap from 'tap';
+import fs from 'node:fs';
 
-const { PassThrough } = require('stream');
-const FormData = require('form-data');
-const path = require('path');
-const tap = require('tap');
-const fs = require('fs');
+import Handler from '../../lib/handlers/map.put.js';
+import Sink from '../../lib/sinks/test.js';
 
-const Handler = require('../../lib/handlers/map.put.js');
-const Sink = require('../../lib/sinks/test');
-
-const FIXTURE_MAP = path.resolve(__dirname, '../../fixtures/import-map.json');
+const FIXTURE_MAP = new URL('../../fixtures/import-map.json', import.meta.url);
 
 
 const Request = class Request extends PassThrough {

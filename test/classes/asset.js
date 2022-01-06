@@ -1,15 +1,13 @@
-'use strict';
+import tap from 'tap';
+import Asset from '../../lib/classes/asset.js';
 
-const { test } = require('tap');
-const Asset = require('../../lib/classes/asset');
-
-test('HttpIncoming() - Object type', (t) => {
+tap.test('HttpIncoming() - Object type', (t) => {
     const obj = new Asset();
     t.equal(Object.prototype.toString.call(obj), '[object Asset]', 'should be Asset');
     t.end();
 });
 
-test('Asset() - Default property values', (t) => {
+tap.test('Asset() - Default property values', (t) => {
     const obj = new Asset();
     t.equal(obj.integrity, '', '.integrity should be empty String');
     t.equal(obj.pathname, '/', '.pathname should be "/"');
@@ -23,7 +21,7 @@ test('Asset() - Default property values', (t) => {
     t.end();
 });
 
-test('Asset() - Set values to the arguments on the constructor', (t) => {
+tap.test('Asset() - Set values to the arguments on the constructor', (t) => {
     const obj = new Asset({
         pathname: '/foo/bar.js',
         version: '4.2.6',
@@ -43,7 +41,7 @@ test('Asset() - Set values to the arguments on the constructor', (t) => {
     t.end();
 });
 
-test('Asset() - Set values to the argument "type" on the constructor in upper case', (t) => {
+tap.test('Asset() - Set values to the argument "type" on the constructor in upper case', (t) => {
     const obj = new Asset({
         type: 'PkG',
     });
@@ -51,35 +49,35 @@ test('Asset() - Set values to the argument "type" on the constructor in upper ca
     t.end();
 });
 
-test('Asset() - Set .integrity property', (t) => {
+tap.test('Asset() - Set .integrity property', (t) => {
     const obj = new Asset();
     obj.integrity = 'foo';
     t.equal(obj.integrity, 'foo', '.integrity should contain value set on property');
     t.end();
 });
 
-test('Asset() - Set .type property', (t) => {
+tap.test('Asset() - Set .type property', (t) => {
     const obj = new Asset();
     obj.type = 'pkg';
     t.equal(obj.type, 'pkg', '.type should contain value set on property');
     t.end();
 });
 
-test('Asset() - Set .type property with upper case characthers', (t) => {
+tap.test('Asset() - Set .type property with upper case characthers', (t) => {
     const obj = new Asset();
     obj.type = 'PkG';
     t.equal(obj.type, 'pkg', '.type should contain value set on property in lower case');
     t.end();
 });
 
-test('Asset() - Set .size property', (t) => {
+tap.test('Asset() - Set .size property', (t) => {
     const obj = new Asset();
     obj.size = 1234;
     t.equal(obj.size, 1234, '.size should contain value set on property');
     t.end();
 });
 
-test('Asset() - Stringify object to JSON', (t) => {
+tap.test('Asset() - Stringify object to JSON', (t) => {
     const obj = new Asset({
         pathname: '/foo/bar.js',
         version: '4.2.6',

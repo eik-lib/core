@@ -1,7 +1,5 @@
-'use strict';
-
-const tap = require('tap');
-const FormField = require('../../lib/multipart/form-field');
+import tap from 'tap';
+import FormField from '../../lib/multipart/form-field.js';
 
 tap.test('FormField() - Object type', (t) => {
     const obj = new FormField();

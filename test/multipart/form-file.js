@@ -1,7 +1,5 @@
-'use strict';
-
-const tap = require('tap');
-const FormFile = require('../../lib/multipart/form-file');
+import tap from 'tap';
+import FormFile from '../../lib/multipart/form-file.js';
 
 tap.test('FormFile() - Object type', (t) => {
     const obj = new FormFile();

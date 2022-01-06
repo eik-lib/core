@@ -1,15 +1,13 @@
-'use strict';
+import tap from 'tap';
+import Versions from '../../lib/classes/versions.js';
 
-const { test } = require('tap');
-const Versions = require('../../lib/classes/versions');
-
-test('Versions() - Object type', (t) => {
+tap.test('Versions() - Object type', (t) => {
     const obj = new Versions();
     t.equal(Object.prototype.toString.call(obj), '[object Versions]', 'should be Versions');
     t.end();
 });
 
-test('Versions() - Default property values', (t) => {
+tap.test('Versions() - Default property values', (t) => {
     const obj = new Versions();
     t.strictSame(obj.versions, [], '.version should be empty Array');
     t.equal(obj.name, '', '.name should be empty String');
@@ -17,19 +15,19 @@ test('Versions() - Default property values', (t) => {
     t.end();
 });
 
-test('Versions() - Set a value on the "name" argument on the constructor', (t) => {
+tap.test('Versions() - Set a value on the "name" argument on the constructor', (t) => {
     const obj = new Versions({ name: 'foo' });
     t.equal(obj.name, 'foo', '.name should be value set on constructor');
     t.end();
 });
 
-test('Versions() - Set a value on the "name" argument on the constructor', (t) => {
+tap.test('Versions() - Set a value on the "name" argument on the constructor', (t) => {
     const obj = new Versions({ org: 'bar' });
     t.equal(obj.org, 'bar', '.org should be value set on constructor');
     t.end();
 });
 
-test('Versions() - Set the multiple versions in the same major range', (t) => {
+tap.test('Versions() - Set the multiple versions in the same major range', (t) => {
     const obj = new Versions();
     obj.setVersion('4.3.2', 'bar');
     obj.setVersion('4.6.1', 'foo');
@@ -39,7 +37,7 @@ test('Versions() - Set the multiple versions in the same major range', (t) => {
     t.end();
 });
 
-test('Versions() - Set multiple versions with different major range', (t) => {
+tap.test('Versions() - Set multiple versions with different major range', (t) => {
     const obj = new Versions();
     obj.setVersion('1.7.3', 'rab');
     obj.setVersion('3.3.2', 'bar');
@@ -54,7 +52,7 @@ test('Versions() - Set multiple versions with different major range', (t) => {
     t.end();
 });
 
-test('Version() - Set a version with lower semver version than latest', (t) => {
+tap.test('Version() - Set a version with lower semver version than latest', (t) => {
     t.plan(1);
 
     const obj = new Versions();
@@ -67,7 +65,7 @@ test('Version() - Set a version with lower semver version than latest', (t) => {
     t.end();
 });
 
-test('Versions() - Get a version', (t) => {
+tap.test('Versions() - Get a version', (t) => {
     const obj = new Versions();
     obj.setVersion('4.2.4', 'xyz');
     obj.setVersion('4.3.2', 'bar');
@@ -82,7 +80,7 @@ test('Versions() - Get a version', (t) => {
     t.end();
 });
 
-test('Versions() - Set values to the arguments on the constructor', (t) => {
+tap.test('Versions() - Set values to the arguments on the constructor', (t) => {
     const obj = new Versions({ name: 'buzz', org: 'bizz' });
     obj.setVersion('1.7.3', 'rab');
     obj.setVersion('3.3.2', 'bar');

@@ -1,10 +1,8 @@
-'use strict';
+import { Writable, PassThrough, pipeline } from 'node:stream';
+import tap from 'tap';
 
-const { Writable, PassThrough, pipeline } = require('stream');
-const tap = require('tap');
-
-const Handler = require('../../lib/handlers/pkg.get.js');
-const Sink = require('../../lib/sinks/test');
+import Handler from '../../lib/handlers/pkg.get.js';
+import Sink from '../../lib/sinks/test.js';
 
 const pipeInto = (...streams) => new Promise((resolve, reject) => {
     const buffer = [];

@@ -1,11 +1,9 @@
-'use strict';
+import { PassThrough } from 'node:stream';
+import FormData from 'form-data';
+import tap from 'tap';
 
-const { PassThrough } = require('stream');
-const FormData = require('form-data');
-const tap = require('tap');
-
-const Handler = require('../../lib/handlers/alias.delete.js');
-const Sink = require('../../lib/sinks/test');
+import Handler from '../../lib/handlers/alias.delete.js';
+import Sink from '../../lib/sinks/test.js';
 
 const Request = class Request extends PassThrough {
     constructor ({
@@ -15,7 +13,6 @@ const Request = class Request extends PassThrough {
         this.headers = {host: 'localhost', ...headers};
     }
 }
-
 
 tap.test('alias.delete() - URL parameters is URL encoded', async (t) => {
     const sink = new Sink();

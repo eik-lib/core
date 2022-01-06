@@ -1,12 +1,10 @@
-'use strict';
+import { PassThrough } from 'node:stream';
+import FormData from 'form-data';
+import tap from 'tap';
+import HttpError from 'http-errors';
 
-const { PassThrough } = require('stream');
-const FormData = require('form-data');
-const tap = require('tap');
-const HttpError = require('http-errors');
-
-const Handler = require('../../lib/handlers/alias.post.js');
-const Sink = require('../../lib/sinks/test');
+import Handler from '../../lib/handlers/alias.post.js';
+import Sink from '../../lib/sinks/test.js';
 
 const Request = class Request extends PassThrough {
     constructor ({
