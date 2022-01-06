@@ -1,6 +1,7 @@
 import { PassThrough } from 'node:stream';
 import FormData from 'form-data';
 import HttpError from 'http-errors';
+import { URL } from 'node:url';
 import tap from 'tap';
 import fs from 'node:fs';
 

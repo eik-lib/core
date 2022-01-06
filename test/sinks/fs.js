@@ -1,5 +1,6 @@
 import { Writable, pipeline } from 'node:stream';
 import { stream } from '@eik/common';
+import { URL } from 'node:url';
 import slug from 'unique-slug';
 import path from 'node:path';
 import tap from 'tap';
@@ -40,9 +41,7 @@ const MetricsInto = class MetricsInto extends Writable {
     }
 }
 
-const readFileStream = (file = '../README.md') => {
-    return fs.createReadStream(new URL(file, import.meta.url));
-};
+const readFileStream = (file = '../README.md') => fs.createReadStream(new URL(file, import.meta.url));
 
 const pipeInto = (...streams) => new Promise((resolve, reject) => {
         const buffer = [];
