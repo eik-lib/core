@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/eik-lib/core/compare/v1.2.29...v1.3.0) (2022-01-07)
+
+
+### Features
+
+* Convert to ESM ([#297](https://github.com/eik-lib/core/issues/297)) ([86c5cb3](https://github.com/eik-lib/core/commit/86c5cb3be753b777dafb6a79753e4dd5412cd352))
+
 ## [1.2.29](https://github.com/eik-lib/core/compare/v1.2.28...v1.2.29) (2022-01-05)
 
 
