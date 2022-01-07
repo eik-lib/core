@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/eik-lib/core/compare/v1.3.1...v1.3.2) (2022-01-07)
+
+
+### Bug Fixes
+
+* Expose the internal test sink ([#299](https://github.com/eik-lib/core/issues/299)) ([c3c24a8](https://github.com/eik-lib/core/commit/c3c24a85b3e0be947bd1a06775cf3f92e8feb8e6))
+
 ## [1.3.1](https://github.com/eik-lib/core/compare/v1.3.0...v1.3.1) (2022-01-07)
 
 
