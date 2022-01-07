@@ -1,10 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 
-'use strict';
-
-const FormData = require('form-data');
-const fetch = require('node-fetch');
+import FormData from 'form-data';
+import fetch from 'node-fetch';
 
 const authenticate = async (address) => {
     const formData = new FormData();

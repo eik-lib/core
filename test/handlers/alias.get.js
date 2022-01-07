@@ -1,11 +1,9 @@
-'use strict';
+import { PassThrough } from 'node:stream';
+import tap from 'tap';
 
-const { PassThrough } = require('stream');
-const tap = require('tap');
-
-const Handler = require('../../lib/handlers/alias.get.js');
-const Alias = require('../../lib/classes/alias');
-const Sink = require('../../lib/sinks/test');
+import Handler from '../../lib/handlers/alias.get.js';
+import Alias from '../../lib/classes/alias.js';
+import Sink from '../../lib/sinks/test.js';
 
 const Request = class Request extends PassThrough {
     constructor ({

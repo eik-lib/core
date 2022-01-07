@@ -1,15 +1,13 @@
-'use strict';
+import tap from 'tap';
+import Alias from '../../lib/classes/alias.js';
 
-const { test } = require('tap');
-const Alias = require('../../lib/classes/alias');
-
-test('Alias() - Object type', (t) => {
+tap.test('Alias() - Object type', (t) => {
     const obj = new Alias();
     t.equal(Object.prototype.toString.call(obj), '[object Alias]', 'should be Alias');
     t.end();
 });
 
-test('Alias() - Default property values', (t) => {
+tap.test('Alias() - Default property values', (t) => {
     const obj = new Alias();
     t.equal(obj.version, '', '.version should be empty String');
     t.equal(obj.alias, '', '.alias should be empty String');
@@ -19,7 +17,7 @@ test('Alias() - Default property values', (t) => {
     t.end();
 });
 
-test('Alias() - Set values to the arguments on the constructor', (t) => {
+tap.test('Alias() - Set values to the arguments on the constructor', (t) => {
     const obj = new Alias({
         version: '1.0.0',
         alias: 'v1',
@@ -35,7 +33,7 @@ test('Alias() - Set values to the arguments on the constructor', (t) => {
     t.end();
 });
 
-test('Alias() - Set a value on the .version property', (t) => {
+tap.test('Alias() - Set a value on the .version property', (t) => {
     const obj = new Alias({
         version: '1.0.0',
     });
@@ -44,7 +42,7 @@ test('Alias() - Set a value on the .version property', (t) => {
     t.end();
 });
 
-test('Alias() - Serialize object', (t) => {
+tap.test('Alias() - Serialize object', (t) => {
     const obj = new Alias({
         version: '1.0.0',
         alias: 'v1',

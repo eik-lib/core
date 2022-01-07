@@ -1,11 +1,20 @@
 {
+  "parser": "@babel/eslint-parser",
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["prettier"],
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module",
+    "requireConfigFile": false
+  },
   "rules": {
-    "strict": [0, "global"],
+    "import/prefer-default-export": "off",
+    "import/extensions": ["error", {
+      "js": "ignorePackages"
+      }
+    ],
     "class-methods-use-this": [0],
     "no-underscore-dangle": [0],
-    "no-restricted-syntax": [0],
-    "import/extensions": [0]
+    "no-restricted-syntax": [0]
   }
 }

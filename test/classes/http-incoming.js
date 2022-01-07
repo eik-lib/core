@@ -1,15 +1,13 @@
-'use strict';
+import tap from 'tap';
+import HttpIncoming from '../../lib/classes/http-incoming.js';
 
-const { test } = require('tap');
-const HttpIncoming = require('../../lib/classes/http-incoming');
-
-test('HttpIncoming() - Object type', (t) => {
+tap.test('HttpIncoming() - Object type', (t) => {
     const obj = new HttpIncoming();
     t.equal(Object.prototype.toString.call(obj), '[object HttpIncoming]', 'should be HttpIncoming');
     t.end();
 });
 
-test('HttpIncoming() - Default property values', (t) => {
+tap.test('HttpIncoming() - Default property values', (t) => {
     const obj = new HttpIncoming();
     t.type(obj.request, 'undefined', '.request should be undefined');
     t.same(obj.headers, {}, '.headers should be empty Object');
@@ -22,7 +20,7 @@ test('HttpIncoming() - Default property values', (t) => {
     t.end();
 });
 
-test('HttpIncoming() - Set values to the arguments on the constructor', (t) => {
+tap.test('HttpIncoming() - Set values to the arguments on the constructor', (t) => {
     const obj = new HttpIncoming({
         headers: {
             foo: 'bar'

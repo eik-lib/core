@@ -1,14 +1,13 @@
-'use strict';
+import { Writable, pipeline } from 'node:stream';
+import { stream } from '@eik/common';
+import { URL } from 'node:url';
+import slug from 'unique-slug';
+import path from 'node:path';
+import tap from 'tap';
+import fs from 'node:fs';
+import os from 'node:os';
 
-const { Writable, pipeline } = require('stream');
-const { stream } = require('@eik/common');
-const slug = require('unique-slug');
-const path = require('path');
-const tap = require('tap');
-const fs = require('fs');
-const os = require('os');
-
-const Sink = require('../../lib/sinks/fs');
+import Sink from '../../lib/sinks/fs.js';
 
 // Ignore the value for "timestamp" field in the snapshots
 tap.cleanSnapshot = (s) => {
@@ -19,7 +18,7 @@ tap.cleanSnapshot = (s) => {
 const DEFAULT_CONFIG = {
     sinkFsRootPath: path.join(os.tmpdir(), '/eik-test-files')
 };
-const FIXTURE = fs.readFileSync(path.join(__dirname, '../../fixtures/import-map.json')).toString();
+const FIXTURE = fs.readFileSync(new URL('../../fixtures/import-map.json', import.meta.url)).toString();
 
 const MetricsInto = class MetricsInto extends Writable {
     constructor() { 
@@ -42,10 +41,7 @@ const MetricsInto = class MetricsInto extends Writable {
     }
 }
 
-const readFileStream = (file = '../README.md') => {
-    const pathname = path.join(__dirname, file);
-    return fs.createReadStream(pathname);
-};
+const readFileStream = (file = '../README.md') => fs.createReadStream(new URL(file, import.meta.url));
 
 const pipeInto = (...streams) => new Promise((resolve, reject) => {
         const buffer = [];

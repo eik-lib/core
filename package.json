@@ -3,6 +3,7 @@
   "version": "1.2.29",
   "description": "Core server package",
   "main": "lib/main.js",
+  "type": "module",
   "files": [
     "CHANGELOG.md",
     "package.json",
@@ -33,6 +34,7 @@
     "unique-slug": "2.0.2"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "7.16.5",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
     "eslint": "8.6.0",
@@ -42,7 +44,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "form-data": "4.0.0",
     "mkdirp": "1.0.4",
-    "node-fetch": "2.6.6",
+    "node-fetch": "3.1.0",
     "prettier": "2.5.1",
     "semantic-release": "18.0.1",
     "tap": "15.1.6"

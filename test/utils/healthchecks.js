@@ -1,9 +1,6 @@
-'use strict';
-
-const tap = require('tap');
-
-const HealthCheck = require('../../lib/utils/healthcheck');
-const Sink = require('../../lib/sinks/test');
+import tap from 'tap';
+import HealthCheck from '../../lib/utils/healthcheck.js';
+import Sink from '../../lib/sinks/test.js';
 
 tap.test('HealthCheck() - Object type', (t) => {
     const health = new HealthCheck();

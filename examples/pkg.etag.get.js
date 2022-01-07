@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 
-'use strict';
-
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 const get = async () => {
 

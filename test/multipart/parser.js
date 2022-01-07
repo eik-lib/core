@@ -1,20 +1,18 @@
-'use strict';
+import { PassThrough } from 'node:stream';
+import FormData from 'form-data';
+import HttpError from 'http-errors';
+import { URL } from 'node:url';
+import tap from 'tap';
+import fs from 'node:fs';
 
-const { PassThrough } = require('stream');
-const FormData = require('form-data');
-const HttpError = require('http-errors');
-const path = require('path');
-const tap = require('tap');
-const fs = require('fs');
+import MultipartParser from '../../lib/multipart/parser.js';
+import HttpIncoming from '../../lib/classes/http-incoming.js';
+import Sink from '../../lib/sinks/mem.js';
 
-const MultipartParser = require('../../lib/multipart/parser');
-const HttpIncoming = require('../../lib/classes/http-incoming');
-const Sink = require('../../lib/sinks/mem');
-
-const FIXTURE_TAR = path.resolve(__dirname, '../../fixtures/package.tar');
-const FIXTURE_BZ2 = path.resolve(__dirname, '../../fixtures/package.tar.bz2');
-const FIXTURE_GZ = path.resolve(__dirname, '../../fixtures/package.tar.gz');
-const FIXTURE_PKG = path.resolve(__dirname, '../../fixtures/archive.tgz');
+const FIXTURE_TAR = new URL('../../fixtures/package.tar', import.meta.url);
+const FIXTURE_BZ2 = new URL('../../fixtures/package.tar.bz2', import.meta.url);
+const FIXTURE_GZ = new URL('../../fixtures/package.tar.gz', import.meta.url);
+const FIXTURE_PKG = new URL('../../fixtures/archive.tgz', import.meta.url);
 
 const Request = class Request extends PassThrough {
     constructor ({
