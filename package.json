@@ -23,7 +23,7 @@
     "@eik/sink": "1.2.1",
     "@metrics/client": "2.5.0",
     "abslog": "2.4.0",
-    "busboy": "1.4.0",
+    "busboy": "1.5.0",
     "http-errors": "2.0.0",
     "mime": "3.0.0",
     "original-url": "1.2.3",
