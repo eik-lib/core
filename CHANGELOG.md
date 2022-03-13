@@ -1,3 +1,10 @@
+## [1.3.5](https://github.com/eik-lib/core/compare/v1.3.4...v1.3.5) (2022-03-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency busboy to v1.5.0 ([82e8b07](https://github.com/eik-lib/core/commit/82e8b07f51980aa7641c0ea891e511273086513f))
+
 ## [1.3.4](https://github.com/eik-lib/core/compare/v1.3.3...v1.3.4) (2022-01-15)
 
 
