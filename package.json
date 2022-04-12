@@ -29,7 +29,7 @@
     "original-url": "1.2.3",
     "rimraf": "3.0.2",
     "semver": "7.3.7",
-    "ssri": "8.0.1",
+    "ssri": "9.0.0",
     "tar": "6.1.11",
     "unique-slug": "2.0.2"
   },
