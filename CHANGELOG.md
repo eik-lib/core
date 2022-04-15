@@ -1,3 +1,10 @@
+## [1.3.8](https://github.com/eik-lib/core/compare/v1.3.7...v1.3.8) (2022-04-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ssri to v9 ([#314](https://github.com/eik-lib/core/issues/314)) ([b1355bb](https://github.com/eik-lib/core/commit/b1355bb7aed232961b2a54e318667a7ea21319cf))
+
 ## [1.3.7](https://github.com/eik-lib/core/compare/v1.3.6...v1.3.7) (2022-04-12)
 
 
