@@ -52,19 +52,6 @@ tap.test('Versions() - Set multiple versions with different major range', (t) =>
     t.end();
 });
 
-tap.test('Version() - Set a version with lower semver version than latest', (t) => {
-    t.plan(1);
-
-    const obj = new Versions();
-    obj.setVersion('3.3.2', 'bar');
-    obj.setVersion('3.4.1', 'foo');
-
-    t.throws(() => {
-        obj.setVersion('3.2.1', 'xyz');
-    }, /Semver version is lower than previous version/, 'Should throw');
-    t.end();
-});
-
 tap.test('Versions() - Get a version', (t) => {
     const obj = new Versions();
     obj.setVersion('4.2.4', 'xyz');
