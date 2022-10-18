@@ -1,3 +1,11 @@
+## [1.3.13](https://github.com/eik-lib/core/compare/v1.3.12...v1.3.13) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ssri to v10 ([#337](https://github.com/eik-lib/core/issues/337)) ([b474833](https://github.com/eik-lib/core/commit/b474833838915e8b505aab84a39fed4a361c5ebc))
+* **deps:** update dependency unique-slug to v4 ([#336](https://github.com/eik-lib/core/issues/336)) ([bc2d673](https://github.com/eik-lib/core/commit/bc2d673cfaa150a10858bd452d91f76cffc4e0e5))
+
 ## [1.3.12](https://github.com/eik-lib/core/compare/v1.3.11...v1.3.12) (2022-10-05)
 
 
