@@ -26,6 +26,45 @@ const Request = class Request extends PassThrough {
     }
 }
 
+tap.test('pkg.put() - Allow publishing of previous version', async (t) => {
+    const sink = new Sink();
+    sink.set('/local/pkg/fuzz/1.0.1/eik.json', 'payload');
+    sink.set('/local/pkg/fuzz/1.0.3/eik.json', 'payload');
+
+    const h = new Handler({ sink });
+
+    const formData = new FormData();
+    formData.append('package', fs.createReadStream(FIXTURE_TAR));
+
+    const headers = formData.getHeaders();
+    const req = new Request({ headers });
+    formData.pipe(req);
+
+    const res = await h.handler(req, 'anton', 'pkg', 'fuzz', '1.0.2');
+    t.equal(res.cacheControl, 'no-store', '.cacheControl should be "no-store"')
+    t.equal(res.statusCode, 303, '.statusCode should be "303"');
+    t.equal(res.mimeType, 'text/plain', '.mimeType should be "text/plain"');
+    t.equal(res.location, '/pkg/fuzz/1.0.2', '.location should be "/pkg/fuzz/1.0.2"');
+    t.end()
+})
+
+tap.test('pkg.put() - Reject publishing of same version', (t) => {
+    const sink = new Sink();
+    sink.set('/local/pkg/fuzz/8.4.1/eik.json', 'payload');
+
+    const h = new Handler({ sink });
+
+    const formData = new FormData();
+    formData.append('package', fs.createReadStream(FIXTURE_TAR));
+
+    const headers = formData.getHeaders();
+    const req = new Request({ headers });
+    formData.pipe(req);
+
+    t.rejects(h.handler(req, 'anton', 'pkg', 'fuzz', '8.4.1'), new HttpError.Conflict(), 'should reject with conflict error. Version already exists');
+    t.end()
+})
+
 
 tap.test('pkg.put() - The "type" argument is invalid', (t) => {
     const h = new Handler();
