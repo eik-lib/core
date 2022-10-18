@@ -31,7 +31,7 @@
     "semver": "7.3.8",
     "ssri": "10.0.0",
     "tar": "6.1.11",
-    "unique-slug": "2.0.2"
+    "unique-slug": "4.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.19.1",
