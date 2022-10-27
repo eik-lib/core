@@ -1,3 +1,10 @@
+## [1.3.14](https://github.com/eik-lib/core/compare/v1.3.13...v1.3.14) (2022-10-27)
+
+
+### Bug Fixes
+
+* Removed duplicate logger ([#340](https://github.com/eik-lib/core/issues/340)) ([808e160](https://github.com/eik-lib/core/commit/808e16079cd1a7616330488d837c3e84dc362cef))
+
 ## [1.3.13](https://github.com/eik-lib/core/compare/v1.3.12...v1.3.13) (2022-10-18)
 
 
