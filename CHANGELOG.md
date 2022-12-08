@@ -1,3 +1,10 @@
+## [1.3.16](https://github.com/eik-lib/core/compare/v1.3.15...v1.3.16) (2022-12-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency ssri to v10.0.1 ([b0be6fb](https://github.com/eik-lib/core/commit/b0be6fb367c983e9a8547fa4a682d05347751ee6))
+
 ## [1.3.15](https://github.com/eik-lib/core/compare/v1.3.14...v1.3.15) (2022-11-01)
 
 
