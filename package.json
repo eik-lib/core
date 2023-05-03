@@ -30,7 +30,7 @@
     "rimraf": "3.0.2",
     "semver": "7.5.0",
     "ssri": "10.0.4",
-    "tar": "6.1.13",
+    "tar": "6.1.14",
     "unique-slug": "4.0.0"
   },
   "devDependencies": {
