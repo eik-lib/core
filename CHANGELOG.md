@@ -1,3 +1,10 @@
+## [1.3.26](https://github.com/eik-lib/core/compare/v1.3.25...v1.3.26) (2023-06-02)
+
+
+### Bug Fixes
+
+* Update dependencies ([#370](https://github.com/eik-lib/core/issues/370)) ([0c671f4](https://github.com/eik-lib/core/commit/0c671f412cefd9185172e36d46252c56028559e8))
+
 ## [1.3.25](https://github.com/eik-lib/core/compare/v1.3.24...v1.3.25) (2023-05-17)
 
 
