@@ -21,7 +21,7 @@
   "dependencies": {
     "@eik/common": "3.0.1",
     "@eik/sink": "1.2.1",
-    "@metrics/client": "2.5.0",
+    "@metrics/client": "2.5.1",
     "abslog": "2.4.0",
     "busboy": "1.6.0",
     "http-errors": "2.0.0",
