@@ -1,3 +1,10 @@
+## [1.3.32](https://github.com/eik-lib/core/compare/v1.3.31...v1.3.32) (2023-09-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @metrics/client to v2.5.2 ([4aa9459](https://github.com/eik-lib/core/commit/4aa9459c7ded4ad67f3f289afd9cd9ee7e84d14d))
+
 ## [1.3.31](https://github.com/eik-lib/core/compare/v1.3.30...v1.3.31) (2023-09-14)
 
 
