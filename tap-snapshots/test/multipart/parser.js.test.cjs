@@ -4,10 +4,8 @@
  * Re-generate by setting TAP_SNAPSHOT=1 and running tests.
  * Make sure to inspect the output below.  Do not ignore changes!
  */
-
 'use strict'
-
-exports[`test/multipart/parser.js TAP Parser() - Request contains multiple files and fields > parsed request should match snapshot 1`] = `
+exports[`test/multipart/parser.js > TAP > Parser() - Request contains multiple files and fields > parsed request should match snapshot 1`] = `
 Array [
   FormFile {
     "_name": "tgz",
@@ -150,7 +148,7 @@ Array [
 ]
 `
 
-exports[`test/multipart/parser.js TAP Parser() - Request contains only fields > parsed request should match snapshot 1`] = `
+exports[`test/multipart/parser.js > TAP > Parser() - Request contains only fields > parsed request should match snapshot 1`] = `
 Array [
   FormField {
     "_name": "foo",
@@ -163,7 +161,7 @@ Array [
 ]
 `
 
-exports[`test/multipart/parser.js TAP Parser() - Request contains only files > parsed request should match snapshot 1`] = `
+exports[`test/multipart/parser.js > TAP > Parser() - Request contains only files > parsed request should match snapshot 1`] = `
 Array [
   FormFile {
     "_name": "tgz",
