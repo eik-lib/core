@@ -10,7 +10,7 @@
     "lib"
   ],
   "scripts": {
-    "test": "tap --no-check-coverage",
+    "test": "tap --disable-coverage --allow-empty-coverage",
     "test:snapshots:update": "tap --snapshot",
     "lint:fix": "eslint --fix .",
     "lint": "eslint ."
