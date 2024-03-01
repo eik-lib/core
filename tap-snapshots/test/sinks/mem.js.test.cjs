@@ -4,10 +4,8 @@
  * Re-generate by setting TAP_SNAPSHOT=1 and running tests.
  * Make sure to inspect the output below.  Do not ignore changes!
  */
-
 'use strict'
-
-exports[`test/sinks/mem.js TAP Sink() - .metrics - all successfull operations > metrics should match snapshot 1`] = `
+exports[`test/sinks/mem.js > TAP > Sink() - .metrics - all successfull operations > metrics should match snapshot 1`] = `
 [
   {
     "name": "eik_core_sink_mem",
