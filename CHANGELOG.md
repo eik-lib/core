@@ -1,3 +1,10 @@
+## [1.3.37](https://github.com/eik-lib/core/compare/v1.3.36...v1.3.37) (2024-04-11)
+
+
+### Bug Fixes
+
+* **deps:** update dependency abslog to v2.4.2 ([ce2dd07](https://github.com/eik-lib/core/commit/ce2dd076a25e7a4a7ae7f8bee4a025ea12863012))
+
 ## [1.3.36](https://github.com/eik-lib/core/compare/v1.3.35...v1.3.36) (2024-04-11)
 
 
