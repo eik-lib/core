@@ -25,7 +25,7 @@
     "abslog": "2.4.2",
     "busboy": "1.6.0",
     "http-errors": "2.0.0",
-    "mime": "3.0.0",
+    "mime": "4.0.3",
     "original-url": "1.2.3",
     "rimraf": "5.0.5",
     "semver": "7.6.0",
