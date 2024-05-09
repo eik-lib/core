@@ -1,3 +1,10 @@
+## [1.3.42](https://github.com/eik-lib/core/compare/v1.3.41...v1.3.42) (2024-05-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency semver to v7.6.2 ([ba37d8c](https://github.com/eik-lib/core/commit/ba37d8c550f3aef70f3fffe7115d83e9b8e7bc50))
+
 ## [1.3.41](https://github.com/eik-lib/core/compare/v1.3.40...v1.3.41) (2024-05-07)
 
 
