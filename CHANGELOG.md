@@ -1,3 +1,10 @@
+## [1.3.45](https://github.com/eik-lib/core/compare/v1.3.44...v1.3.45) (2024-05-13)
+
+
+### Bug Fixes
+
+* change response code to bad request for unconfigured hostname ([#401](https://github.com/eik-lib/core/issues/401)) ([babc560](https://github.com/eik-lib/core/commit/babc560beddb580b1b9828021aa761b32fa0bc32))
+
 ## [1.3.44](https://github.com/eik-lib/core/compare/v1.3.43...v1.3.44) (2024-05-12)
 
 
