@@ -1,3 +1,10 @@
+## [1.3.46](https://github.com/eik-lib/core/compare/v1.3.45...v1.3.46) (2024-07-03)
+
+
+### Bug Fixes
+
+* add some logging in case archive parsing fails ([#420](https://github.com/eik-lib/core/issues/420)) ([d4f1a88](https://github.com/eik-lib/core/commit/d4f1a88924fde7afc6ba2b12ab757447d546fc2a)), closes [#418](https://github.com/eik-lib/core/issues/418)
+
 ## [1.3.45](https://github.com/eik-lib/core/compare/v1.3.44...v1.3.45) (2024-05-13)
 
 
