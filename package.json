@@ -27,7 +27,7 @@
     "http-errors": "2.0.0",
     "mime": "3.0.0",
     "original-url": "1.2.3",
-    "rimraf": "5.0.7",
+    "rimraf": "5.0.8",
     "semver": "7.6.2",
     "ssri": "10.0.6",
     "tar": "6.2.1",
