@@ -4,10 +4,10 @@ import HttpError from 'http-errors';
 import { URL } from 'node:url';
 import tap from 'tap';
 import fs from 'node:fs';
+import Sink from '@eik/sink-memory';
 
 import MultipartParser from '../../lib/multipart/parser.js';
 import HttpIncoming from '../../lib/classes/http-incoming.js';
-import Sink from '../../lib/sinks/mem.js';
 
 const FIXTURE_TAR = new URL('../../fixtures/package.tar', import.meta.url);
 const FIXTURE_BZ2 = new URL('../../fixtures/package.tar.bz2', import.meta.url);
@@ -15,17 +15,19 @@ const FIXTURE_GZ = new URL('../../fixtures/package.tar.gz', import.meta.url);
 const FIXTURE_PKG = new URL('../../fixtures/archive.tgz', import.meta.url);
 
 const Request = class Request extends PassThrough {
-    constructor ({
-        headers = {}
-    } = {}) {
+    constructor({ headers = {} } = {}) {
         super();
-        this.headers = {host: 'localhost', ...headers};
+        this.headers = { host: 'localhost', ...headers };
     }
-}
+};
 
 tap.test('Parser() - Object type', (t) => {
     const obj = new MultipartParser();
-    t.equal(Object.prototype.toString.call(obj), '[object MultipartParser]', 'should be MultipartParser');
+    t.equal(
+        Object.prototype.toString.call(obj),
+        '[object MultipartParser]',
+        'should be MultipartParser',
+    );
     t.end();
 });
 
@@ -137,7 +139,11 @@ tap.test('Parser() - Request is empty', async (t) => {
 
     formData.pipe(req);
 
-    t.rejects(multipart.parse(incoming), new Error('Unexpected end of form'), 'should reject with orignal error');
+    t.rejects(
+        multipart.parse(incoming),
+        new Error('Unexpected end of form'),
+        'should reject with orignal error',
+    );
     t.end();
 });
 
@@ -163,7 +169,11 @@ tap.test('Parser() - Request contain illegal field name', async (t) => {
 
     formData.pipe(req);
 
-    t.rejects(multipart.parse(incoming), new HttpError.BadRequest(), 'should reject with bad request error');
+    t.rejects(
+        multipart.parse(incoming),
+        new HttpError.BadRequest(),
+        'should reject with bad request error',
+    );
     t.end();
 });
 
@@ -189,7 +199,11 @@ tap.test('Parser() - Request contain illegal field name', async (t) => {
 
     formData.pipe(req);
 
-    t.rejects(multipart.parse(incoming), new HttpError.BadRequest(), 'should reject with bad request error');
+    t.rejects(
+        multipart.parse(incoming),
+        new HttpError.BadRequest(),
+        'should reject with bad request error',
+    );
     t.end();
 });
 
@@ -214,7 +228,11 @@ tap.test('Parser() - Request contain unprocessable file', async (t) => {
 
     formData.pipe(req);
 
-    t.rejects(multipart.parse(incoming), new HttpError.UnprocessableEntity(), 'should reject with unprocessable entity error');
+    t.rejects(
+        multipart.parse(incoming),
+        new HttpError.UnprocessableEntity(),
+        'should reject with unprocessable entity error',
+    );
     t.end();
 });
 
@@ -241,6 +259,10 @@ tap.test('Parser() - Request contain file which is too large', async (t) => {
 
     formData.pipe(req);
 
-    t.rejects(multipart.parse(incoming), new HttpError.PayloadTooLarge(), 'should reject with payload too large error');
+    t.rejects(
+        multipart.parse(incoming),
+        new HttpError.PayloadTooLarge(),
+        'should reject with payload too large error',
+    );
     t.end();
 });
