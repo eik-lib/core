@@ -1,3 +1,10 @@
+## [1.3.48](https://github.com/eik-lib/core/compare/v1.3.47...v1.3.48) (2024-07-29)
+
+
+### Bug Fixes
+
+* migrate to using sink modules ([0101d50](https://github.com/eik-lib/core/commit/0101d502365e304baa5e5583e13c29ca7b345b67))
+
 ## [1.3.47](https://github.com/eik-lib/core/compare/v1.3.46...v1.3.47) (2024-07-06)
 
 
