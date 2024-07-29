@@ -1,3 +1,10 @@
+## [1.3.49](https://github.com/eik-lib/core/compare/v1.3.48...v1.3.49) (2024-07-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/sink to v1.2.5 ([c738de5](https://github.com/eik-lib/core/commit/c738de5f544e27d31b888b4b039ce4b63efd7fd9))
+
 ## [1.3.48](https://github.com/eik-lib/core/compare/v1.3.47...v1.3.48) (2024-07-29)
 
 
