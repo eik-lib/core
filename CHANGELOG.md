@@ -1,3 +1,10 @@
+## [1.3.51](https://github.com/eik-lib/core/compare/v1.3.50...v1.3.51) (2024-07-29)
+
+
+### Bug Fixes
+
+* **deps:** update dependency rimraf to v5.0.9 ([84ac06a](https://github.com/eik-lib/core/commit/84ac06a5ec14b31b882bb66cb9a0bfd9f06bea0a))
+
 ## [1.3.50](https://github.com/eik-lib/core/compare/v1.3.49...v1.3.50) (2024-07-29)
 
 
