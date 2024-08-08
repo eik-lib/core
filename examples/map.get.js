@@ -1,11 +1,8 @@
-/* eslint-disable no-console */
-/* eslint-disable import/no-extraneous-dependencies */
+import fetch from "node-fetch";
 
-import fetch from 'node-fetch';
-
-fetch('http://localhost:4001/map/buzz/4.2.2', {
-    method: 'GET',
+fetch("http://localhost:4001/map/buzz/4.2.2", {
+	method: "GET",
 })
-    .then(res => res.json())
-    .then(obj => console.log(obj))
-    .catch(error => console.log(error));
+	.then((res) => res.json())
+	.then((obj) => console.log(obj))
+	.catch((error) => console.log(error));
