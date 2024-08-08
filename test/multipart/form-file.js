@@ -28,6 +28,7 @@ tap.test("FormFile() - Custom constructor values", (t) => {
 tap.test("FormFile() - Constructor value is illegal", (t) => {
 	t.throws(
 		() => {
+			// @ts-expect-error Testing bad input
 			// eslint-disable-next-line no-unused-vars
 			const obj = new FormFile({ name: "foo", value: "bar" });
 		},

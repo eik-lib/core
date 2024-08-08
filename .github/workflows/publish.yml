@@ -28,6 +28,8 @@ jobs:
 
       - run: npm run lint
 
+      - run: npm run types
+
       - run: npm test
 
       - run: npx semantic-release

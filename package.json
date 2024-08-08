@@ -3,11 +3,13 @@
   "version": "1.3.54",
   "description": "Core server package",
   "main": "lib/main.js",
+  "types": "./types/main.d.ts",
   "type": "module",
   "files": [
     "CHANGELOG.md",
     "package.json",
-    "lib"
+    "lib",
+    "types"
   ],
   "scripts": {
     "clean": "rimraf node_modules .tap types",
@@ -44,6 +46,7 @@
     "@eik/prettier-config": "1.0.1",
     "@eik/semantic-release-config": "1.0.0",
     "@eik/typescript-config": "1.0.0",
+    "@types/readable-stream": "4.0.15",
     "eslint": "9.8.0",
     "form-data": "4.0.0",
     "mkdirp": "3.0.1",
