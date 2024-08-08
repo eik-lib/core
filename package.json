@@ -19,7 +19,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "3.0.1",
+    "@eik/common": "4.0.6",
     "@eik/sink": "1.2.5",
     "@eik/sink-file-system": "1.0.1",
     "@eik/sink-memory": "1.1.1",
