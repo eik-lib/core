@@ -1,16 +1,13 @@
-/* eslint-disable no-console */
-/* eslint-disable import/no-extraneous-dependencies */
+import fetch from "node-fetch";
 
-import fetch from 'node-fetch';
-
-fetch('http://localhost:4001/npm/fuzz/8.4.1/main/index.js', {
-    method: 'GET',
+fetch("http://localhost:4001/npm/fuzz/8.4.1/main/index.js", {
+	method: "GET",
 })
-.then(res => res.text())
-.then(body => console.log(body));
+	.then((res) => res.text())
+	.then((body) => console.log(body));
 
-fetch('http://localhost:4001/npm/@cuz/fuzz/8.4.1/main/index.js', {
-    method: 'GET',
+fetch("http://localhost:4001/npm/@cuz/fuzz/8.4.1/main/index.js", {
+	method: "GET",
 })
-.then(res => res.text())
-.then(body => console.log(body));
+	.then((res) => res.text())
+	.then((body) => console.log(body));
