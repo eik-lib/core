@@ -23,7 +23,6 @@ tap.test("Alias() - Default property values", (t) => {
 
 tap.test("Alias() - Set values to the arguments on the constructor", (t) => {
 	const obj = new Alias({
-		version: "1.0.0",
 		alias: "v1",
 		name: "buzz",
 		type: "pkg",
@@ -38,9 +37,7 @@ tap.test("Alias() - Set values to the arguments on the constructor", (t) => {
 });
 
 tap.test("Alias() - Set a value on the .version property", (t) => {
-	const obj = new Alias({
-		version: "1.0.0",
-	});
+	const obj = new Alias();
 	obj.version = "2.0.0";
 	t.equal(obj.version, "2.0.0", ".version should be value set on .version");
 	t.end();
@@ -48,7 +45,6 @@ tap.test("Alias() - Set a value on the .version property", (t) => {
 
 tap.test("Alias() - Serialize object", (t) => {
 	const obj = new Alias({
-		version: "1.0.0",
 		alias: "v1",
 		name: "buzz",
 		type: "pkg",

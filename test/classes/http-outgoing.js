@@ -39,6 +39,7 @@ tap.test("HttpOutgoing() - Set .statusCode to non numeric value", (t) => {
 	t.throws(
 		() => {
 			const obj = new HttpOutgoing();
+			// @ts-expect-error Testing bad input
 			obj.statusCode = "fouronefour";
 		},
 		/Value is not a legal http status code/,

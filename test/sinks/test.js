@@ -54,6 +54,7 @@ const pipeInto = (...streams) =>
 			},
 		});
 
+		// @ts-expect-error
 		pipeline(...streams, to, (error) => {
 			if (error) return reject(error);
 			const str = buffer.join("").toString();
@@ -62,12 +63,15 @@ const pipeInto = (...streams) =>
 	});
 
 const pipe = (...streams) =>
-	new Promise((resolve, reject) => {
-		pipeline(...streams, (error) => {
-			if (error) return reject(error);
-			return resolve();
-		});
-	});
+	/** @type {Promise<void>} */ (
+		new Promise((resolve, reject) => {
+			// @ts-expect-error
+			pipeline(...streams, (error) => {
+				if (error) return reject(error);
+				return resolve();
+			});
+		})
+	);
 
 tap.test("Sink() - Object type", (t) => {
 	const sink = new Sink(DEFAULT_CONFIG);

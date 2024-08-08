@@ -16,6 +16,7 @@ const pipeInto = (...streams) =>
 			},
 		});
 
+		// @ts-expect-error
 		pipeline(...streams, to, (error) => {
 			if (error) return reject(error);
 			const str = buffer.join("").toString();
