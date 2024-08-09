@@ -1,3 +1,10 @@
+## [1.3.57](https://github.com/eik-lib/core/compare/v1.3.56...v1.3.57) (2024-08-09)
+
+
+### Bug Fixes
+
+* make healthcheck logging less verbose by default ([#433](https://github.com/eik-lib/core/issues/433)) ([73a3a39](https://github.com/eik-lib/core/commit/73a3a39b0262da0cd6fdd08043764a5a8331836b))
+
 ## [1.3.54](https://github.com/eik-lib/core/compare/v1.3.53...v1.3.54) (2024-08-08)
 
 
