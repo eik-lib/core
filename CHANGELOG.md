@@ -1,3 +1,10 @@
+## [1.3.59](https://github.com/eik-lib/core/compare/v1.3.58...v1.3.59) (2024-08-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/common to v4.0.8 ([916cee6](https://github.com/eik-lib/core/commit/916cee6951997339c87685c7719a68b778c82f20))
+
 ## [1.3.58](https://github.com/eik-lib/core/compare/v1.3.57...v1.3.58) (2024-08-09)
 
 
