@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/eik-lib/core/compare/v1.3.61...v1.4.0) (2024-08-14)
+
+
+### Bug Fixes
+
+* update to @eik/common v2.1.0 ([7ac426b](https://github.com/eik-lib/core/commit/7ac426b4a1e7c6698672b0e01a411a00afc2b5c1))
+
+
+### Features
+
+* add support for Eik image type ([d54b4c9](https://github.com/eik-lib/core/commit/d54b4c9a15d36851b5ab8b7e8a09cfdb9f3ca786))
+
 ## [1.3.61](https://github.com/eik-lib/core/compare/v1.3.60...v1.3.61) (2024-08-14)
 
 
