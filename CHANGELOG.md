@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/eik-lib/core/compare/v1.4.0...v1.4.1) (2024-08-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/sink-memory to v1.1.2 ([b757e0d](https://github.com/eik-lib/core/commit/b757e0d0b5aa1e602e4baba1585e36a5b4711749))
+
 # [1.4.0](https://github.com/eik-lib/core/compare/v1.3.61...v1.4.0) (2024-08-14)
 
 
