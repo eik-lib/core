@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/eik-lib/core/compare/v1.4.1...v1.4.2) (2024-08-16)
+
+
+### Bug Fixes
+
+* windows support ([#441](https://github.com/eik-lib/core/issues/441)) ([50380a7](https://github.com/eik-lib/core/commit/50380a754036510f0b71c1fddf100e1a09cd48a3))
+
 ## [1.4.1](https://github.com/eik-lib/core/compare/v1.4.0...v1.4.1) (2024-08-15)
 
 
