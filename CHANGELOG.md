@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/eik-lib/core/compare/v1.4.3...v2.0.0) (2024-11-15)
+
+
+### Bug Fixes
+
+* update dependencies ([#460](https://github.com/eik-lib/core/issues/460)) ([1b69224](https://github.com/eik-lib/core/commit/1b69224219dfe66b75ee048f891c97da85113e14))
+
+
+### BREAKING CHANGES
+
+* Requires Node >=20.5.0. Uses `text/javascript` instead of `application/javascript` as mimetype.
+
 ## [1.4.3](https://github.com/eik-lib/core/compare/v1.4.2...v1.4.3) (2024-11-13)
 
 
