@@ -4,15 +4,17 @@
  * Re-generate by setting TAP_SNAPSHOT=1 and running tests.
  * Make sure to inspect the output below.  Do not ignore changes!
  */
-'use strict'
-exports[`test/multipart/parser.js > TAP > Parser() - Request contains multiple files and fields > parsed request should match snapshot 1`] = `
+"use strict";
+exports[
+	`test/multipart/parser.js > TAP > Parser() - Request contains multiple files and fields > parsed request should match snapshot 1`
+] = `
 Array [
   FormFile {
     "_name": "tgz",
     "_value": Array [
       Asset {
         "_integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/ie11/index.js",
@@ -32,7 +34,7 @@ Array [
       },
       Asset {
         "_integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/main/index.js",
@@ -85,7 +87,7 @@ Array [
     "_value": Array [
       Asset {
         "_integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/ie11/index.js",
@@ -105,7 +107,7 @@ Array [
       },
       Asset {
         "_integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/main/index.js",
@@ -146,9 +148,11 @@ Array [
     ],
   },
 ]
-`
+`;
 
-exports[`test/multipart/parser.js > TAP > Parser() - Request contains only fields > parsed request should match snapshot 1`] = `
+exports[
+	`test/multipart/parser.js > TAP > Parser() - Request contains only fields > parsed request should match snapshot 1`
+] = `
 Array [
   FormField {
     "_name": "foo",
@@ -159,16 +163,18 @@ Array [
     "_value": "value-bar",
   },
 ]
-`
+`;
 
-exports[`test/multipart/parser.js > TAP > Parser() - Request contains only files > parsed request should match snapshot 1`] = `
+exports[
+	`test/multipart/parser.js > TAP > Parser() - Request contains only files > parsed request should match snapshot 1`
+] = `
 Array [
   FormFile {
     "_name": "tgz",
     "_value": Array [
       Asset {
         "_integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/ie11/index.js",
@@ -188,7 +194,7 @@ Array [
       },
       Asset {
         "_integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/main/index.js",
@@ -233,7 +239,7 @@ Array [
     "_value": Array [
       Asset {
         "_integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/ie11/index.js",
@@ -253,7 +259,7 @@ Array [
       },
       Asset {
         "_integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
-        "_mimeType": "application/javascript",
+        "_mimeType": "text/javascript",
         "_name": "buz",
         "_org": "biz",
         "_pathname": "/main/index.js",
@@ -294,4 +300,4 @@ Array [
     ],
   },
 ]
-`
+`;
