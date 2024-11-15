@@ -45,7 +45,7 @@ tap.test("Asset() - Set values to the arguments on the constructor", (t) => {
 	);
 	t.equal(
 		obj.mimeType,
-		"application/javascript",
+		"text/javascript",
 		'.mimeType should contain value matching type of file set on "pathname"',
 	);
 	t.equal(
@@ -141,7 +141,7 @@ tap.test("Asset() - Stringify object to JSON", (t) => {
 	);
 	t.equal(
 		o.mimeType,
-		"application/javascript",
+		"text/javascript",
 		'.mimeType should contain value matching type of file set on "pathname" on the origin object',
 	);
 	t.equal(o.type, "pkg", ".type should contain value set on origin object");

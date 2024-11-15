@@ -73,12 +73,8 @@ tap.test("HttpOutgoing() - Set .location to legal value", (t) => {
 
 tap.test("HttpOutgoing() - Set .mimeType to legal value", (t) => {
 	const obj = new HttpOutgoing();
-	obj.mimeType = "application/javascript";
-	t.equal(
-		obj.mimeType,
-		"application/javascript",
-		".location should be the set value",
-	);
+	obj.mimeType = "text/javascript";
+	t.equal(obj.mimeType, "text/javascript", ".location should be the set value");
 	t.end();
 });
 
