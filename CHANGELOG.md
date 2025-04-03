@@ -1,3 +1,10 @@
+## [2.0.8](https://github.com/eik-lib/core/compare/v2.0.7...v2.0.8) (2025-04-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mime to v4.0.7 ([#478](https://github.com/eik-lib/core/issues/478)) ([c7f7d37](https://github.com/eik-lib/core/commit/c7f7d378e5c727e358334ec9d4aa102d51000f55))
+
 ## [2.0.7](https://github.com/eik-lib/core/compare/v2.0.6...v2.0.7) (2025-02-04)
 
 
