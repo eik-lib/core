@@ -1,3 +1,10 @@
+## [2.0.9](https://github.com/eik-lib/core/compare/v2.0.8...v2.0.9) (2025-04-24)
+
+
+### Bug Fixes
+
+* **deps:** update eik packages ([#479](https://github.com/eik-lib/core/issues/479)) ([f8eba7c](https://github.com/eik-lib/core/commit/f8eba7cb8443f6b7f309d29b663ea48bd5cd5edd))
+
 ## [2.0.8](https://github.com/eik-lib/core/compare/v2.0.7...v2.0.8) (2025-04-03)
 
 
