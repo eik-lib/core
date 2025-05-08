@@ -25,10 +25,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "5.0.4",
+    "@eik/common": "5.1.0",
     "@eik/sink": "1.2.5",
-    "@eik/sink-file-system": "2.0.6",
-    "@eik/sink-memory": "2.0.4",
+    "@eik/sink-file-system": "2.0.7",
+    "@eik/sink-memory": "2.0.5",
     "@metrics/client": "2.5.4",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
@@ -41,7 +41,7 @@
     "unique-slug": "5.0.0"
   },
   "devDependencies": {
-    "@eik/eslint-config": "1.0.13",
+    "@eik/eslint-config": "1.0.15",
     "@eik/prettier-config": "1.0.1",
     "@eik/semantic-release-config": "1.0.2",
     "@eik/typescript-config": "1.0.0",
