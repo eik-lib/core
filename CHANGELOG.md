@@ -1,3 +1,10 @@
+## [2.0.13](https://github.com/eik-lib/core/compare/v2.0.12...v2.0.13) (2025-05-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/common to v5.1.1 ([#485](https://github.com/eik-lib/core/issues/485)) ([82598ca](https://github.com/eik-lib/core/commit/82598ca04da3a68dea7c7c55adc38f8859fff03b))
+
 ## [2.0.12](https://github.com/eik-lib/core/compare/v2.0.11...v2.0.12) (2025-05-12)
 
 
