@@ -25,10 +25,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "5.1.4",
+    "@eik/common": "5.1.5",
     "@eik/sink": "1.2.5",
     "@eik/sink-file-system": "2.0.9",
-    "@eik/sink-memory": "2.0.8",
+    "@eik/sink-memory": "2.0.9",
     "@metrics/client": "2.5.4",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
