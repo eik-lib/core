@@ -29,7 +29,7 @@
     "@eik/sink": "1.2.5",
     "@eik/sink-file-system": "2.0.9",
     "@eik/sink-memory": "2.0.9",
-    "@metrics/client": "2.5.4",
+    "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
     "http-errors": "2.0.0",
