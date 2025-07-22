@@ -28,7 +28,7 @@
     "@eik/common": "5.1.6",
     "@eik/sink": "1.2.5",
     "@eik/sink-file-system": "2.0.10",
-    "@eik/sink-memory": "2.0.10",
+    "@eik/sink-memory": "2.0.11",
     "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
