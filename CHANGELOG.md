@@ -1,3 +1,10 @@
+## [2.0.20](https://github.com/eik-lib/core/compare/v2.0.19...v2.0.20) (2025-07-22)
+
+
+### Bug Fixes
+
+* **deps:** update eik packages ([#497](https://github.com/eik-lib/core/issues/497)) ([9d2bf1b](https://github.com/eik-lib/core/commit/9d2bf1bb22e2a8f9cdcaed8e914597150a3c2e71))
+
 ## [2.0.19](https://github.com/eik-lib/core/compare/v2.0.18...v2.0.19) (2025-06-27)
 
 
