@@ -1,3 +1,10 @@
+## [2.0.22](https://github.com/eik-lib/core/compare/v2.0.21...v2.0.22) (2025-08-22)
+
+
+### Bug Fixes
+
+* end timer on stream end or error  ([#503](https://github.com/eik-lib/core/issues/503)) ([5cea253](https://github.com/eik-lib/core/commit/5cea2535df552a9c3f9787f4e54d6f2d985808c4))
+
 ## [2.0.21](https://github.com/eik-lib/core/compare/v2.0.20...v2.0.21) (2025-07-22)
 
 
