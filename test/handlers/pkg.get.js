@@ -33,6 +33,7 @@ const Request = class Request extends PassThrough {
 
 tap.test("pkg.get() - URL parameters is URL encoded", async (t) => {
 	const sink = new Sink();
+	sink.readDelay = 10_000;
 	sink.set("/local/pkg/@foo/bar-lib/8.1.4-1/foo/main.js", "payload");
 
 	const h = new Handler({ sink });
