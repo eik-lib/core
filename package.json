@@ -27,8 +27,8 @@
   "dependencies": {
     "@eik/common": "5.1.7",
     "@eik/sink": "1.2.5",
-    "@eik/sink-file-system": "2.0.11",
-    "@eik/sink-memory": "2.0.11",
+    "@eik/sink-file-system": "2.0.12",
+    "@eik/sink-memory": "2.0.12",
     "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
@@ -41,7 +41,7 @@
     "unique-slug": "5.0.0"
   },
   "devDependencies": {
-    "@eik/eslint-config": "1.0.22",
+    "@eik/eslint-config": "1.0.23",
     "@eik/prettier-config": "1.0.1",
     "@eik/semantic-release-config": "1.0.8",
     "@eik/typescript-config": "1.0.0",
