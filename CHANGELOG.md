@@ -1,3 +1,10 @@
+## [2.0.25](https://github.com/eik-lib/core/compare/v2.0.24...v2.0.25) (2025-09-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency mime to v4.1.0 ([#507](https://github.com/eik-lib/core/issues/507)) ([1be191b](https://github.com/eik-lib/core/commit/1be191b654876678451e9ccb74352c7bd90b3886))
+
 ## [2.0.24](https://github.com/eik-lib/core/compare/v2.0.23...v2.0.24) (2025-09-10)
 
 
