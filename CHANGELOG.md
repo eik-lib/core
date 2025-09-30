@@ -1,3 +1,11 @@
+# [2.1.0](https://github.com/eik-lib/core/compare/v2.0.27...v2.1.0) (2025-09-30)
+
+
+### Features
+
+* add new alias route handler ([e7d78f6](https://github.com/eik-lib/core/commit/e7d78f6559cc9efb61c78e992ad094e0bb312a9d))
+* add stale while revalidate to new alias route ([7639c11](https://github.com/eik-lib/core/commit/7639c11dda5a0353de499552294611fe96914fab))
+
 ## [2.0.27](https://github.com/eik-lib/core/compare/v2.0.26...v2.0.27) (2025-09-24)
 
 
