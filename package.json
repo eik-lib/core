@@ -32,7 +32,7 @@
     "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
-    "http-errors": "2.0.0",
+    "http-errors": "2.0.1",
     "mime": "4.1.0",
     "original-url": "1.2.3",
     "semver": "7.7.3",
