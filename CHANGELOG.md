@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/eik-lib/core/compare/v2.1.4...v2.1.5) (2025-12-11)
+
+
+### Bug Fixes
+
+* triggering release ([59121a4](https://github.com/eik-lib/core/commit/59121a484d0df3e09ca6811a0627bce3badc0f0f))
+
 ## [2.1.4](https://github.com/eik-lib/core/compare/v2.1.3...v2.1.4) (2025-11-21)
 
 
