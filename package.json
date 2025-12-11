@@ -21,6 +21,10 @@
     "types:module": "tsc",
     "types:test": "tsc --project tsconfig.test.json"
   },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:eik-lib/core.git"
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
