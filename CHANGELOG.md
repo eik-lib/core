@@ -1,3 +1,10 @@
+## [2.1.7](https://github.com/eik-lib/core/compare/v2.1.6...v2.1.7) (2025-12-11)
+
+
+### Bug Fixes
+
+* nudge again ([0ceb186](https://github.com/eik-lib/core/commit/0ceb18639052972d9b3fe9d315adf1837282c210))
+
 ## [2.1.6](https://github.com/eik-lib/core/compare/v2.1.5...v2.1.6) (2025-12-11)
 
 
