@@ -1,3 +1,10 @@
+## [2.1.9](https://github.com/eik-lib/core/compare/v2.1.8...v2.1.9) (2025-12-12)
+
+
+### Bug Fixes
+
+* update eik dependencies ([83afc1f](https://github.com/eik-lib/core/commit/83afc1f71c1f73f378f267d84dde08c34ed2d048))
+
 ## [2.1.8](https://github.com/eik-lib/core/compare/v2.1.7...v2.1.8) (2025-12-11)
 
 
