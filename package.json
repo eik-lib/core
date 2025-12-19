@@ -29,10 +29,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "5.1.11",
+    "@eik/common": "5.1.12",
     "@eik/sink": "1.2.5",
-    "@eik/sink-file-system": "2.0.14",
-    "@eik/sink-memory": "2.0.13",
+    "@eik/sink-file-system": "2.0.15",
+    "@eik/sink-memory": "2.0.14",
     "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
@@ -47,7 +47,7 @@
   "devDependencies": {
     "@eik/eslint-config": "1.0.23",
     "@eik/prettier-config": "1.0.1",
-    "@eik/semantic-release-config": "1.0.10",
+    "@eik/semantic-release-config": "1.0.11",
     "@eik/typescript-config": "1.0.0",
     "@types/readable-stream": "4.0.22",
     "eslint": "9.39.1",
