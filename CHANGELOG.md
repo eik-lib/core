@@ -1,3 +1,10 @@
+## [2.1.13](https://github.com/eik-lib/core/compare/v2.1.12...v2.1.13) (2026-01-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependency tar to v7.5.4 ([#529](https://github.com/eik-lib/core/issues/529)) ([aa6021f](https://github.com/eik-lib/core/commit/aa6021ffbce1834ed325fd4582f70865635d67b4))
+
 ## [2.1.12](https://github.com/eik-lib/core/compare/v2.1.11...v2.1.12) (2026-01-17)
 
 
