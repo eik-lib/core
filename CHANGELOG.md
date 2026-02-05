@@ -1,3 +1,11 @@
+## [2.1.19](https://github.com/eik-lib/core/compare/v2.1.18...v2.1.19) (2026-02-05)
+
+
+### Bug Fixes
+
+* reducing log level on invalid hosts ([5d11684](https://github.com/eik-lib/core/commit/5d116840ac95899c2c487a8c7860055330547fa7))
+* reducing log level on invalid hosts ([#539](https://github.com/eik-lib/core/issues/539)) ([1c3709d](https://github.com/eik-lib/core/commit/1c3709d84da3475a8f67a211c8b2161c7e165cfa))
+
 ## [2.1.18](https://github.com/eik-lib/core/compare/v2.1.17...v2.1.18) (2026-02-05)
 
 
