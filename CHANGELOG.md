@@ -1,3 +1,10 @@
+## [2.1.21](https://github.com/eik-lib/core/compare/v2.1.20...v2.1.21) (2026-02-06)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/common to v5.1.16 ([#542](https://github.com/eik-lib/core/issues/542)) ([271a4dc](https://github.com/eik-lib/core/commit/271a4dc661f31fc36fe447d3e3a9d9088b4e4b1e))
+
 ## [2.1.20](https://github.com/eik-lib/core/compare/v2.1.19...v2.1.20) (2026-02-05)
 
 
