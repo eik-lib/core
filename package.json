@@ -42,7 +42,7 @@
     "semver": "7.7.4",
     "ssri": "12.0.0",
     "tar": "7.5.7",
-    "unique-slug": "5.0.0"
+    "unique-slug": "6.0.0"
   },
   "devDependencies": {
     "@eik/eslint-config": "1.0.25",
