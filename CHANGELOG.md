@@ -1,3 +1,10 @@
+## [2.1.25](https://github.com/eik-lib/core/compare/v2.1.24...v2.1.25) (2026-02-13)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/sink-memory to v2.0.20 ([#546](https://github.com/eik-lib/core/issues/546)) ([d9c65aa](https://github.com/eik-lib/core/commit/d9c65aacff9830b1989d5f18d21d19add68011c3))
+
 ## [2.1.24](https://github.com/eik-lib/core/compare/v2.1.23...v2.1.24) (2026-02-13)
 
 
