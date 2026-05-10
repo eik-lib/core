@@ -1,3 +1,10 @@
+## [2.1.43](https://github.com/eik-lib/core/compare/v2.1.42...v2.1.43) (2026-05-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @eik/sink-file-system to v2.0.31 ([#582](https://github.com/eik-lib/core/issues/582)) ([b39ba0d](https://github.com/eik-lib/core/commit/b39ba0d40683c75b763a54d5f75cc304e986609c))
+
 ## [2.1.42](https://github.com/eik-lib/core/compare/v2.1.41...v2.1.42) (2026-05-09)
 
 
