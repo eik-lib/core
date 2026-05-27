@@ -1,3 +1,10 @@
+## [2.1.47](https://github.com/eik-lib/core/compare/v2.1.46...v2.1.47) (2026-05-27)
+
+
+### Bug Fixes
+
+* Bump dependencies ([#587](https://github.com/eik-lib/core/issues/587)) ([c81b101](https://github.com/eik-lib/core/commit/c81b10179c6e6fc8d4f4a2ee82b95f1c0e1533e7))
+
 ## [2.1.46](https://github.com/eik-lib/core/compare/v2.1.45...v2.1.46) (2026-05-22)
 
 
