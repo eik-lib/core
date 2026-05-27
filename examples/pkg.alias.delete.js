@@ -1,6 +1,3 @@
-import FormData from "form-data";
-import fetch from "node-fetch";
-
 const authenticate = async (address) => {
 	const formData = new FormData();
 	formData.append("key", "change_me");
@@ -8,7 +5,6 @@ const authenticate = async (address) => {
 	const res = await fetch(`${address}/auth/login`, {
 		method: "POST",
 		body: formData,
-		headers: formData.getHeaders(),
 	});
 
 	return res.json();
@@ -26,7 +22,7 @@ const del = async (address) => {
 		headers,
 	});
 
-	let result = {};
+	let result;
 	switch (res.status) {
 		case 204:
 			result = { status: res.status, message: "Deleted" };

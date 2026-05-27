@@ -1,5 +1,4 @@
 import { PassThrough } from "node:stream";
-import FormData from "form-data";
 import HttpError from "http-errors";
 import { URL } from "node:url";
 import tap from "tap";
@@ -30,11 +29,18 @@ tap.test("pkg.put() - Allow publishing of previous version", async (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "pkg", "fuzz", "1.0.2");
 	t.equal(res.cacheControl, "no-store", '.cacheControl should be "no-store"');
@@ -55,11 +61,18 @@ tap.test("pkg.put() - Reject publishing of same version", (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
@@ -82,7 +95,7 @@ tap.test('pkg.put() - The "type" argument is invalid', (t) => {
 tap.test('pkg.put() - The "name" argument is invalid', (t) => {
 	const h = new Handler();
 	t.rejects(
-		h.handler({}, "anton", "pkg", null, "8.4.1"),
+		h.handler({}, "anton", "pkg", /** @type {any} */ (null), "8.4.1"),
 		new HttpError.BadRequest(),
 		"should reject with bad request error",
 	);
@@ -104,11 +117,18 @@ tap.test("pkg.put() - Successful upload of .tar file", async (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "pkg", "fuzz", "8.4.1");
 
@@ -128,11 +148,18 @@ tap.test("pkg.put() - URL parameters is URL encoded", async (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(
 		req,
@@ -156,11 +183,18 @@ tap.test("pkg.put() - Successful upload of .tar.gz file", async (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_GZ));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_GZ)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.gz",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "pkg", "fuzz", "8.4.1");
 
@@ -180,11 +214,18 @@ tap.test("pkg.put() - File is not a tar file", (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_MAP));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_MAP)], {
+			type: "application/octet-stream",
+		}),
+		"import-map.json",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
@@ -201,11 +242,18 @@ tap.test(
 		const h = new Handler({ sink });
 
 		const formData = new FormData();
-		formData.append("package", fs.createReadStream(FIXTURE_BZ2));
+		formData.append(
+			"package",
+			new Blob([fs.readFileSync(FIXTURE_BZ2)], {
+				type: "application/octet-stream",
+			}),
+			"package.tar.bz2",
+		);
 
-		const headers = formData.getHeaders();
+		const _response = new Response(formData);
+		const headers = { "content-type": _response.headers.get("content-type") };
 		const req = new Request({ headers });
-		formData.pipe(req);
+		_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 		t.rejects(
 			h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
@@ -221,11 +269,18 @@ tap.test("pkg.put() - Form field is not valid", (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("pkg", fs.createReadStream(FIXTURE_PKG));
+	formData.append(
+		"pkg",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
@@ -243,11 +298,18 @@ tap.test("pkg.put() - File exceeds legal file size limit", (t) => {
 	});
 
 	const formData = new FormData();
-	formData.append("package", fs.createReadStream(FIXTURE_PKG));
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),

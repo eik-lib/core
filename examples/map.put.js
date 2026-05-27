@@ -1,5 +1,3 @@
-import FormData from "form-data";
-import fetch from "node-fetch";
 import fs from "node:fs";
 
 const authenticate = async (address) => {
@@ -9,7 +7,6 @@ const authenticate = async (address) => {
 	const res = await fetch(`${address}/auth/login`, {
 		method: "POST",
 		body: formData,
-		headers: formData.getHeaders(),
 	});
 
 	return res.json();
@@ -23,7 +20,6 @@ const put = async (address) => {
 
 	const headers = {
 		Authorization: `Bearer ${auth.token}`,
-		...formData.getHeaders(),
 	};
 
 	const res = await fetch(`${address}/map/buzz/4.2.2`, {
@@ -32,7 +28,7 @@ const put = async (address) => {
 		headers,
 	});
 
-	let result = {};
+	let result;
 	switch (res.status) {
 		case 200:
 			result = await res.json();
