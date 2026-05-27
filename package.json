@@ -15,8 +15,8 @@
     "clean": "node -e \"['.tap', 'node_modules', 'types'].forEach(d => require('fs').rmSync(d, {recursive: true, force: true}))\"",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "test": "tap --disable-coverage --allow-empty-coverage",
-    "test:snapshots": "tap --snapshot",
+    "test": "node --test 'test/**/*.js'",
+    "test:snapshots": "node --test --test-update-snapshots 'test/**/*.js'",
     "types": "run-s types:module types:test",
     "types:module": "tsc",
     "types:test": "tsc --project tsconfig.test.json"
@@ -54,7 +54,6 @@
     "npm-run-all2": "9.0.1",
     "prettier": "3.8.3",
     "semantic-release": "25.0.3",
-    "tap": "21.7.4",
     "typescript": "6.0.3"
   }
 }

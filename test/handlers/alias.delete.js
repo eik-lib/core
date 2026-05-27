@@ -1,5 +1,6 @@
 import { PassThrough } from "node:stream";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 
 import Handler from "../../lib/handlers/alias.delete.js";
 import Sink from "../../lib/sinks/test.js";
@@ -11,7 +12,7 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("alias.delete() - URL parameters is URL encoded", async (t) => {
+test("alias.delete() - URL parameters is URL encoded", async () => {
 	const sink = new Sink();
 	sink.set("/local/pkg/@foo/foo-bar/8.alias.json", "payload");
 
@@ -27,11 +28,14 @@ tap.test("alias.delete() - URL parameters is URL encoded", async (t) => {
 
 	const res = await h.handler(req, "anton", "pkg", "%40foo%2Ffoo-bar", "8");
 
-	t.equal(res.statusCode, 204, "should respond with expected status code");
-	t.equal(
+	assert.strictEqual(
+		res.statusCode,
+		204,
+		"should respond with expected status code",
+	);
+	assert.strictEqual(
 		sink.get("/pkg/@foo/foo-bar/8.alias.json"),
 		null,
 		"should delete alias from sink",
 	);
-	t.end();
 });

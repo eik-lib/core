@@ -1,45 +1,54 @@
 import { Readable } from "node:stream";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import HttpOutgoing from "../../lib/classes/http-outgoing.js";
 
 const RE_ILLEGAL_STATUS_CODE = /Value is not a legal http status code/;
 const RE_NOT_READABLE_STREAM = /Value is not a Readable stream/;
 
-tap.test("HttpOutgoing() - Object type", (t) => {
+test("HttpOutgoing() - Object type", () => {
 	const obj = new HttpOutgoing();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object HttpOutgoing]",
 		"should be HttpIncoming",
 	);
-	t.end();
 });
 
-tap.test("HttpOutgoing() - Default property values", (t) => {
+test("HttpOutgoing() - Default property values", () => {
 	const obj = new HttpOutgoing();
-	t.equal(obj.statusCode, 200, ".statusCode should be the Number 200");
-	t.equal(obj.location, "", ".location should be empty String");
-	t.equal(
+	assert.strictEqual(
+		obj.statusCode,
+		200,
+		".statusCode should be the Number 200",
+	);
+	assert.strictEqual(obj.location, "", ".location should be empty String");
+	assert.strictEqual(
 		obj.mimeType,
 		"text/plain",
 		'.mimeType should be the String "text/plain"',
 	);
-	t.type(obj.stream, "undefined", ".stream should be undefined");
-	t.type(obj.body, "undefined", ".body should be undefined");
-	t.equal(obj.etag, "", ".etag should be empty String");
-	t.end();
+	assert.strictEqual(
+		typeof obj.stream,
+		"undefined",
+		".stream should be undefined",
+	);
+	assert.strictEqual(typeof obj.body, "undefined", ".body should be undefined");
+	assert.strictEqual(obj.etag, "", ".etag should be empty String");
 });
 
-tap.test("HttpOutgoing() - Set .statusCode to legal value", (t) => {
+test("HttpOutgoing() - Set .statusCode to legal value", () => {
 	const obj = new HttpOutgoing();
 	obj.statusCode = 404;
-	t.equal(obj.statusCode, 404, ".statusCode should be the set value");
-	t.end();
+	assert.strictEqual(
+		obj.statusCode,
+		404,
+		".statusCode should be the set value",
+	);
 });
 
-tap.test("HttpOutgoing() - Set .statusCode to non numeric value", (t) => {
-	t.plan(1);
-	t.throws(
+test("HttpOutgoing() - Set .statusCode to non numeric value", () => {
+	assert.throws(
 		() => {
 			const obj = new HttpOutgoing();
 			// @ts-expect-error Testing bad input
@@ -48,72 +57,60 @@ tap.test("HttpOutgoing() - Set .statusCode to non numeric value", (t) => {
 		RE_ILLEGAL_STATUS_CODE,
 		"Should throw",
 	);
-	t.end();
 });
 
-tap.test(
-	"HttpOutgoing() - Set .statusCode to a illegal http status code",
-	(t) => {
-		t.plan(1);
-		t.throws(
-			() => {
-				const obj = new HttpOutgoing();
-				obj.statusCode = 98555555;
-			},
-			RE_ILLEGAL_STATUS_CODE,
-			"Should throw",
-		);
-		t.end();
-	},
-);
+test("HttpOutgoing() - Set .statusCode to a illegal http status code", () => {
+	assert.throws(
+		() => {
+			const obj = new HttpOutgoing();
+			obj.statusCode = 98555555;
+		},
+		RE_ILLEGAL_STATUS_CODE,
+		"Should throw",
+	);
+});
 
-tap.test("HttpOutgoing() - Set .location to legal value", (t) => {
+test("HttpOutgoing() - Set .location to legal value", () => {
 	const obj = new HttpOutgoing();
 	obj.location = "/foo";
-	t.equal(obj.location, "/foo", ".location should be the set value");
-	t.end();
+	assert.strictEqual(obj.location, "/foo", ".location should be the set value");
 });
 
-tap.test("HttpOutgoing() - Set .mimeType to legal value", (t) => {
+test("HttpOutgoing() - Set .mimeType to legal value", () => {
 	const obj = new HttpOutgoing();
 	obj.mimeType = "text/javascript";
-	t.equal(obj.mimeType, "text/javascript", ".location should be the set value");
-	t.end();
+	assert.strictEqual(
+		obj.mimeType,
+		"text/javascript",
+		".location should be the set value",
+	);
 });
 
-tap.test("HttpOutgoing() - Set .stream to legal value", (t) => {
+test("HttpOutgoing() - Set .stream to legal value", () => {
 	const obj = new HttpOutgoing();
 	obj.stream = new Readable();
-	t.ok(obj.stream instanceof Readable, ".stream should be the set value");
-	t.end();
+	assert.ok(obj.stream instanceof Readable, ".stream should be the set value");
 });
 
-tap.test(
-	"HttpOutgoing() - Set a non Readable stream as value on the .stream property",
-	(t) => {
-		t.plan(1);
-		t.throws(
-			() => {
-				const obj = new HttpOutgoing();
-				obj.stream = /** @type {any} */ ("foo");
-			},
-			RE_NOT_READABLE_STREAM,
-			"Should throw",
-		);
-		t.end();
-	},
-);
+test("HttpOutgoing() - Set a non Readable stream as value on the .stream property", () => {
+	assert.throws(
+		() => {
+			const obj = new HttpOutgoing();
+			obj.stream = /** @type {any} */ ("foo");
+		},
+		RE_NOT_READABLE_STREAM,
+		"Should throw",
+	);
+});
 
-tap.test("HttpOutgoing() - Set .body to legal value", (t) => {
+test("HttpOutgoing() - Set .body to legal value", () => {
 	const obj = new HttpOutgoing();
 	obj.body = "foo";
-	t.equal(obj.body, "foo", ".location should be the set value");
-	t.end();
+	assert.strictEqual(obj.body, "foo", ".location should be the set value");
 });
 
-tap.test("HttpOutgoing() - Set .etag to legal value", (t) => {
+test("HttpOutgoing() - Set .etag to legal value", () => {
 	const obj = new HttpOutgoing();
 	obj.etag = "foo";
-	t.equal(obj.etag, "foo", ".location should be the set value");
-	t.end();
+	assert.strictEqual(obj.etag, "foo", ".location should be the set value");
 });

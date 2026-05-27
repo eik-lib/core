@@ -1,6 +1,7 @@
 import { PassThrough } from "node:stream";
 import { URL } from "node:url";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import fs from "node:fs";
 
 import Handler from "../../lib/handlers/map.put.js";
@@ -15,7 +16,7 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("map.put() - URL parameters is URL encoded", async (t) => {
+test("map.put() - URL parameters is URL encoded", async () => {
 	const sink = new Sink();
 	const h = new Handler({ sink });
 
@@ -40,11 +41,14 @@ tap.test("map.put() - URL parameters is URL encoded", async (t) => {
 		"8%2E1%2E4%2D1",
 	);
 
-	t.equal(res.statusCode, 303, "should respond with expected status code");
-	t.equal(
+	assert.strictEqual(
+		res.statusCode,
+		303,
+		"should respond with expected status code",
+	);
+	assert.strictEqual(
 		res.location,
 		"/map/@foo/bar-lib/8.1.4-1",
 		".location should be decoded",
 	);
-	t.end();
 });

@@ -1,33 +1,42 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import FormField from "../../lib/multipart/form-field.js";
 
-tap.test("FormField() - Object type", (t) => {
+test("FormField() - Object type", () => {
 	const obj = new FormField();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object FormField]",
 		"should be FormField",
 	);
-	t.end();
 });
 
-tap.test("FormField() - Default constructor values", (t) => {
+test("FormField() - Default constructor values", () => {
 	const obj = new FormField();
-	t.equal(obj.name, "", ".name should be empty String");
-	t.equal(obj.value, "", ".value should be empty String");
-	t.end();
+	assert.strictEqual(obj.name, "", ".name should be empty String");
+	assert.strictEqual(obj.value, "", ".value should be empty String");
 });
 
-tap.test("FormField() - Custom constructor values", (t) => {
+test("FormField() - Custom constructor values", () => {
 	const obj = new FormField({ name: "foo", value: "bar" });
-	t.equal(obj.name, "foo", ".name should have value from constructor");
-	t.equal(obj.value, "bar", ".value should have value from constructor");
-	t.end();
+	assert.strictEqual(
+		obj.name,
+		"foo",
+		".name should have value from constructor",
+	);
+	assert.strictEqual(
+		obj.value,
+		"bar",
+		".value should have value from constructor",
+	);
 });
 
-tap.test("FormField() - .toJSON", (t) => {
+test("FormField() - .toJSON", () => {
 	const obj = new FormField({ name: "foo", value: "bar" });
 	const o = JSON.parse(JSON.stringify(obj));
-	t.strictSame(o, { name: "foo", value: "bar" }, "should stringify object");
-	t.end();
+	assert.deepStrictEqual(
+		o,
+		{ name: "foo", value: "bar" },
+		"should stringify object",
+	);
 });

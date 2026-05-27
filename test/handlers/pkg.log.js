@@ -1,5 +1,6 @@
 import { Writable, PassThrough, pipeline } from "node:stream";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 
 import Handler from "../../lib/handlers/pkg.log.js";
 import Sink from "../../lib/sinks/test.js";
@@ -32,7 +33,7 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("pkg.log() - URL parameters is URL encoded", async (t) => {
+test("pkg.log() - URL parameters is URL encoded", async () => {
 	const sink = new Sink();
 	sink.set("/local/pkg/@foo/bar-lib/8.1.4-1.package.json", "payload");
 
@@ -42,11 +43,14 @@ tap.test("pkg.log() - URL parameters is URL encoded", async (t) => {
 	const res = await h.handler(req, "pkg", "%40foo%2Fbar-lib", "8%2E1%2E4%2D1");
 	const result = await pipeInto(res.stream);
 
-	t.equal(res.statusCode, 200, "should respond with expected status code");
-	t.equal(
+	assert.strictEqual(
+		res.statusCode,
+		200,
+		"should respond with expected status code",
+	);
+	assert.strictEqual(
 		result,
 		"payload",
 		"should be possible to retrieve a payload when handlers values is URL encoded",
 	);
-	t.end();
 });

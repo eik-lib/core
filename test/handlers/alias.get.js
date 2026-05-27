@@ -1,5 +1,6 @@
 import { PassThrough } from "node:stream";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 
 import Handler from "../../lib/handlers/alias.get.js";
 import Alias from "../../lib/classes/alias.js";
@@ -12,7 +13,7 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("alias.get() - URL parameters is URL encoded", async (t) => {
+test("alias.get() - URL parameters is URL encoded", async () => {
 	const sink = new Sink();
 	const alias = new Alias({
 		alias: "8",
@@ -33,11 +34,14 @@ tap.test("alias.get() - URL parameters is URL encoded", async (t) => {
 		"%2Ffoo%2Fmain.js",
 	);
 
-	t.equal(res.statusCode, 302, "should respond with expected status code");
-	t.equal(
+	assert.strictEqual(
+		res.statusCode,
+		302,
+		"should respond with expected status code",
+	);
+	assert.strictEqual(
 		res.location,
 		"/pkg/@foo/bar-lib/8.1.4-1/foo/main.js",
 		".location should be decoded",
 	);
-	t.end();
 });

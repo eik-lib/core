@@ -1,34 +1,40 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import FormFile from "../../lib/multipart/form-file.js";
 
 const RE_VALUE_MUST_BE_ARRAY = /The argument "value" must be of type Array/;
 
-tap.test("FormFile() - Object type", (t) => {
+test("FormFile() - Object type", () => {
 	const obj = new FormFile();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object FormFile]",
 		"should be FormFile",
 	);
-	t.end();
 });
 
-tap.test("FormFile() - Default constructor values", (t) => {
+test("FormFile() - Default constructor values", () => {
 	const obj = new FormFile();
-	t.equal(obj.name, "", ".name should be empty String");
-	t.strictSame(obj.value, [], ".value should be empty Array");
-	t.end();
+	assert.strictEqual(obj.name, "", ".name should be empty String");
+	assert.deepStrictEqual(obj.value, [], ".value should be empty Array");
 });
 
-tap.test("FormFile() - Custom constructor values", (t) => {
+test("FormFile() - Custom constructor values", () => {
 	const obj = new FormFile({ name: "foo", value: ["bar"] });
-	t.equal(obj.name, "foo", ".name should have value from constructor");
-	t.strictSame(obj.value, ["bar"], ".value should have value from constructor");
-	t.end();
+	assert.strictEqual(
+		obj.name,
+		"foo",
+		".name should have value from constructor",
+	);
+	assert.deepStrictEqual(
+		obj.value,
+		["bar"],
+		".value should have value from constructor",
+	);
 });
 
-tap.test("FormFile() - Constructor value is illegal", (t) => {
-	t.throws(
+test("FormFile() - Constructor value is illegal", () => {
+	assert.throws(
 		() => {
 			// @ts-expect-error Testing bad input
 			// eslint-disable-next-line no-unused-vars
@@ -37,12 +43,14 @@ tap.test("FormFile() - Constructor value is illegal", (t) => {
 		RE_VALUE_MUST_BE_ARRAY,
 		"Should throw",
 	);
-	t.end();
 });
 
-tap.test("FormFile() - .toJSON", (t) => {
+test("FormFile() - .toJSON", () => {
 	const obj = new FormFile({ name: "foo", value: ["bar"] });
 	const o = JSON.parse(JSON.stringify(obj));
-	t.strictSame(o, { name: "foo", value: ["bar"] }, "should stringify object");
-	t.end();
+	assert.deepStrictEqual(
+		o,
+		{ name: "foo", value: ["bar"] },
+		"should stringify object",
+	);
 });
