@@ -1,5 +1,4 @@
 import { PassThrough } from "node:stream";
-import FormData from "form-data";
 import { URL } from "node:url";
 import tap from "tap";
 import fs from "node:fs";
@@ -21,11 +20,18 @@ tap.test("map.put() - URL parameters is URL encoded", async (t) => {
 	const h = new Handler({ sink });
 
 	const formData = new FormData();
-	formData.append("map", fs.createReadStream(FIXTURE_MAP));
+	formData.append(
+		"map",
+		new Blob([fs.readFileSync(FIXTURE_MAP)], {
+			type: "application/octet-stream",
+		}),
+		"import-map.json",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(
 		req,

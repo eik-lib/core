@@ -1,5 +1,4 @@
 import { PassThrough } from "node:stream";
-import FormData from "form-data";
 import tap from "tap";
 import HttpError from "http-errors";
 
@@ -21,9 +20,10 @@ tap.test("alias.put() - URL parameters is URL encoded", async (t) => {
 	const formData = new FormData();
 	formData.append("version", "8.1.4-1");
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "pkg", "%40foo%2Fbar-lib", "8");
 
@@ -41,9 +41,10 @@ tap.test(
 		const formData = new FormData();
 		formData.append("version", "8.1.4-1");
 
-		const headers = formData.getHeaders();
+		const _response = new Response(formData);
+		const headers = { "content-type": _response.headers.get("content-type") };
 		const req = new Request({ headers });
-		formData.pipe(req);
+		_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 		const res = h.handler(req, "anton", "pkg", "%40foo%2Fbar-lib", "8");
 
@@ -62,9 +63,10 @@ tap.test("alias.put() - Map alias to existing npm package", async (t) => {
 	const formData = new FormData();
 	formData.append("version", "17.0.2");
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "npm", "%40bar%2Fbaz", "8");
 
@@ -84,9 +86,10 @@ tap.test(
 		const formData = new FormData();
 		formData.append("version", "17.0.2");
 
-		const headers = formData.getHeaders();
+		const _response = new Response(formData);
+		const headers = { "content-type": _response.headers.get("content-type") };
 		const req = new Request({ headers });
-		formData.pipe(req);
+		_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 		const res = h.handler(req, "anton", "npm", "%40bar%2Fbaz", "8");
 
@@ -105,9 +108,10 @@ tap.test("alias.put() - Map alias to existing import-map", async (t) => {
 	const formData = new FormData();
 	formData.append("version", "8.1.4");
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "map", "%40cuz%2Ffuzz", "8");
 
@@ -127,9 +131,10 @@ tap.test(
 		const formData = new FormData();
 		formData.append("version", "8.1.4");
 
-		const headers = formData.getHeaders();
+		const _response = new Response(formData);
+		const headers = { "content-type": _response.headers.get("content-type") };
 		const req = new Request({ headers });
-		formData.pipe(req);
+		_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 		const res = h.handler(req, "anton", "map", "%40cuz%2Ffuzz", "8");
 		t.rejects(res, HttpError.NotFound);

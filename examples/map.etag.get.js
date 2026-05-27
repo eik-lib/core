@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 const get = async () => {
 	const resA = await fetch("http://localhost:4001/map/buzz/4.2.2", {
 		method: "GET",

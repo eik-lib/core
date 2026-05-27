@@ -1,5 +1,4 @@
 import { PassThrough } from "node:stream";
-import FormData from "form-data";
 import HttpError from "http-errors";
 import { URL } from "node:url";
 import tap from "tap";
@@ -39,12 +38,25 @@ tap.test("Parser() - Request contains multiple files and fields", async (t) => {
 	});
 
 	const formData = new FormData();
-	formData.append("tgz", fs.createReadStream(FIXTURE_GZ));
+	formData.append(
+		"tgz",
+		new Blob([fs.readFileSync(FIXTURE_GZ)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.gz",
+	);
 	formData.append("foo", "value-foo");
 	formData.append("bar", "value-bar");
-	formData.append("tar", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"tar",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -54,7 +66,7 @@ tap.test("Parser() - Request contains multiple files and fields", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const result = await multipart.parse(incoming);
 
@@ -69,10 +81,23 @@ tap.test("Parser() - Request contains only files", async (t) => {
 	});
 
 	const formData = new FormData();
-	formData.append("tgz", fs.createReadStream(FIXTURE_GZ));
-	formData.append("tar", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"tgz",
+		new Blob([fs.readFileSync(FIXTURE_GZ)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.gz",
+	);
+	formData.append(
+		"tar",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -82,7 +107,7 @@ tap.test("Parser() - Request contains only files", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const result = await multipart.parse(incoming);
 
@@ -100,7 +125,8 @@ tap.test("Parser() - Request contains only fields", async (t) => {
 	formData.append("foo", "value-foo");
 	formData.append("bar", "value-bar");
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -110,7 +136,7 @@ tap.test("Parser() - Request contains only fields", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const result = await multipart.parse(incoming);
 
@@ -125,9 +151,11 @@ tap.test("Parser() - Request is empty", async (t) => {
 		sink: new Sink(),
 	});
 
-	const formData = new FormData();
-
-	const headers = formData.getHeaders();
+	// Use a content-type with a boundary but send no body so busboy
+	// receives an incomplete multipart stream and rejects as expected.
+	const headers = {
+		"content-type": "multipart/form-data; boundary=----formdata-empty-0000",
+	};
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -137,7 +165,7 @@ tap.test("Parser() - Request is empty", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	req.end();
 
 	t.rejects(
 		multipart.parse(incoming),
@@ -157,7 +185,8 @@ tap.test("Parser() - Request contain illegal field name", async (t) => {
 	formData.append("foo", "value-foo");
 	formData.append("xyz", "value-xyz");
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -167,7 +196,7 @@ tap.test("Parser() - Request contain illegal field name", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		multipart.parse(incoming),
@@ -184,10 +213,23 @@ tap.test("Parser() - Request contain illegal field name", async (t) => {
 	});
 
 	const formData = new FormData();
-	formData.append("tgz", fs.createReadStream(FIXTURE_GZ));
-	formData.append("xyz", fs.createReadStream(FIXTURE_TAR));
+	formData.append(
+		"tgz",
+		new Blob([fs.readFileSync(FIXTURE_GZ)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.gz",
+	);
+	formData.append(
+		"xyz",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -197,7 +239,7 @@ tap.test("Parser() - Request contain illegal field name", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		multipart.parse(incoming),
@@ -214,9 +256,16 @@ tap.test("Parser() - Request contain unprocessable file", async (t) => {
 	});
 
 	const formData = new FormData();
-	formData.append("file", fs.createReadStream(FIXTURE_BZ2));
+	formData.append(
+		"file",
+		new Blob([fs.readFileSync(FIXTURE_BZ2)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.bz2",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -226,7 +275,7 @@ tap.test("Parser() - Request contain unprocessable file", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		multipart.parse(incoming),
@@ -244,10 +293,23 @@ tap.test("Parser() - Request contain file which is too large", async (t) => {
 	});
 
 	const formData = new FormData();
-	formData.append("small", fs.createReadStream(FIXTURE_GZ));
-	formData.append("large", fs.createReadStream(FIXTURE_PKG));
+	formData.append(
+		"small",
+		new Blob([fs.readFileSync(FIXTURE_GZ)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.gz",
+	);
+	formData.append(
+		"large",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
 
-	const headers = formData.getHeaders();
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
 	const req = new Request({ headers });
 	const incoming = new HttpIncoming(req, {
 		version: "1.1.1",
@@ -257,7 +319,7 @@ tap.test("Parser() - Request contain file which is too large", async (t) => {
 		org: "biz",
 	});
 
-	formData.pipe(req);
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	t.rejects(
 		multipart.parse(incoming),

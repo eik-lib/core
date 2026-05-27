@@ -1,7 +1,8 @@
 import { Writable, pipeline } from "node:stream";
 import { stream } from "@eik/common";
 import { URL } from "node:url";
-import slug from "unique-slug";
+import { randomBytes } from "node:crypto";
+const slug = () => randomBytes(4).toString("hex");
 import tap from "tap";
 import fs from "node:fs";
 
@@ -21,10 +22,15 @@ const FIXTURE = fs
 const MetricsInto = class MetricsInto extends Writable {
 	constructor() {
 		super({ objectMode: true });
+		/** @type {any[]} */
 		this._metrics = [];
 	}
 
-	_write(chunk, encoding, callback) {
+	_write(
+		/** @type {any} */ chunk,
+		/** @type {any} */ encoding,
+		/** @type {any} */ callback,
+	) {
 		this._metrics.push(chunk);
 		callback();
 	}
@@ -42,8 +48,9 @@ const MetricsInto = class MetricsInto extends Writable {
 const readFileStream = (file = "../README.md") =>
 	fs.createReadStream(new URL(file, import.meta.url));
 
-const pipeInto = (...streams) =>
+const pipeInto = (/** @type {any[]} */ ...streams) =>
 	new Promise((resolve, reject) => {
+		/** @type {any[]} */
 		const buffer = [];
 
 		const to = new Writable({
@@ -62,7 +69,7 @@ const pipeInto = (...streams) =>
 		});
 	});
 
-const pipe = (...streams) =>
+const pipe = (/** @type {any[]} */ ...streams) =>
 	/** @type {Promise<void>} */ (
 		new Promise((resolve, reject) => {
 			// @ts-expect-error
@@ -100,12 +107,12 @@ tap.test("Sink() - .write() - arguments is illegal", async (t) => {
 	const dir = slug();
 
 	t.rejects(
-		sink.write(300, "application/octet-stream"),
+		sink.write(/** @type {any} */ (300), "application/octet-stream"),
 		new TypeError("Argument must be a String"),
 		"should reject on illegal filepath",
 	);
 	t.rejects(
-		sink.write(`${dir}/bar/map.json`, 300),
+		sink.write(`${dir}/bar/map.json`, /** @type {any} */ (300)),
 		new TypeError("Argument must be a String"),
 		"should reject on illegal mime type",
 	);
@@ -202,7 +209,7 @@ tap.test("Sink() - .read() - File does NOT exist", (t) => {
 tap.test("Sink() - .read() - arguments is illegal", async (t) => {
 	const sink = new Sink(DEFAULT_CONFIG);
 	t.rejects(
-		sink.read(300),
+		sink.read(/** @type {any} */ (300)),
 		new TypeError("Argument must be a String"),
 		"should reject on illegal filepath",
 	);
@@ -361,7 +368,7 @@ tap.test("Sink() - .delete() - Delete files recursively", async (t) => {
 tap.test("Sink() - .delete() - arguments is illegal", async (t) => {
 	const sink = new Sink(DEFAULT_CONFIG);
 	t.rejects(
-		sink.delete(300),
+		sink.delete(/** @type {any} */ (300)),
 		new TypeError("Argument must be a String"),
 		"should reject on illegal filepath",
 	);
@@ -435,7 +442,7 @@ tap.test("Sink() - .exist() - Check non existing file", (t) => {
 tap.test("Sink() - .exist() - arguments is illegal", async (t) => {
 	const sink = new Sink(DEFAULT_CONFIG);
 	t.rejects(
-		sink.exist(300),
+		sink.exist(/** @type {any} */ (300)),
 		new TypeError("Argument must be a String"),
 		"should reject on illegal filepath",
 	);

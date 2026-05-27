@@ -2,6 +2,9 @@ import { Readable } from "node:stream";
 import tap from "tap";
 import HttpOutgoing from "../../lib/classes/http-outgoing.js";
 
+const RE_ILLEGAL_STATUS_CODE = /Value is not a legal http status code/;
+const RE_NOT_READABLE_STREAM = /Value is not a Readable stream/;
+
 tap.test("HttpOutgoing() - Object type", (t) => {
 	const obj = new HttpOutgoing();
 	t.equal(
@@ -42,7 +45,7 @@ tap.test("HttpOutgoing() - Set .statusCode to non numeric value", (t) => {
 			// @ts-expect-error Testing bad input
 			obj.statusCode = "fouronefour";
 		},
-		/Value is not a legal http status code/,
+		RE_ILLEGAL_STATUS_CODE,
 		"Should throw",
 	);
 	t.end();
@@ -57,7 +60,7 @@ tap.test(
 				const obj = new HttpOutgoing();
 				obj.statusCode = 98555555;
 			},
-			/Value is not a legal http status code/,
+			RE_ILLEGAL_STATUS_CODE,
 			"Should throw",
 		);
 		t.end();
@@ -92,9 +95,9 @@ tap.test(
 		t.throws(
 			() => {
 				const obj = new HttpOutgoing();
-				obj.stream = "foo";
+				obj.stream = /** @type {any} */ ("foo");
 			},
-			/Value is not a Readable stream/,
+			RE_NOT_READABLE_STREAM,
 			"Should throw",
 		);
 		t.end();

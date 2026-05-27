@@ -1,6 +1,8 @@
 import tap from "tap";
 import FormFile from "../../lib/multipart/form-file.js";
 
+const RE_VALUE_MUST_BE_ARRAY = /The argument "value" must be of type Array/;
+
 tap.test("FormFile() - Object type", (t) => {
 	const obj = new FormFile();
 	t.equal(
@@ -32,7 +34,7 @@ tap.test("FormFile() - Constructor value is illegal", (t) => {
 			// eslint-disable-next-line no-unused-vars
 			const obj = new FormFile({ name: "foo", value: "bar" });
 		},
-		/The argument "value" must be of type Array/,
+		RE_VALUE_MUST_BE_ARRAY,
 		"Should throw",
 	);
 	t.end();

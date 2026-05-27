@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 const get = async () => {
 	const resA = await fetch(
 		"http://localhost:4001/pkg/fuzz/8.4.1/main/index.js",

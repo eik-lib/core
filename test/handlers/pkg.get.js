@@ -4,8 +4,9 @@ import tap from "tap";
 import Handler from "../../lib/handlers/pkg.get.js";
 import Sink from "../../lib/sinks/test.js";
 
-const pipeInto = (...streams) =>
+const pipeInto = (/** @type {any[]} */ ...streams) =>
 	new Promise((resolve, reject) => {
+		/** @type {any[]} */
 		const buffer = [];
 
 		const to = new Writable({

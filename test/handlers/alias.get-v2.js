@@ -5,8 +5,9 @@ import Handler from "../../lib/handlers/alias.get-v2.js";
 import Alias from "../../lib/classes/alias.js";
 import Sink from "../../lib/sinks/test.js";
 
-const pipeInto = (...streams) =>
+const pipeInto = (/** @type {any[]} */ ...streams) =>
 	new Promise((resolve, reject) => {
+		/** @type {any[]} */
 		const buffer = [];
 
 		const to = new Writable({

@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 fetch("http://localhost:4001/pkg/fuzz/8.4.1/main/index.js", {
 	method: "GET",
 })
