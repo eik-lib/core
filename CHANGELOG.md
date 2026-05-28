@@ -1,3 +1,10 @@
+## [2.1.48](https://github.com/eik-lib/core/compare/v2.1.47...v2.1.48) (2026-05-28)
+
+
+### Bug Fixes
+
+* Replace Tap with node.js test runner ([#588](https://github.com/eik-lib/core/issues/588)) ([823e940](https://github.com/eik-lib/core/commit/823e940f976168bcad4d9fa504476c1fe9c2a452))
+
 ## [2.1.47](https://github.com/eik-lib/core/compare/v2.1.46...v2.1.47) (2026-05-27)
 
 
