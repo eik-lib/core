@@ -1,8 +1,8 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import Package from "../../lib/classes/package.js";
 
-tap.test("Package() - object type - should be Package", (t) => {
+test("Package() - object type - should be Package", () => {
 	const pkg = new Package();
-	t.equal(Object.prototype.toString.call(pkg), "[object Package]");
-	t.end();
+	assert.strictEqual(Object.prototype.toString.call(pkg), "[object Package]");
 });

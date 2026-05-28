@@ -1,0 +1,218 @@
+exports[`Parser() - Request contains multiple files and fields 1`] = `
+[
+  {
+    "value": [
+      {
+        "integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
+        "pathname": "/ie11/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 111
+      },
+      {
+        "integrity": "sha512-aBcMYl0ZnkXf/9yCbnVXted2i0TcwBwNZZ9zdAip7iqSbhnRAHEn0Qgbo8VrhJs6o+iiWeNzYqaqphX8J2pgEg==",
+        "pathname": "/ie11/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 421
+      },
+      {
+        "integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
+        "pathname": "/main/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 83
+      },
+      {
+        "integrity": "sha512-mqoo6LQtopSBDKC1DMHrilgoH+0SVdQhurrjP/MqISCxelr5PJZtT3ImEB2V7ww33ijj1NgKvdXOYnqDwFMwjw==",
+        "pathname": "/main/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 425
+      },
+      {
+        "integrity": "sha512-sh4jQ4dz2PoNhndQlnC1XULBVkHYgjacQpnicDobIsolYbgKNybvlmZdA7oJ/66yecjAfv64i0ypAkL5nyUwbw==",
+        "pathname": "/main/index.css.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 163
+      },
+      {
+        "integrity": "sha512-Qqu5xjdYNzRT24ox2eBngOcqmhd1dzkD21IVpBLqE/fF9uVPRHMBzqZ9lzBKosj5wE5ExOdTXSi8AWfbdAoIGA==",
+        "pathname": "/main/index.css",
+        "mimeType": "text/css",
+        "type": "pkg",
+        "size": 65
+      }
+    ],
+    "name": "tgz"
+  },
+  {
+    "value": "value-foo",
+    "name": "foo"
+  },
+  {
+    "value": "value-bar",
+    "name": "bar"
+  },
+  {
+    "value": [
+      {
+        "integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
+        "pathname": "/ie11/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 111
+      },
+      {
+        "integrity": "sha512-aBcMYl0ZnkXf/9yCbnVXted2i0TcwBwNZZ9zdAip7iqSbhnRAHEn0Qgbo8VrhJs6o+iiWeNzYqaqphX8J2pgEg==",
+        "pathname": "/ie11/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 421
+      },
+      {
+        "integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
+        "pathname": "/main/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 83
+      },
+      {
+        "integrity": "sha512-mqoo6LQtopSBDKC1DMHrilgoH+0SVdQhurrjP/MqISCxelr5PJZtT3ImEB2V7ww33ijj1NgKvdXOYnqDwFMwjw==",
+        "pathname": "/main/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 425
+      },
+      {
+        "integrity": "sha512-sh4jQ4dz2PoNhndQlnC1XULBVkHYgjacQpnicDobIsolYbgKNybvlmZdA7oJ/66yecjAfv64i0ypAkL5nyUwbw==",
+        "pathname": "/main/index.css.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 163
+      },
+      {
+        "integrity": "sha512-Qqu5xjdYNzRT24ox2eBngOcqmhd1dzkD21IVpBLqE/fF9uVPRHMBzqZ9lzBKosj5wE5ExOdTXSi8AWfbdAoIGA==",
+        "pathname": "/main/index.css",
+        "mimeType": "text/css",
+        "type": "pkg",
+        "size": 65
+      }
+    ],
+    "name": "tar"
+  }
+]
+`;
+
+exports[`Parser() - Request contains only fields 1`] = `
+[
+  {
+    "value": "value-foo",
+    "name": "foo"
+  },
+  {
+    "value": "value-bar",
+    "name": "bar"
+  }
+]
+`;
+
+exports[`Parser() - Request contains only files 1`] = `
+[
+  {
+    "value": [
+      {
+        "integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
+        "pathname": "/ie11/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 111
+      },
+      {
+        "integrity": "sha512-aBcMYl0ZnkXf/9yCbnVXted2i0TcwBwNZZ9zdAip7iqSbhnRAHEn0Qgbo8VrhJs6o+iiWeNzYqaqphX8J2pgEg==",
+        "pathname": "/ie11/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 421
+      },
+      {
+        "integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
+        "pathname": "/main/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 83
+      },
+      {
+        "integrity": "sha512-mqoo6LQtopSBDKC1DMHrilgoH+0SVdQhurrjP/MqISCxelr5PJZtT3ImEB2V7ww33ijj1NgKvdXOYnqDwFMwjw==",
+        "pathname": "/main/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 425
+      },
+      {
+        "integrity": "sha512-sh4jQ4dz2PoNhndQlnC1XULBVkHYgjacQpnicDobIsolYbgKNybvlmZdA7oJ/66yecjAfv64i0ypAkL5nyUwbw==",
+        "pathname": "/main/index.css.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 163
+      },
+      {
+        "integrity": "sha512-Qqu5xjdYNzRT24ox2eBngOcqmhd1dzkD21IVpBLqE/fF9uVPRHMBzqZ9lzBKosj5wE5ExOdTXSi8AWfbdAoIGA==",
+        "pathname": "/main/index.css",
+        "mimeType": "text/css",
+        "type": "pkg",
+        "size": 65
+      }
+    ],
+    "name": "tgz"
+  },
+  {
+    "value": [
+      {
+        "integrity": "sha512-i1oU4MCMKNS1akPh2DGG4w4SKDxj0mg7XW7jvIGx+/6wRxWREm5CCLhugpsnzc8MvhBW1h/7AT3nINtGT++nTQ==",
+        "pathname": "/ie11/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 111
+      },
+      {
+        "integrity": "sha512-aBcMYl0ZnkXf/9yCbnVXted2i0TcwBwNZZ9zdAip7iqSbhnRAHEn0Qgbo8VrhJs6o+iiWeNzYqaqphX8J2pgEg==",
+        "pathname": "/ie11/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 421
+      },
+      {
+        "integrity": "sha512-lq9ovpg4+LD6vF+yOFaZTnuT43fVPmCDg9FjFKl4TM3/UI8TrXeQa3WlpkoFB1WoucVwQcP9pFvZrBjtts4uHA==",
+        "pathname": "/main/index.js",
+        "mimeType": "text/javascript",
+        "type": "pkg",
+        "size": 83
+      },
+      {
+        "integrity": "sha512-mqoo6LQtopSBDKC1DMHrilgoH+0SVdQhurrjP/MqISCxelr5PJZtT3ImEB2V7ww33ijj1NgKvdXOYnqDwFMwjw==",
+        "pathname": "/main/index.js.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 425
+      },
+      {
+        "integrity": "sha512-sh4jQ4dz2PoNhndQlnC1XULBVkHYgjacQpnicDobIsolYbgKNybvlmZdA7oJ/66yecjAfv64i0ypAkL5nyUwbw==",
+        "pathname": "/main/index.css.map",
+        "mimeType": "application/json",
+        "type": "pkg",
+        "size": 163
+      },
+      {
+        "integrity": "sha512-Qqu5xjdYNzRT24ox2eBngOcqmhd1dzkD21IVpBLqE/fF9uVPRHMBzqZ9lzBKosj5wE5ExOdTXSi8AWfbdAoIGA==",
+        "pathname": "/main/index.css",
+        "mimeType": "text/css",
+        "type": "pkg",
+        "size": 65
+      }
+    ],
+    "name": "tar"
+  }
+]
+`;

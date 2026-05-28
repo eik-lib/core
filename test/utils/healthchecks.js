@@ -1,20 +1,22 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import HealthCheck from "../../lib/utils/healthcheck.js";
 import Sink from "../../lib/sinks/test.js";
 
-tap.test("HealthCheck() - Object type", (t) => {
+test("HealthCheck() - Object type", () => {
 	const health = new HealthCheck();
 	const name = Object.prototype.toString.call(health);
-	t.ok(name.startsWith("[object HealthCheck"), "should begin with HealthCheck");
-	t.end();
+	assert.ok(
+		name.startsWith("[object HealthCheck"),
+		"should begin with HealthCheck",
+	);
 });
 
-tap.test("HealthCheck() - Sink is healthy", (t) => {
+test("HealthCheck() - Sink is healthy", async () => {
 	const sink = new Sink();
 
 	const health = new HealthCheck({ sink });
-	const check = health.check();
+	const result = await health.check();
 
-	t.resolveMatch(check, true, 'Should resolve with "true" as a value');
-	t.end();
+	assert.strictEqual(result, true, 'Should resolve with "true" as a value');
 });

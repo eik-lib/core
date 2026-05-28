@@ -1,7 +1,8 @@
 import { PassThrough } from "node:stream";
 import HttpError from "http-errors";
 import { URL } from "node:url";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import fs from "node:fs";
 
 import Handler from "../../lib/handlers/pkg.put.js";
@@ -21,7 +22,7 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("pkg.put() - Allow publishing of previous version", async (t) => {
+test("pkg.put() - Allow publishing of previous version", async () => {
 	const sink = new Sink();
 	sink.set("/local/pkg/fuzz/1.0.1/eik.json", "payload");
 	sink.set("/local/pkg/fuzz/1.0.3/eik.json", "payload");
@@ -43,18 +44,25 @@ tap.test("pkg.put() - Allow publishing of previous version", async (t) => {
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
 	const res = await h.handler(req, "anton", "pkg", "fuzz", "1.0.2");
-	t.equal(res.cacheControl, "no-store", '.cacheControl should be "no-store"');
-	t.equal(res.statusCode, 303, '.statusCode should be "303"');
-	t.equal(res.mimeType, "text/plain", '.mimeType should be "text/plain"');
-	t.equal(
+	assert.strictEqual(
+		res.cacheControl,
+		"no-store",
+		'.cacheControl should be "no-store"',
+	);
+	assert.strictEqual(res.statusCode, 303, '.statusCode should be "303"');
+	assert.strictEqual(
+		res.mimeType,
+		"text/plain",
+		'.mimeType should be "text/plain"',
+	);
+	assert.strictEqual(
 		res.location,
 		"/pkg/fuzz/1.0.2",
 		'.location should be "/pkg/fuzz/1.0.2"',
 	);
-	t.end();
 });
 
-tap.test("pkg.put() - Reject publishing of same version", (t) => {
+test("pkg.put() - Reject publishing of same version", async () => {
 	const sink = new Sink();
 	sink.set("/local/pkg/fuzz/8.4.1/eik.json", "payload");
 
@@ -74,45 +82,41 @@ tap.test("pkg.put() - Reject publishing of same version", (t) => {
 	const req = new Request({ headers });
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
-		new HttpError.Conflict(),
+		HttpError.Conflict,
 		"should reject with conflict error. Version already exists",
 	);
-	t.end();
 });
 
-tap.test('pkg.put() - The "type" argument is invalid', (t) => {
+test('pkg.put() - The "type" argument is invalid', async () => {
 	const h = new Handler();
-	t.rejects(
+	await assert.rejects(
 		h.handler({}, "anton", "zaaap", "fuzz", "8.4.1"),
-		new HttpError.BadRequest(),
+		HttpError.BadRequest,
 		"should reject with bad request error",
 	);
-	t.end();
 });
 
-tap.test('pkg.put() - The "name" argument is invalid', (t) => {
+test('pkg.put() - The "name" argument is invalid', async () => {
 	const h = new Handler();
-	t.rejects(
+	await assert.rejects(
 		h.handler({}, "anton", "pkg", /** @type {any} */ (null), "8.4.1"),
-		new HttpError.BadRequest(),
+		HttpError.BadRequest,
 		"should reject with bad request error",
 	);
-	t.end();
 });
 
-tap.test('pkg.put() - The "version" argument is invalid', (t) => {
+test('pkg.put() - The "version" argument is invalid', async () => {
 	const h = new Handler();
-	t.rejects(
+	await assert.rejects(
 		h.handler({}, "anton", "pkg", "fuzz", "zaaap"),
-		new HttpError.BadRequest(),
+		HttpError.BadRequest,
 		"should reject with bad request error",
 	);
-	t.end();
 });
 
-tap.test("pkg.put() - Successful upload of .tar file", async (t) => {
+test("pkg.put() - Successful upload of .tar file", async () => {
 	const sink = new Sink();
 	const h = new Handler({ sink });
 
@@ -132,18 +136,25 @@ tap.test("pkg.put() - Successful upload of .tar file", async (t) => {
 
 	const res = await h.handler(req, "anton", "pkg", "fuzz", "8.4.1");
 
-	t.equal(res.cacheControl, "no-store", '.cacheControl should be "no-store"');
-	t.equal(res.statusCode, 303, '.statusCode should be "303"');
-	t.equal(res.mimeType, "text/plain", '.mimeType should be "text/plain"');
-	t.equal(
+	assert.strictEqual(
+		res.cacheControl,
+		"no-store",
+		'.cacheControl should be "no-store"',
+	);
+	assert.strictEqual(res.statusCode, 303, '.statusCode should be "303"');
+	assert.strictEqual(
+		res.mimeType,
+		"text/plain",
+		'.mimeType should be "text/plain"',
+	);
+	assert.strictEqual(
 		res.location,
 		"/pkg/fuzz/8.4.1",
 		'.location should be "/pkg/fuzz/8.4.1"',
 	);
-	t.end();
 });
 
-tap.test("pkg.put() - URL parameters is URL encoded", async (t) => {
+test("pkg.put() - URL parameters is URL encoded", async () => {
 	const sink = new Sink();
 	const h = new Handler({ sink });
 
@@ -169,16 +180,19 @@ tap.test("pkg.put() - URL parameters is URL encoded", async (t) => {
 		"8%2E1%2E4%2D1",
 	);
 
-	t.equal(res.statusCode, 303, "should respond with expected status code");
-	t.equal(
+	assert.strictEqual(
+		res.statusCode,
+		303,
+		"should respond with expected status code",
+	);
+	assert.strictEqual(
 		res.location,
 		"/pkg/@foo/bar-lib/8.1.4-1",
 		".location should be decoded",
 	);
-	t.end();
 });
 
-tap.test("pkg.put() - Successful upload of .tar.gz file", async (t) => {
+test("pkg.put() - Successful upload of .tar.gz file", async () => {
 	const sink = new Sink();
 	const h = new Handler({ sink });
 
@@ -198,18 +212,25 @@ tap.test("pkg.put() - Successful upload of .tar.gz file", async (t) => {
 
 	const res = await h.handler(req, "anton", "pkg", "fuzz", "8.4.1");
 
-	t.equal(res.cacheControl, "no-store", '.cacheControl should be "no-store"');
-	t.equal(res.statusCode, 303, '.statusCode should be "303"');
-	t.equal(res.mimeType, "text/plain", '.mimeType should be "text/plain"');
-	t.equal(
+	assert.strictEqual(
+		res.cacheControl,
+		"no-store",
+		'.cacheControl should be "no-store"',
+	);
+	assert.strictEqual(res.statusCode, 303, '.statusCode should be "303"');
+	assert.strictEqual(
+		res.mimeType,
+		"text/plain",
+		'.mimeType should be "text/plain"',
+	);
+	assert.strictEqual(
 		res.location,
 		"/pkg/fuzz/8.4.1",
 		'.location should be "/pkg/fuzz/8.4.1"',
 	);
-	t.end();
 });
 
-tap.test("pkg.put() - File is not a tar file", (t) => {
+test("pkg.put() - File is not a tar file", async () => {
 	const sink = new Sink();
 	const h = new Handler({ sink });
 
@@ -227,44 +248,39 @@ tap.test("pkg.put() - File is not a tar file", (t) => {
 	const req = new Request({ headers });
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
-		new HttpError.UnsupportedMediaType(),
+		HttpError.UnsupportedMediaType,
 		"should reject with unsupported media type error",
 	);
-	t.end();
 });
 
-tap.test(
-	"pkg.put() - File is not a compatible file or contain an error",
-	(t) => {
-		const sink = new Sink();
-		const h = new Handler({ sink });
+test("pkg.put() - File is not a compatible file or contain an error", async () => {
+	const sink = new Sink();
+	const h = new Handler({ sink });
 
-		const formData = new FormData();
-		formData.append(
-			"package",
-			new Blob([fs.readFileSync(FIXTURE_BZ2)], {
-				type: "application/octet-stream",
-			}),
-			"package.tar.bz2",
-		);
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_BZ2)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.bz2",
+	);
 
-		const _response = new Response(formData);
-		const headers = { "content-type": _response.headers.get("content-type") };
-		const req = new Request({ headers });
-		_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-		t.rejects(
-			h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
-			new HttpError.UnprocessableEntity(),
-			"should reject with unprocessable entry error",
-		);
-		t.end();
-	},
-);
+	await assert.rejects(
+		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
+		HttpError.UnprocessableEntity,
+		"should reject with unprocessable entry error",
+	);
+});
 
-tap.test("pkg.put() - Form field is not valid", (t) => {
+test("pkg.put() - Form field is not valid", async () => {
 	const sink = new Sink();
 	const h = new Handler({ sink });
 
@@ -282,15 +298,14 @@ tap.test("pkg.put() - Form field is not valid", (t) => {
 	const req = new Request({ headers });
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
-		new HttpError.BadRequest(),
+		HttpError.BadRequest,
 		"should reject with bad request error",
 	);
-	t.end();
 });
 
-tap.test("pkg.put() - File exceeds legal file size limit", (t) => {
+test("pkg.put() - File exceeds legal file size limit", async () => {
 	const sink = new Sink();
 	const h = new Handler({
 		pkgMaxFileSize: 100,
@@ -311,10 +326,9 @@ tap.test("pkg.put() - File exceeds legal file size limit", (t) => {
 	const req = new Request({ headers });
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
-		new HttpError.PayloadTooLarge(),
+		HttpError.PayloadTooLarge,
 		"should reject with payload too large error",
 	);
-	t.end();
 });

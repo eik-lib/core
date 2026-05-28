@@ -1,35 +1,34 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import Asset from "../../lib/classes/asset.js";
 
-tap.test("HttpIncoming() - Object type", (t) => {
+test("HttpIncoming() - Object type", () => {
 	const obj = new Asset();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object Asset]",
 		"should be Asset",
 	);
-	t.end();
 });
 
-tap.test("Asset() - Default property values", (t) => {
+test("Asset() - Default property values", () => {
 	const obj = new Asset();
-	t.equal(obj.integrity, "", ".integrity should be empty String");
-	t.equal(obj.pathname, "/", '.pathname should be "/"');
-	t.equal(
+	assert.strictEqual(obj.integrity, "", ".integrity should be empty String");
+	assert.strictEqual(obj.pathname, "/", '.pathname should be "/"');
+	assert.strictEqual(
 		obj.mimeType,
 		"application/octet-stream",
 		'.mimetype should be "application/octet-stream"',
 	);
-	t.equal(obj.version, "", ".version should be empty String");
-	t.equal(obj.asset, "/", '.asset should be "/"');
-	t.equal(obj.name, "", ".name should be empty String");
-	t.equal(obj.type, "", ".type should be empty String");
-	t.equal(obj.size, -1, ".size should be the number -1");
-	t.equal(obj.org, "", ".org should be empty String");
-	t.end();
+	assert.strictEqual(obj.version, "", ".version should be empty String");
+	assert.strictEqual(obj.asset, "/", '.asset should be "/"');
+	assert.strictEqual(obj.name, "", ".name should be empty String");
+	assert.strictEqual(obj.type, "", ".type should be empty String");
+	assert.strictEqual(obj.size, -1, ".size should be the number -1");
+	assert.strictEqual(obj.org, "", ".org should be empty String");
 });
 
-tap.test("Asset() - Set values to the arguments on the constructor", (t) => {
+test("Asset() - Set values to the arguments on the constructor", () => {
 	const obj = new Asset({
 		pathname: "/foo/bar.js",
 		version: "4.2.6",
@@ -37,86 +36,97 @@ tap.test("Asset() - Set values to the arguments on the constructor", (t) => {
 		type: "pkg",
 		org: "bizz",
 	});
-	t.equal(obj.integrity, "", ".integrity should be empty String");
-	t.equal(
+	assert.strictEqual(obj.integrity, "", ".integrity should be empty String");
+	assert.strictEqual(
 		obj.pathname,
 		"/foo/bar.js",
 		".pathname should contain value set on constructor",
 	);
-	t.equal(
+	assert.strictEqual(
 		obj.mimeType,
 		"text/javascript",
 		'.mimeType should contain value matching type of file set on "pathname"',
 	);
-	t.equal(
+	assert.strictEqual(
 		obj.version,
 		"4.2.6",
 		".version should contain value set on constructor",
 	);
-	t.equal(
+	assert.strictEqual(
 		obj.asset,
 		"/foo/bar.js",
 		'.asset should contain same value as set on "pathname" on constructor',
 	);
-	t.equal(obj.name, "buzz", ".name should contain value set on constructor");
-	t.equal(obj.type, "pkg", ".type should contain value set on constructor");
-	t.equal(obj.size, -1, ".size should be the number -1");
-	t.equal(obj.org, "bizz", ".org should contain value set on constructor");
-	t.end();
-});
-
-tap.test(
-	'Asset() - Set values to the argument "type" on the constructor in upper case',
-	(t) => {
-		const obj = new Asset({
-			type: "PkG",
-		});
-		t.equal(
-			obj.type,
-			"pkg",
-			".type should contain value set on property in lower case",
-		);
-		t.end();
-	},
-);
-
-tap.test("Asset() - Set .integrity property", (t) => {
-	const obj = new Asset();
-	obj.integrity = "foo";
-	t.equal(
-		obj.integrity,
-		"foo",
-		".integrity should contain value set on property",
+	assert.strictEqual(
+		obj.name,
+		"buzz",
+		".name should contain value set on constructor",
 	);
-	t.end();
+	assert.strictEqual(
+		obj.type,
+		"pkg",
+		".type should contain value set on constructor",
+	);
+	assert.strictEqual(obj.size, -1, ".size should be the number -1");
+	assert.strictEqual(
+		obj.org,
+		"bizz",
+		".org should contain value set on constructor",
+	);
 });
 
-tap.test("Asset() - Set .type property", (t) => {
-	const obj = new Asset();
-	obj.type = "pkg";
-	t.equal(obj.type, "pkg", ".type should contain value set on property");
-	t.end();
-});
-
-tap.test("Asset() - Set .type property with upper case characthers", (t) => {
-	const obj = new Asset();
-	obj.type = "PkG";
-	t.equal(
+test('Asset() - Set values to the argument "type" on the constructor in upper case', () => {
+	const obj = new Asset({
+		type: "PkG",
+	});
+	assert.strictEqual(
 		obj.type,
 		"pkg",
 		".type should contain value set on property in lower case",
 	);
-	t.end();
 });
 
-tap.test("Asset() - Set .size property", (t) => {
+test("Asset() - Set .integrity property", () => {
+	const obj = new Asset();
+	obj.integrity = "foo";
+	assert.strictEqual(
+		obj.integrity,
+		"foo",
+		".integrity should contain value set on property",
+	);
+});
+
+test("Asset() - Set .type property", () => {
+	const obj = new Asset();
+	obj.type = "pkg";
+	assert.strictEqual(
+		obj.type,
+		"pkg",
+		".type should contain value set on property",
+	);
+});
+
+test("Asset() - Set .type property with upper case characthers", () => {
+	const obj = new Asset();
+	obj.type = "PkG";
+	assert.strictEqual(
+		obj.type,
+		"pkg",
+		".type should contain value set on property in lower case",
+	);
+});
+
+test("Asset() - Set .size property", () => {
 	const obj = new Asset();
 	obj.size = 1234;
-	t.equal(obj.size, 1234, ".size should contain value set on property");
-	t.end();
+	assert.strictEqual(
+		obj.size,
+		1234,
+		".size should contain value set on property",
+	);
 });
 
-tap.test("Asset() - Stringify object to JSON", (t) => {
+test("Asset() - Stringify object to JSON", () => {
 	const obj = new Asset({
 		pathname: "/foo/bar.js",
 		version: "4.2.6",
@@ -129,22 +139,29 @@ tap.test("Asset() - Stringify object to JSON", (t) => {
 
 	const o = JSON.parse(JSON.stringify(obj));
 
-	t.equal(
+	assert.strictEqual(
 		o.integrity,
 		"foo",
 		".integrity should contain value set on origin object",
 	);
-	t.equal(
+	assert.strictEqual(
 		o.pathname,
 		"/foo/bar.js",
 		".pathname should contain value set on origin object",
 	);
-	t.equal(
+	assert.strictEqual(
 		o.mimeType,
 		"text/javascript",
 		'.mimeType should contain value matching type of file set on "pathname" on the origin object',
 	);
-	t.equal(o.type, "pkg", ".type should contain value set on origin object");
-	t.equal(o.size, 1234, ".size should contain value set on origin object");
-	t.end();
+	assert.strictEqual(
+		o.type,
+		"pkg",
+		".type should contain value set on origin object",
+	);
+	assert.strictEqual(
+		o.size,
+		1234,
+		".size should contain value set on origin object",
+	);
 });

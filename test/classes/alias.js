@@ -1,49 +1,66 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import Alias from "../../lib/classes/alias.js";
 
-tap.test("Alias() - Object type", (t) => {
+test("Alias() - Object type", () => {
 	const obj = new Alias();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object Alias]",
 		"should be Alias",
 	);
-	t.end();
 });
 
-tap.test("Alias() - Default property values", (t) => {
+test("Alias() - Default property values", () => {
 	const obj = new Alias();
-	t.equal(obj.version, "", ".version should be empty String");
-	t.equal(obj.alias, "", ".alias should be empty String");
-	t.equal(obj.name, "", ".name should be empty String");
-	t.equal(obj.type, "", ".type should be empty String");
-	t.equal(obj.org, "", ".org should be empty String");
-	t.end();
+	assert.strictEqual(obj.version, "", ".version should be empty String");
+	assert.strictEqual(obj.alias, "", ".alias should be empty String");
+	assert.strictEqual(obj.name, "", ".name should be empty String");
+	assert.strictEqual(obj.type, "", ".type should be empty String");
+	assert.strictEqual(obj.org, "", ".org should be empty String");
 });
 
-tap.test("Alias() - Set values to the arguments on the constructor", (t) => {
+test("Alias() - Set values to the arguments on the constructor", () => {
 	const obj = new Alias({
 		alias: "v1",
 		name: "buzz",
 		type: "pkg",
 		org: "bizz",
 	});
-	t.equal(obj.version, "", ".version should be empty String");
-	t.equal(obj.alias, "v1", ".alias should contain value set on constructor");
-	t.equal(obj.name, "buzz", ".name should contain value set on constructor");
-	t.equal(obj.type, "pkg", ".type should contain value set on constructor");
-	t.equal(obj.org, "bizz", ".org should contain value set on constructor");
-	t.end();
+	assert.strictEqual(obj.version, "", ".version should be empty String");
+	assert.strictEqual(
+		obj.alias,
+		"v1",
+		".alias should contain value set on constructor",
+	);
+	assert.strictEqual(
+		obj.name,
+		"buzz",
+		".name should contain value set on constructor",
+	);
+	assert.strictEqual(
+		obj.type,
+		"pkg",
+		".type should contain value set on constructor",
+	);
+	assert.strictEqual(
+		obj.org,
+		"bizz",
+		".org should contain value set on constructor",
+	);
 });
 
-tap.test("Alias() - Set a value on the .version property", (t) => {
+test("Alias() - Set a value on the .version property", () => {
 	const obj = new Alias();
 	obj.version = "2.0.0";
-	t.equal(obj.version, "2.0.0", ".version should be value set on .version");
-	t.end();
+	assert.strictEqual(
+		obj.version,
+		"2.0.0",
+		".version should be value set on .version",
+	);
 });
 
-tap.test("Alias() - Serialize object", (t) => {
+test("Alias() - Serialize object", () => {
 	const obj = new Alias({
 		alias: "v1",
 		name: "buzz",
@@ -54,10 +71,29 @@ tap.test("Alias() - Serialize object", (t) => {
 
 	const o = JSON.parse(JSON.stringify(obj));
 
-	t.equal(o.version, "2.0.0", ".version should be value set on .version");
-	t.equal(o.alias, "v1", ".alias should contain value set on constructor");
-	t.equal(o.name, "buzz", ".name should contain value set on constructor");
-	t.equal(o.type, "pkg", ".type should contain value set on constructor");
-	t.equal(o.org, "bizz", ".org should contain value set on constructor");
-	t.end();
+	assert.strictEqual(
+		o.version,
+		"2.0.0",
+		".version should be value set on .version",
+	);
+	assert.strictEqual(
+		o.alias,
+		"v1",
+		".alias should contain value set on constructor",
+	);
+	assert.strictEqual(
+		o.name,
+		"buzz",
+		".name should contain value set on constructor",
+	);
+	assert.strictEqual(
+		o.type,
+		"pkg",
+		".type should contain value set on constructor",
+	);
+	assert.strictEqual(
+		o.org,
+		"bizz",
+		".org should contain value set on constructor",
+	);
 });

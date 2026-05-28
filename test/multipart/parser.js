@@ -1,12 +1,15 @@
 import { PassThrough } from "node:stream";
 import HttpError from "http-errors";
 import { URL } from "node:url";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import fs from "node:fs";
 import Sink from "@eik/sink-memory";
 
 import MultipartParser from "../../lib/multipart/parser.js";
 import HttpIncoming from "../../lib/classes/http-incoming.js";
+
+const RE_UNEXPECTED_END_OF_FORM = /Unexpected end of form/;
 
 const FIXTURE_TAR = new URL("../../fixtures/package.tar", import.meta.url);
 const FIXTURE_BZ2 = new URL("../../fixtures/package.tar.bz2", import.meta.url);
@@ -20,17 +23,16 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("Parser() - Object type", (t) => {
+test("Parser() - Object type", () => {
 	const obj = new MultipartParser();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object MultipartParser]",
 		"should be MultipartParser",
 	);
-	t.end();
 });
 
-tap.test("Parser() - Request contains multiple files and fields", async (t) => {
+test("Parser() - Request contains multiple files and fields", async (t) => {
 	const multipart = new MultipartParser({
 		legalFields: ["foo", "bar"],
 		legalFiles: ["tgz", "tar"],
@@ -70,11 +72,10 @@ tap.test("Parser() - Request contains multiple files and fields", async (t) => {
 
 	const result = await multipart.parse(incoming);
 
-	t.matchSnapshot(result, "parsed request should match snapshot");
-	t.end();
+	t.assert.snapshot(result);
 });
 
-tap.test("Parser() - Request contains only files", async (t) => {
+test("Parser() - Request contains only files", async (t) => {
 	const multipart = new MultipartParser({
 		legalFiles: ["tgz", "tar"],
 		sink: new Sink(),
@@ -111,11 +112,10 @@ tap.test("Parser() - Request contains only files", async (t) => {
 
 	const result = await multipart.parse(incoming);
 
-	t.matchSnapshot(result, "parsed request should match snapshot");
-	t.end();
+	t.assert.snapshot(result);
 });
 
-tap.test("Parser() - Request contains only fields", async (t) => {
+test("Parser() - Request contains only fields", async (t) => {
 	const multipart = new MultipartParser({
 		legalFields: ["foo", "bar"],
 		sink: new Sink(),
@@ -140,11 +140,10 @@ tap.test("Parser() - Request contains only fields", async (t) => {
 
 	const result = await multipart.parse(incoming);
 
-	t.matchSnapshot(result, "parsed request should match snapshot");
-	t.end();
+	t.assert.snapshot(result);
 });
 
-tap.test("Parser() - Request is empty", async (t) => {
+test("Parser() - Request is empty", async () => {
 	const multipart = new MultipartParser({
 		legalFields: ["foo", "bar"],
 		legalFiles: ["tgz", "tar"],
@@ -167,15 +166,14 @@ tap.test("Parser() - Request is empty", async (t) => {
 
 	req.end();
 
-	t.rejects(
+	await assert.rejects(
 		multipart.parse(incoming),
-		new Error("Unexpected end of form"),
+		RE_UNEXPECTED_END_OF_FORM,
 		"should reject with orignal error",
 	);
-	t.end();
 });
 
-tap.test("Parser() - Request contain illegal field name", async (t) => {
+test("Parser() - Request contain illegal field name", async () => {
 	const multipart = new MultipartParser({
 		legalFields: ["foo", "bar"],
 		sink: new Sink(),
@@ -198,15 +196,14 @@ tap.test("Parser() - Request contain illegal field name", async (t) => {
 
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		multipart.parse(incoming),
-		new HttpError.BadRequest(),
+		HttpError.BadRequest,
 		"should reject with bad request error",
 	);
-	t.end();
 });
 
-tap.test("Parser() - Request contain illegal field name", async (t) => {
+test("Parser() - Request contain illegal file name", async () => {
 	const multipart = new MultipartParser({
 		legalFiles: ["tgz", "tar"],
 		sink: new Sink(),
@@ -241,15 +238,14 @@ tap.test("Parser() - Request contain illegal field name", async (t) => {
 
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		multipart.parse(incoming),
-		new HttpError.BadRequest(),
+		HttpError.BadRequest,
 		"should reject with bad request error",
 	);
-	t.end();
 });
 
-tap.test("Parser() - Request contain unprocessable file", async (t) => {
+test("Parser() - Request contain unprocessable file", async () => {
 	const multipart = new MultipartParser({
 		legalFiles: ["file"],
 		sink: new Sink(),
@@ -277,15 +273,14 @@ tap.test("Parser() - Request contain unprocessable file", async (t) => {
 
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		multipart.parse(incoming),
-		new HttpError.UnprocessableEntity(),
+		HttpError.UnprocessableEntity,
 		"should reject with unprocessable entity error",
 	);
-	t.end();
 });
 
-tap.test("Parser() - Request contain file which is too large", async (t) => {
+test("Parser() - Request contain file which is too large", async () => {
 	const multipart = new MultipartParser({
 		pkgMaxFileSize: 1024,
 		legalFiles: ["large", "small"],
@@ -321,10 +316,9 @@ tap.test("Parser() - Request contain file which is too large", async (t) => {
 
 	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
 
-	t.rejects(
+	await assert.rejects(
 		multipart.parse(incoming),
-		new HttpError.PayloadTooLarge(),
+		HttpError.PayloadTooLarge,
 		"should reject with payload too large error",
 	);
-	t.end();
 });

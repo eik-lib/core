@@ -1,36 +1,33 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import Author from "../../lib/classes/author.js";
 
-tap.test("Author() - Object type", (t) => {
+test("Author() - Object type", () => {
 	const obj = new Author();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object Author]",
 		"should be Author",
 	);
-	t.end();
 });
 
-tap.test("Author() - Default property values", (t) => {
+test("Author() - Default property values", () => {
 	const obj = new Author();
-	t.equal(obj.user, "", ".user should be empty String");
-	t.equal(obj.name, "", ".name should be empty String");
-	t.end();
+	assert.strictEqual(obj.user, "", ".user should be empty String");
+	assert.strictEqual(obj.name, "", ".name should be empty String");
 });
 
-tap.test("Author() - Set arguments on the constructor", (t) => {
+test("Author() - Set arguments on the constructor", () => {
 	const obj = new Author({ user: "foo", name: "bar" });
-	t.equal(obj.user, "foo", ".user should be the set value");
-	t.equal(obj.name, "bar", ".name should be the set value");
-	t.end();
+	assert.strictEqual(obj.user, "foo", ".user should be the set value");
+	assert.strictEqual(obj.name, "bar", ".name should be the set value");
 });
 
-tap.test("Author() - Serialize object", (t) => {
+test("Author() - Serialize object", () => {
 	const obj = new Author({ user: "foo", name: "bar" });
 
 	const o = JSON.parse(JSON.stringify(obj));
 
-	t.equal(o.user, "foo", ".user should be the set value");
-	t.equal(o.name, "bar", ".name should be the set value");
-	t.end();
+	assert.strictEqual(o.user, "foo", ".user should be the set value");
+	assert.strictEqual(o.name, "bar", ".name should be the set value");
 });

@@ -1,36 +1,33 @@
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 import Meta from "../../lib/classes/meta.js";
 
-tap.test("Meta() - Object type", (t) => {
+test("Meta() - Object type", () => {
 	const obj = new Meta();
-	t.equal(
+	assert.strictEqual(
 		Object.prototype.toString.call(obj),
 		"[object Meta]",
 		"should be Meta",
 	);
-	t.end();
 });
 
-tap.test("Meta() - Default property values", (t) => {
+test("Meta() - Default property values", () => {
 	const obj = new Meta();
-	t.equal(obj.value, "", ".value should be empty String");
-	t.equal(obj.name, "", ".name should be empty String");
-	t.end();
+	assert.strictEqual(obj.value, "", ".value should be empty String");
+	assert.strictEqual(obj.name, "", ".name should be empty String");
 });
 
-tap.test("Meta() - Set arguments on the constructor", (t) => {
+test("Meta() - Set arguments on the constructor", () => {
 	const obj = new Meta({ value: "foo", name: "bar" });
-	t.equal(obj.value, "foo", ".value should be the set value");
-	t.equal(obj.name, "bar", ".name should be the set value");
-	t.end();
+	assert.strictEqual(obj.value, "foo", ".value should be the set value");
+	assert.strictEqual(obj.name, "bar", ".name should be the set value");
 });
 
-tap.test("Meta() - Serialize object", (t) => {
+test("Meta() - Serialize object", () => {
 	const obj = new Meta({ value: "foo", name: "bar" });
 
 	const o = JSON.parse(JSON.stringify(obj));
 
-	t.equal(o.value, "foo", ".value should be the set value");
-	t.equal(o.name, "bar", ".name should be the set value");
-	t.end();
+	assert.strictEqual(o.value, "foo", ".value should be the set value");
+	assert.strictEqual(o.name, "bar", ".name should be the set value");
 });

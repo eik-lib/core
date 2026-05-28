@@ -1,5 +1,6 @@
 import { PassThrough, pipeline, Writable } from "node:stream";
-import tap from "tap";
+import { test } from "node:test";
+import assert from "node:assert/strict";
 
 import Handler from "../../lib/handlers/alias.get-v2.js";
 import Alias from "../../lib/classes/alias.js";
@@ -33,7 +34,7 @@ const Request = class Request extends PassThrough {
 	}
 };
 
-tap.test("v2 alias.get() - URL parameters is URL encoded", async (t) => {
+test("v2 alias.get() - URL parameters is URL encoded", async () => {
 	const sink = new Sink();
 
 	// create a file with payload content
@@ -62,11 +63,14 @@ tap.test("v2 alias.get() - URL parameters is URL encoded", async (t) => {
 
 	const result = await pipeInto(res.stream);
 
-	t.equal(res.statusCode, 200, "should respond with expected status code");
-	t.equal(
+	assert.strictEqual(
+		res.statusCode,
+		200,
+		"should respond with expected status code",
+	);
+	assert.strictEqual(
 		result,
 		"payload",
 		"should return file payload when alias is requested",
 	);
-	t.end();
 });
