@@ -1,3 +1,10 @@
+## [2.1.50](https://github.com/eik-lib/core/compare/v2.1.49...v2.1.50) (2026-05-29)
+
+
+### Bug Fixes
+
+* **deps:** update eik packages ([#590](https://github.com/eik-lib/core/issues/590)) ([d646f6a](https://github.com/eik-lib/core/commit/d646f6a78508e4dcd7cb379587857a2ab1a68401))
+
 ## [2.1.49](https://github.com/eik-lib/core/compare/v2.1.48...v2.1.49) (2026-05-28)
 
 
