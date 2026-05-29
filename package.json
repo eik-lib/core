@@ -31,7 +31,7 @@
   "dependencies": {
     "@eik/common": "5.1.29",
     "@eik/sink": "1.2.7",
-    "@eik/sink-file-system": "2.0.34",
+    "@eik/sink-file-system": "2.0.35",
     "@eik/sink-memory": "2.0.31",
     "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
@@ -44,7 +44,7 @@
     "tar": "7.5.15"
   },
   "devDependencies": {
-    "@eik/eslint-config": "2.0.6",
+    "@eik/eslint-config": "2.0.7",
     "@eik/prettier-config": "1.0.2",
     "@eik/semantic-release-config": "1.0.17",
     "@eik/typescript-config": "1.0.2",
