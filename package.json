@@ -41,7 +41,7 @@
     "original-url": "1.2.3",
     "semver": "7.8.1",
     "ssri": "14.0.0",
-    "tar": "7.5.15"
+    "tar": "7.5.16"
   },
   "devDependencies": {
     "@eik/eslint-config": "2.0.7",
