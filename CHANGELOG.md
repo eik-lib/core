@@ -1,3 +1,10 @@
+## [2.1.59](https://github.com/eik-lib/core/compare/v2.1.58...v2.1.59) (2026-06-09)
+
+
+### Bug Fixes
+
+* Improve unpacking files ([#598](https://github.com/eik-lib/core/issues/598)) ([41cd672](https://github.com/eik-lib/core/commit/41cd672db44af05e06acd2dc047bffb0ed2006a7))
+
 ## [2.1.58](https://github.com/eik-lib/core/compare/v2.1.57...v2.1.58) (2026-06-09)
 
 
