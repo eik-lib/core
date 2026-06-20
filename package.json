@@ -29,7 +29,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "5.1.33",
+    "@eik/common": "5.1.34",
     "@eik/sink": "1.2.7",
     "@eik/sink-file-system": "2.0.39",
     "@eik/sink-memory": "2.0.36",
@@ -44,7 +44,7 @@
     "tar": "7.5.16"
   },
   "devDependencies": {
-    "@eik/eslint-config": "2.0.7",
+    "@eik/eslint-config": "2.0.8",
     "@eik/prettier-config": "1.0.2",
     "@eik/semantic-release-config": "1.0.17",
     "@eik/typescript-config": "1.0.2",
