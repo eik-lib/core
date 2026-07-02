@@ -51,7 +51,7 @@
     "@types/readable-stream": "4.0.23",
     "eslint": "10.4.1",
     "mkdirp": "3.0.1",
-    "npm-run-all2": "9.0.1",
+    "npm-run-all2": "9.0.2",
     "prettier": "3.8.3",
     "semantic-release": "25.0.3",
     "typescript": "6.0.3"
