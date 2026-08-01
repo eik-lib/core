@@ -48,7 +48,7 @@
     "@eik/prettier-config": "1.0.2",
     "@eik/semantic-release-config": "1.0.17",
     "@eik/typescript-config": "1.0.2",
-    "@types/readable-stream": "4.0.23",
+    "@types/readable-stream": "4.0.24",
     "eslint": "10.4.1",
     "mkdirp": "3.0.1",
     "npm-run-all2": "9.0.2",
