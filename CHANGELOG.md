@@ -1,3 +1,10 @@
+## [2.1.70](https://github.com/eik-lib/core/compare/v2.1.69...v2.1.70) (2026-08-12)
+
+
+### Bug Fixes
+
+* health check now correctly throws when file exists after deletion ([db8cf84](https://github.com/eik-lib/core/commit/db8cf84d4f905d988ed3edf9de0bc421f7419ffe))
+
 ## [2.1.69](https://github.com/eik-lib/core/compare/v2.1.68...v2.1.69) (2026-07-25)
 
 
