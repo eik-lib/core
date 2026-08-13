@@ -44,9 +44,9 @@
     "tar": "7.5.22"
   },
   "devDependencies": {
-    "@eik/eslint-config": "2.0.9",
+    "@eik/eslint-config": "2.0.15",
     "@eik/prettier-config": "1.0.2",
-    "@eik/semantic-release-config": "1.0.17",
+    "@eik/semantic-release-config": "1.0.18",
     "@eik/typescript-config": "1.0.2",
     "@types/readable-stream": "4.0.24",
     "eslint": "10.4.1",
