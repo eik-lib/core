@@ -1,3 +1,10 @@
+## [2.1.71](https://github.com/eik-lib/core/compare/v2.1.70...v2.1.71) (2026-08-13)
+
+
+### Bug Fixes
+
+* log ERR_STREAM_PREMATURE_CLOSE at debug level in GET handlers ([#630](https://github.com/eik-lib/core/issues/630)) ([48a303b](https://github.com/eik-lib/core/commit/48a303b8ee0d5124eb0506fefbee648f141a3507))
+
 ## [2.1.70](https://github.com/eik-lib/core/compare/v2.1.69...v2.1.70) (2026-08-12)
 
 
