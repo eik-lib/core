@@ -37,7 +37,7 @@
     "abslog": "2.4.4",
     "busboy": "1.6.0",
     "http-errors": "2.0.1",
-    "mime": "4.1.0",
+    "mrmime": "2.0.1",
     "original-url": "1.2.3",
     "semver": "7.8.5",
     "ssri": "14.0.0",
