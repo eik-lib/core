@@ -328,6 +328,68 @@ test("Parser() - Request contain file which is too large", async () => {
 	);
 });
 
+test("Parser() - A warn log is emitted with package details when the file size limit is exceeded", async () => {
+	let warnMessage = "";
+	const logger = {
+		fatal: () => {},
+		error: () => {},
+		warn: (/** @type {string} */ msg) => {
+			warnMessage = msg;
+		},
+		info: () => {},
+		debug: () => {},
+		trace: () => {},
+	};
+
+	const multipart = new MultipartParser({
+		pkgMaxFileSize: 1024,
+		legalFiles: ["package"],
+		sink: new Sink(),
+		logger,
+	});
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	const incoming = new HttpIncoming(req, {
+		version: "2.0.0",
+		author: {},
+		type: "pkg",
+		name: "my-app",
+		org: "my-org",
+	});
+
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await assert.rejects(
+		multipart.parse(incoming),
+		HttpError.PayloadTooLarge,
+		"should reject with payload too large error",
+	);
+
+	assert.ok(
+		warnMessage.includes("my-app"),
+		"warn log should include the package name",
+	);
+	assert.ok(
+		warnMessage.includes("2.0.0"),
+		"warn log should include the package version",
+	);
+	assert.ok(
+		warnMessage.includes("1024"),
+		"warn log should include the configured size limit",
+	);
+});
+
 test("Parser() - In-flight sink writes are aborted when file size limit is exceeded", async () => {
 	const sink = new SinkTest();
 	// Delay write() returning its stream so _persistFile calls are guaranteed
