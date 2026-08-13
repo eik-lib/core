@@ -419,7 +419,9 @@ test("Parser() - eik.json in tar is captured on FormFile and not written to sink
 
 	const result = await multipart.parse(incoming);
 
-	const formFile = result.find((/** @type {any} */ item) => item.constructor.name === "FormFile");
+	const formFile = result.find(
+		(/** @type {any} */ item) => item.constructor.name === "FormFile",
+	);
 
 	assert.ok(formFile, "should have a FormFile result");
 	assert.ok(
@@ -477,7 +479,9 @@ test("Parser() - eikJson is null on FormFile when tar does not contain eik.json"
 
 	const result = await multipart.parse(incoming);
 
-	const formFile = result.find((/** @type {any} */ item) => item.constructor.name === "FormFile");
+	const formFile = result.find(
+		(/** @type {any} */ item) => item.constructor.name === "FormFile",
+	);
 
 	assert.ok(formFile, "should have a FormFile result");
 	assert.strictEqual(
