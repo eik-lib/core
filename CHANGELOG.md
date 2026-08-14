@@ -1,3 +1,10 @@
+## [2.1.76](https://github.com/eik-lib/core/compare/v2.1.75...v2.1.76) (2026-08-14)
+
+
+### Bug Fixes
+
+* propagate sink errors in _readVersions rather than silently resetting version history ([#635](https://github.com/eik-lib/core/issues/635)) ([b248bb7](https://github.com/eik-lib/core/commit/b248bb7b644ccd8fb7116157c44917b1ccf7990e))
+
 ## [2.1.75](https://github.com/eik-lib/core/compare/v2.1.74...v2.1.75) (2026-08-14)
 
 
