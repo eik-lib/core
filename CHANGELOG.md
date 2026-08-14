@@ -1,3 +1,10 @@
+## [2.1.73](https://github.com/eik-lib/core/compare/v2.1.72...v2.1.73) (2026-08-14)
+
+
+### Bug Fixes
+
+* write eik.json server-side as the final committed marker for package uploads ([#632](https://github.com/eik-lib/core/issues/632)) ([4461f76](https://github.com/eik-lib/core/commit/4461f76881886992db70848d42c7d6a199397c8f)), closes [#4](https://github.com/eik-lib/core/issues/4) [#5](https://github.com/eik-lib/core/issues/5)
+
 ## [2.1.72](https://github.com/eik-lib/core/compare/v2.1.71...v2.1.72) (2026-08-14)
 
 
