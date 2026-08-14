@@ -1,3 +1,10 @@
+## [2.1.74](https://github.com/eik-lib/core/compare/v2.1.73...v2.1.74) (2026-08-14)
+
+
+### Bug Fixes
+
+* prevent process crash on second busboy error and fix UTF-8 chunk corruption ([#633](https://github.com/eik-lib/core/issues/633)) ([9f5e3ec](https://github.com/eik-lib/core/commit/9f5e3ecab5ea8ceed16a0826c0c9c1824e68beac)), closes [#9](https://github.com/eik-lib/core/issues/9) [#11](https://github.com/eik-lib/core/issues/11)
+
 ## [2.1.73](https://github.com/eik-lib/core/compare/v2.1.72...v2.1.73) (2026-08-14)
 
 
