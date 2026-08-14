@@ -20,6 +20,10 @@ const FIXTURE_SMALL_PKG = new URL(
 	"../../fixtures/archive-small.tgz",
 	import.meta.url,
 );
+const FIXTURE_WITH_EIK_JSON = new URL(
+	"../../fixtures/archive-with-eik-json.tgz",
+	import.meta.url,
+);
 
 const Request = class Request extends PassThrough {
 	constructor({ headers = {} } = {}) {
@@ -443,5 +447,108 @@ test("Parser() - In-flight sink writes are aborted when file size limit is excee
 		sink.dump().length,
 		0,
 		"should not commit any asset writes to the sink when the upload is aborted",
+	);
+});
+
+test("Parser() - eik.json in tar is captured on FormFile and not written to sink", async () => {
+	const sink = new SinkTest();
+	const multipart = new MultipartParser({
+		legalFiles: ["package"],
+		sink,
+	});
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_WITH_EIK_JSON)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	const incoming = new HttpIncoming(req, {
+		version: "1.1.1",
+		author: {},
+		type: "pkg",
+		name: "buz",
+		org: "biz",
+	});
+
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	const result = await multipart.parse(incoming);
+
+	const formFile = result.find(
+		(/** @type {any} */ item) => item.constructor.name === "FormFile",
+	);
+
+	assert.ok(formFile, "should have a FormFile result");
+	assert.ok(
+		formFile.eikJson !== null,
+		"FormFile should have eikJson populated",
+	);
+	assert.strictEqual(
+		formFile.eikJson.name,
+		"test-pkg",
+		"eikJson should contain the name field from the tar",
+	);
+	assert.strictEqual(
+		formFile.eikJson.server,
+		"http://localhost",
+		"eikJson should contain the server field from the tar",
+	);
+
+	// eik.json must NOT be written to the sink — it is the handler's job
+	// to write it server-side as the final committed marker.
+	assert.strictEqual(
+		sink.get("/biz/pkg/buz/1.1.1/eik.json"),
+		null,
+		"eik.json should not be written to the sink by the parser",
+	);
+});
+
+test("Parser() - eikJson is null on FormFile when tar does not contain eik.json", async () => {
+	const sink = new Sink();
+	const multipart = new MultipartParser({
+		legalFiles: ["package"],
+		sink,
+	});
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	const incoming = new HttpIncoming(req, {
+		version: "1.1.1",
+		author: {},
+		type: "pkg",
+		name: "buz",
+		org: "biz",
+	});
+
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	const result = await multipart.parse(incoming);
+
+	const formFile = result.find(
+		(/** @type {any} */ item) => item.constructor.name === "FormFile",
+	);
+
+	assert.ok(formFile, "should have a FormFile result");
+	assert.strictEqual(
+		formFile.eikJson,
+		null,
+		"eikJson should be null when the tar contains no eik.json",
 	);
 });

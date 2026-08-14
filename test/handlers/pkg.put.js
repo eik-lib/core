@@ -13,6 +13,10 @@ const FIXTURE_BZ2 = new URL("../../fixtures/package.tar.bz2", import.meta.url);
 const FIXTURE_GZ = new URL("../../fixtures/package.tar.gz", import.meta.url);
 
 const FIXTURE_PKG = new URL("../../fixtures/archive.tgz", import.meta.url);
+const FIXTURE_PKG_WITH_EIK_JSON = new URL(
+	"../../fixtures/archive-with-eik-json.tgz",
+	import.meta.url,
+);
 const FIXTURE_MAP = new URL("../../fixtures/import-map.json", import.meta.url);
 
 const Request = class Request extends PassThrough {
@@ -302,6 +306,186 @@ test("pkg.put() - Form field is not valid", async () => {
 		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
 		HttpError.BadRequest,
 		"should reject with bad request error",
+	);
+});
+
+test("pkg.put() - Server writes eik.json to sink after successful upload", async () => {
+	const sink = new Sink();
+	const h = new Handler({ sink });
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await h.handler(req, "anton", "pkg", "fuzz", "1.0.2");
+
+	const raw = sink.get("/local/pkg/fuzz/1.0.2/eik.json");
+	assert.ok(raw !== null, "eik.json should be written to the sink");
+
+	const written = JSON.parse(raw);
+	assert.strictEqual(
+		written.name,
+		"fuzz",
+		"should have server-authoritative name",
+	);
+	assert.strictEqual(
+		written.version,
+		"1.0.2",
+		"should have server-authoritative version",
+	);
+	assert.strictEqual(
+		written.type,
+		"pkg",
+		"should have server-authoritative type",
+	);
+});
+
+test("pkg.put() - Server merges client eik.json fields into the server-written eik.json", async () => {
+	const sink = new Sink();
+	const h = new Handler({ sink });
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG_WITH_EIK_JSON)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await h.handler(req, "anton", "pkg", "fuzz", "1.0.2");
+
+	const raw = sink.get("/local/pkg/fuzz/1.0.2/eik.json");
+	assert.ok(raw !== null, "eik.json should be written to the sink");
+
+	const written = JSON.parse(raw);
+
+	// Server-authoritative fields override client values
+	assert.strictEqual(
+		written.name,
+		"fuzz",
+		"server-authoritative name from URL path should override client value",
+	);
+	assert.strictEqual(
+		written.version,
+		"1.0.2",
+		"server-authoritative version from URL path should override client value",
+	);
+	assert.strictEqual(
+		written.type,
+		"pkg",
+		"should have server-authoritative type",
+	);
+
+	// Client fields are preserved in the merged output
+	assert.strictEqual(
+		written.server,
+		"http://localhost",
+		"client field 'server' should be preserved in the merged eik.json",
+	);
+	assert.ok(
+		written.files !== undefined,
+		"client field 'files' should be preserved in the merged eik.json",
+	);
+});
+
+test("pkg.put() - Server writes eik.json even when tar contains no eik.json", async () => {
+	const sink = new Sink();
+	const h = new Handler({ sink });
+
+	// FIXTURE_PKG (archive.tgz) contains no eik.json
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await h.handler(req, "anton", "pkg", "fuzz", "1.0.2");
+
+	const raw = sink.get("/local/pkg/fuzz/1.0.2/eik.json");
+	assert.ok(
+		raw !== null,
+		"eik.json should be written to the sink even when not provided in the tar",
+	);
+
+	const written = JSON.parse(raw);
+	assert.strictEqual(
+		written.name,
+		"fuzz",
+		"should contain server-authoritative name",
+	);
+	assert.strictEqual(
+		written.version,
+		"1.0.2",
+		"should contain server-authoritative version",
+	);
+	assert.strictEqual(
+		written.type,
+		"pkg",
+		"should contain server-authoritative type",
+	);
+});
+
+test("pkg.put() - eik.json in sink acts as committed marker preventing re-upload", async () => {
+	const sink = new Sink();
+
+	// Upload version 1.0.2 successfully
+	const h = new Handler({ sink });
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+	await h.handler(req, "anton", "pkg", "fuzz", "1.0.2");
+
+	// Retry the same version — should be rejected with Conflict
+	const formData2 = new FormData();
+	formData2.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_PKG)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+	const _response2 = new Response(formData2);
+	const headers2 = { "content-type": _response2.headers.get("content-type") };
+	const req2 = new Request({ headers: headers2 });
+	_response2.arrayBuffer().then((buf) => req2.end(Buffer.from(buf)));
+
+	await assert.rejects(
+		h.handler(req2, "anton", "pkg", "fuzz", "1.0.2"),
+		HttpError.Conflict,
+		"re-uploading the same version should be rejected once eik.json is committed",
 	);
 });
 
