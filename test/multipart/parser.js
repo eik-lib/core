@@ -552,3 +552,54 @@ test("Parser() - eikJson is null on FormFile when tar does not contain eik.json"
 		"eikJson should be null when the tar contains no eik.json",
 	);
 });
+
+test("Parser() - second busboy error from concurrent file failure does not cause unhandled exception", async () => {
+	// Regression test for the busboy.once("error") crash:
+	// When an illegal field fires a first error (removing the .once listener)
+	// and a concurrent _handleFile failure then tries to emit a second error,
+	// there must be no zero-listener throw. The parse should reject cleanly
+	// with the first error and the test process must not crash.
+	const multipart = new MultipartParser({
+		legalFields: ["foo"],
+		legalFiles: ["file"],
+		sink: new Sink(),
+	});
+
+	const formData = new FormData();
+	// Illegal field comes first in the body — busboy processes it
+	// synchronously, firing the first error and removing the .once listener.
+	formData.append("xyz", "value");
+	// The file uses an incompatible archive format so _handleFile will fail
+	// asynchronously and emit a second error onto busboy.
+	formData.append(
+		"file",
+		new Blob([fs.readFileSync(FIXTURE_BZ2)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar.bz2",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	const incoming = new HttpIncoming(req, {
+		version: "1.1.1",
+		author: {},
+		type: "pkg",
+		name: "buz",
+		org: "biz",
+	});
+
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await assert.rejects(
+		multipart.parse(incoming),
+		HttpError.BadRequest,
+		"should reject with the first error (illegal field name)",
+	);
+
+	// Give any background file processing time to complete and emit its
+	// second error — if that second error were unhandled it would crash the
+	// process and this await would never resolve.
+	await new Promise((resolve) => setTimeout(resolve, 50));
+});
