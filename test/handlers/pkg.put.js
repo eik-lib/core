@@ -516,3 +516,69 @@ test("pkg.put() - File exceeds legal file size limit", async () => {
 		"should reject with payload too large error",
 	);
 });
+
+test("pkg.put() - infrastructure error reading versions index propagates as 502 and does not overwrite version history", async () => {
+	// Regression test: _readVersions previously caught ALL errors and fell
+	// back to treating the package as brand new, causing _writeVersions to
+	// overwrite versions.json with only the new version and silently erase
+	// all prior version history. A transient sink error (e.g. GCS 500)
+	// during the read was sufficient to trigger this.
+	const inner = new Sink();
+	inner.set(
+		"/local/pkg/fuzz/versions.json",
+		JSON.stringify({
+			versions: [[1, { version: "1.0.8", integrity: "sha512-existinghash" }]],
+			type: "pkg",
+			name: "fuzz",
+			org: "local",
+		}),
+	);
+
+	// Wrap the sink so that exist() resolves (the file is present) but
+	// read() throws a generic infrastructure error for versions.json.
+	const faultySink = {
+		write: inner.write.bind(inner),
+		read: (/** @type {string} */ filePath) => {
+			if (filePath === "/local/pkg/fuzz/versions.json") {
+				return Promise.reject(new Error("Simulated infrastructure error"));
+			}
+			return inner.read(filePath);
+		},
+		exist: inner.exist.bind(inner),
+		delete: inner.delete.bind(inner),
+		get metrics() {
+			return inner.metrics;
+		},
+	};
+
+	const h = new Handler({ sink: /** @type {any} */ (faultySink) });
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await assert.rejects(
+		h.handler(req, "anton", "pkg", "fuzz", "1.0.9"),
+		HttpError.BadGateway,
+		"should reject with 502 when the versions index cannot be read",
+	);
+
+	// The original versions.json content must be unchanged.
+	const raw = inner.get("/local/pkg/fuzz/versions.json");
+	const parsed = JSON.parse(/** @type {string} */ (raw));
+	assert.strictEqual(
+		parsed.versions[0][0],
+		1,
+		"existing version history should be preserved",
+	);
+});
