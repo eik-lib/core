@@ -1,3 +1,10 @@
+## [2.1.72](https://github.com/eik-lib/core/compare/v2.1.71...v2.1.72) (2026-08-14)
+
+
+### Bug Fixes
+
+* upgrade size-limit log from info to warn and include package details ([#631](https://github.com/eik-lib/core/issues/631)) ([e324b5e](https://github.com/eik-lib/core/commit/e324b5e6cab52c788535d3c54b888e0514e40546))
+
 ## [2.1.71](https://github.com/eik-lib/core/compare/v2.1.70...v2.1.71) (2026-08-13)
 
 
