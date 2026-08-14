@@ -1,4 +1,4 @@
-import { PassThrough } from "node:stream";
+import { PassThrough, Writable } from "node:stream";
 import HttpError from "http-errors";
 import { URL } from "node:url";
 import { test } from "node:test";
@@ -22,6 +22,10 @@ const FIXTURE_SMALL_PKG = new URL(
 );
 const FIXTURE_WITH_EIK_JSON = new URL(
 	"../../fixtures/archive-with-eik-json.tgz",
+	import.meta.url,
+);
+const FIXTURE_MANY_FILES = new URL(
+	"../../fixtures/archive-many-files.tgz",
 	import.meta.url,
 );
 
@@ -602,4 +606,92 @@ test("Parser() - second busboy error from concurrent file failure does not cause
 	// second error — if that second error were unhandled it would crash the
 	// process and this await would never resolve.
 	await new Promise((resolve) => setTimeout(resolve, 50));
+});
+
+test("Parser() - _handleFile caps concurrent sink writes to avoid exhausting connections and file descriptors", async () => {
+	// The concurrency cap inside _handleFile. This value must match the
+	// MAX_CONCURRENT_WRITES constant in the implementation.
+	const MAX_CONCURRENT_WRITES = 16;
+
+	let activeWrites = 0;
+	let peakActiveWrites = 0;
+
+	// Simulates a real sink (e.g. GCS) where:
+	//   - write() resolves immediately (just creates the upload stream object)
+	//   - data drains through the stream without backpressure
+	//   - but the stream stays "open" (final() is delayed) while data uploads
+	//
+	// This means multiple entries can be in-flight simultaneously, and the
+	// peak active count reflects real concurrent open upload streams.
+	const trackingSink = {
+		write() {
+			activeWrites++;
+			if (activeWrites > peakActiveWrites) {
+				peakActiveWrites = activeWrites;
+			}
+			return Promise.resolve(
+				new Writable({
+					write(chunk, _enc, cb) {
+						// Accept data instantly — no backpressure — so the tar parser
+						// can advance to the next entry before this one completes.
+						cb();
+					},
+					final(cb) {
+						// Delay completion to simulate an in-progress upload.
+						// During this window other entries can dispatch and open
+						// their own streams, making peak concurrency observable.
+						setTimeout(() => {
+							activeWrites--;
+							cb();
+						}, 20);
+					},
+				}),
+			);
+		},
+		exist() {
+			return Promise.resolve();
+		},
+		read() {
+			return Promise.reject(new Error("not implemented"));
+		},
+		delete() {
+			return Promise.resolve();
+		},
+	};
+
+	const multipart = new MultipartParser({
+		legalFiles: ["package"],
+		sink: /** @type {any} */ (trackingSink),
+	});
+
+	// The fixture contains 30 files — well above the expected concurrency cap
+	// of 16. Without the cap all 30 write() calls open simultaneously.
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_MANY_FILES)], {
+			type: "application/octet-stream",
+		}),
+		"archive.tgz",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	const incoming = new HttpIncoming(req, {
+		version: "1.0.0",
+		author: {},
+		type: "pkg",
+		name: "many-files",
+		org: "test-org",
+	});
+
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await multipart.parse(incoming);
+
+	assert.ok(
+		peakActiveWrites <= MAX_CONCURRENT_WRITES,
+		`Peak concurrent sink writes (${peakActiveWrites}) exceeded the cap of ${MAX_CONCURRENT_WRITES}`,
+	);
 });
