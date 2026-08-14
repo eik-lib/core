@@ -1,3 +1,10 @@
+## [2.1.75](https://github.com/eik-lib/core/compare/v2.1.74...v2.1.75) (2026-08-14)
+
+
+### Bug Fixes
+
+* cap concurrent sink write streams in _handleFile to 16 ([#634](https://github.com/eik-lib/core/issues/634)) ([c16c463](https://github.com/eik-lib/core/commit/c16c463f567b43fc617886e7f5d52acc1fd3d075))
+
 ## [2.1.74](https://github.com/eik-lib/core/compare/v2.1.73...v2.1.74) (2026-08-14)
 
 
