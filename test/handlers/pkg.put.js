@@ -620,3 +620,60 @@ test("pkg.put() - eik.json is included in the package file list after upload", a
 		`eik.json should be listed in package files, got: ${JSON.stringify(filePathnames)}`,
 	);
 });
+
+test("pkg.put() - ALREADY_EXISTS from eik.json write returns 409 Conflict", async () => {
+	// Regression for race condition #1: two replicas both pass _readVersion
+	// (eik.json absent) then race to write it. The second replica receives
+	// ALREADY_EXISTS from the sink's ifNotExists write and must return 409.
+	const inner = new Sink();
+
+	const faultySink = {
+		write: (
+			/** @type {string} */ filePath,
+			/** @type {string} */ contentType,
+			/** @type {any} */ options,
+		) => {
+			if (options && options.ifNotExists && filePath.endsWith("eik.json")) {
+				return Promise.reject(
+					Object.assign(new Error("File already exists"), {
+						code: "ALREADY_EXISTS",
+					}),
+				);
+			}
+			return inner.write(filePath, contentType);
+		},
+		read: inner.read.bind(inner),
+		exist: (/** @type {string} */ filePath) => {
+			if (filePath.endsWith("eik.json")) {
+				return Promise.reject(new Error("File does not exist"));
+			}
+			return inner.exist(filePath);
+		},
+		delete: inner.delete.bind(inner),
+		get metrics() {
+			return inner.metrics;
+		},
+	};
+
+	const h = new Handler({ sink: /** @type {any} */ (faultySink) });
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await assert.rejects(
+		h.handler(req, "anton", "pkg", "fuzz", "8.4.1"),
+		HttpError.Conflict,
+		"ALREADY_EXISTS from ifNotExists write must map to 409 Conflict",
+	);
+});
