@@ -1,3 +1,10 @@
+## [2.1.78](https://github.com/eik-lib/core/compare/v2.1.77...v2.1.78) (2026-08-17)
+
+
+### Bug Fixes
+
+* include server-written eik.json in the package asset list ([#637](https://github.com/eik-lib/core/issues/637)) ([42ea8c6](https://github.com/eik-lib/core/commit/42ea8c6d328f2e35c2ba8618f4c3e74d48454ed2))
+
 ## [2.1.77](https://github.com/eik-lib/core/compare/v2.1.76...v2.1.77) (2026-08-17)
 
 
