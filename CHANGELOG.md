@@ -1,3 +1,10 @@
+## [2.1.77](https://github.com/eik-lib/core/compare/v2.1.76...v2.1.77) (2026-08-17)
+
+
+### Bug Fixes
+
+* propagate sink errors in versions.get as 502 rather than 404 ([#636](https://github.com/eik-lib/core/issues/636)) ([21b8619](https://github.com/eik-lib/core/commit/21b8619eeff9150914adcfa2ae6a233e2c10ec60))
+
 ## [2.1.76](https://github.com/eik-lib/core/compare/v2.1.75...v2.1.76) (2026-08-14)
 
 
