@@ -582,3 +582,41 @@ test("pkg.put() - infrastructure error reading versions index propagates as 502 
 		"existing version history should be preserved",
 	);
 });
+
+test("pkg.put() - eik.json is included in the package file list after upload", async () => {
+	// Regression: PR #632 moved eik.json from being extracted through the
+	// normal _persistFile path (which records the asset) to being written
+	// server-side after the upload. The server-written eik.json was not
+	// added to the package asset list, so it disappeared from the files
+	// returned in {version}.package.json.
+	const sink = new Sink();
+	const h = new Handler({ sink });
+
+	const formData = new FormData();
+	formData.append(
+		"package",
+		new Blob([fs.readFileSync(FIXTURE_TAR)], {
+			type: "application/octet-stream",
+		}),
+		"package.tar",
+	);
+
+	const _response = new Response(formData);
+	const headers = { "content-type": _response.headers.get("content-type") };
+	const req = new Request({ headers });
+	_response.arrayBuffer().then((buf) => req.end(Buffer.from(buf)));
+
+	await h.handler(req, "anton", "pkg", "fuzz", "8.4.1");
+
+	// The package metadata file records all assets including eik.json.
+	const raw = sink.get("/local/pkg/fuzz/8.4.1.package.json");
+	assert.ok(raw !== null, "package metadata file should be written to sink");
+
+	const meta = JSON.parse(/** @type {string} */ (raw));
+	const filePathnames = meta.files.map((/** @type {any} */ f) => f.pathname);
+
+	assert.ok(
+		filePathnames.includes("/eik.json"),
+		`eik.json should be listed in package files, got: ${JSON.stringify(filePathnames)}`,
+	);
+});
