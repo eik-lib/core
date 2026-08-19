@@ -1,3 +1,10 @@
+## [2.1.79](https://github.com/eik-lib/core/compare/v2.1.78...v2.1.79) (2026-08-19)
+
+
+### Bug Fixes
+
+* use atomic sink writes to prevent concurrent upload races ([#638](https://github.com/eik-lib/core/issues/638)) ([cf29a68](https://github.com/eik-lib/core/commit/cf29a6838622360f8c80bc83c86d07536d580f33)), closes [#1](https://github.com/eik-lib/core/issues/1) [#2](https://github.com/eik-lib/core/issues/2) [#3](https://github.com/eik-lib/core/issues/3) [#6](https://github.com/eik-lib/core/issues/6)
+
 ## [2.1.78](https://github.com/eik-lib/core/compare/v2.1.77...v2.1.78) (2026-08-17)
 
 
