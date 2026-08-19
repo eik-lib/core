@@ -1,3 +1,10 @@
+## [2.1.82](https://github.com/eik-lib/core/compare/v2.1.81...v2.1.82) (2026-08-19)
+
+
+### Bug Fixes
+
+* reclassify GCS 412 errors in writeJSONWithOptions rather than via stream re-emission ([#641](https://github.com/eik-lib/core/issues/641)) ([5094866](https://github.com/eik-lib/core/commit/5094866a9f47cfd75a3252e3b9d160df6bfc442b))
+
 ## [2.1.81](https://github.com/eik-lib/core/compare/v2.1.80...v2.1.81) (2026-08-19)
 
 
