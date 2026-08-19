@@ -1,3 +1,10 @@
+## [2.1.83](https://github.com/eik-lib/core/compare/v2.1.82...v2.1.83) (2026-08-19)
+
+
+### Bug Fixes
+
+* reduce MAX_CONCURRENT_WRITES from 16 to 8 ([#642](https://github.com/eik-lib/core/issues/642)) ([8ab90c6](https://github.com/eik-lib/core/commit/8ab90c62123ac0d2001d8e0dff5ae4d21a194531))
+
 ## [2.1.82](https://github.com/eik-lib/core/compare/v2.1.81...v2.1.82) (2026-08-19)
 
 
