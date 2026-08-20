@@ -1,38 +1,3 @@
-## [2.1.83](https://github.com/eik-lib/core/compare/v2.1.82...v2.1.83) (2026-08-19)
-
-
-### Bug Fixes
-
-* reduce MAX_CONCURRENT_WRITES from 16 to 8 ([#642](https://github.com/eik-lib/core/issues/642)) ([8ab90c6](https://github.com/eik-lib/core/commit/8ab90c62123ac0d2001d8e0dff5ae4d21a194531))
-
-## [2.1.82](https://github.com/eik-lib/core/compare/v2.1.81...v2.1.82) (2026-08-19)
-
-
-### Bug Fixes
-
-* reclassify GCS 412 errors in writeJSONWithOptions rather than via stream re-emission ([#641](https://github.com/eik-lib/core/issues/641)) ([5094866](https://github.com/eik-lib/core/commit/5094866a9f47cfd75a3252e3b9d160df6bfc442b))
-
-## [2.1.81](https://github.com/eik-lib/core/compare/v2.1.80...v2.1.81) (2026-08-19)
-
-
-### Bug Fixes
-
-* **deps:** update eik packages to v2.1.0 ([#640](https://github.com/eik-lib/core/issues/640)) ([4ee2d69](https://github.com/eik-lib/core/commit/4ee2d69491e287f5a719973c3b20cf11f9c327ad))
-
-## [2.1.80](https://github.com/eik-lib/core/compare/v2.1.79...v2.1.80) (2026-08-19)
-
-
-### Bug Fixes
-
-* **deps:** update eik packages ([#639](https://github.com/eik-lib/core/issues/639)) ([4e0aa6c](https://github.com/eik-lib/core/commit/4e0aa6caf9630a79af03dd2889392d60cf8b276f))
-
-## [2.1.79](https://github.com/eik-lib/core/compare/v2.1.78...v2.1.79) (2026-08-19)
-
-
-### Bug Fixes
-
-* use atomic sink writes to prevent concurrent upload races ([#638](https://github.com/eik-lib/core/issues/638)) ([cf29a68](https://github.com/eik-lib/core/commit/cf29a6838622360f8c80bc83c86d07536d580f33)), closes [#1](https://github.com/eik-lib/core/issues/1) [#2](https://github.com/eik-lib/core/issues/2) [#3](https://github.com/eik-lib/core/issues/3) [#6](https://github.com/eik-lib/core/issues/6)
-
 ## [2.1.78](https://github.com/eik-lib/core/compare/v2.1.77...v2.1.78) (2026-08-17)
 
 
