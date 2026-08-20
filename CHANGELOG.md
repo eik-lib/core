@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/eik-lib/core/compare/v2.1.83...v2.2.0) (2026-08-20)
+
+
+### Features
+
+* revert to pre-atomic-write implementation ([#643](https://github.com/eik-lib/core/issues/643)) ([add3724](https://github.com/eik-lib/core/commit/add3724d2150ae24e8fe212648f9cefb30cdbe1b)), closes [#1](https://github.com/eik-lib/core/issues/1) [#2](https://github.com/eik-lib/core/issues/2) [#3](https://github.com/eik-lib/core/issues/3) [#6](https://github.com/eik-lib/core/issues/6)
+
 ## [2.1.78](https://github.com/eik-lib/core/compare/v2.1.77...v2.1.78) (2026-08-17)
 
 
