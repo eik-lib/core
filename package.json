@@ -29,7 +29,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@eik/common": "5.2.0",
     "@eik/sink": "1.2.7",
     "@eik/sink-file-system": "2.2.0",
     "@eik/sink-memory": "2.2.1",
@@ -44,6 +43,7 @@
     "tar": "7.5.22"
   },
   "devDependencies": {
+    "@eik/common": "5.2.0",
     "@eik/eslint-config": "2.0.15",
     "@eik/prettier-config": "1.0.2",
     "@eik/semantic-release-config": "1.0.19",
