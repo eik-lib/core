@@ -43,7 +43,7 @@
     "tar": "7.5.22"
   },
   "devDependencies": {
-    "@eik/common": "5.2.0",
+    "@eik/common": "5.2.1",
     "@eik/eslint-config": "2.0.15",
     "@eik/prettier-config": "1.0.2",
     "@eik/semantic-release-config": "1.0.19",
