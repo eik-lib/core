@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/eik-lib/core/compare/v2.2.1...v2.2.2) (2026-08-21)
+
+
+### Bug Fixes
+
+* reject path traversal in alias extras and validate redirect location ([#645](https://github.com/eik-lib/core/issues/645)) ([be1a9ef](https://github.com/eik-lib/core/commit/be1a9ef13f520e10d9003fc5988e93d00e9d4d5c))
+
 ## [2.2.1](https://github.com/eik-lib/core/compare/v2.2.0...v2.2.1) (2026-08-20)
 
 
