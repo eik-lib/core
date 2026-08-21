@@ -45,3 +45,62 @@ test("alias.get() - URL parameters is URL encoded", async () => {
 		".location should be decoded",
 	);
 });
+
+// Regression: path traversal in extras escaped the package path and produced
+// a protocol-relative redirect target that resolves outside the expected origin.
+test("alias.get() - path traversal in extras via double-encoded slashes - should throw", async () => {
+	const sink = new Sink();
+	const alias = new Alias({
+		alias: "2",
+		name: "@warp-ds/css",
+		type: "pkg",
+		org: "localhost",
+	});
+	alias.version = "1.5.3";
+	sink.set("/local/pkg/@warp-ds/css/2.alias.json", JSON.stringify(alias));
+
+	const h = new Handler({ sink });
+	const req = new Request();
+
+	// Simulates the decoded extras from:
+	// /pkg/@warp-ds/css/v2/..%252F..%252F..%252F..%252F%255Cattacker.example
+	// after one round of percent-decoding by the HTTP framework.
+	await assert.rejects(
+		() =>
+			h.handler(
+				req,
+				"pkg",
+				"@warp-ds/css",
+				"2",
+				"..%2F..%2F..%2F..%2F%5Cattacker.example",
+			),
+		{ statusCode: 404 },
+	);
+});
+
+test("alias.get() - path traversal in extras via literal dots - should throw", async () => {
+	const sink = new Sink();
+	const alias = new Alias({
+		alias: "2",
+		name: "@warp-ds/css",
+		type: "pkg",
+		org: "localhost",
+	});
+	alias.version = "1.5.3";
+	sink.set("/local/pkg/@warp-ds/css/2.alias.json", JSON.stringify(alias));
+
+	const h = new Handler({ sink });
+	const req = new Request();
+
+	await assert.rejects(
+		() =>
+			h.handler(
+				req,
+				"pkg",
+				"@warp-ds/css",
+				"2",
+				"../../../../attacker.example",
+			),
+		{ statusCode: 404 },
+	);
+});
