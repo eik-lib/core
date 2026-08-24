@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/eik-lib/core/compare/v2.2.3...v2.3.0) (2026-08-24)
+
+
+### Features
+
+* add traceId to upload logs and improve observability ([#647](https://github.com/eik-lib/core/issues/647)) ([32f8d38](https://github.com/eik-lib/core/commit/32f8d38290fab142cad9febc8379cd12f791cd70))
+
 ## [2.2.3](https://github.com/eik-lib/core/compare/v2.2.2...v2.2.3) (2026-08-22)
 
 
