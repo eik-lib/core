@@ -30,8 +30,8 @@
   "license": "MIT",
   "dependencies": {
     "@eik/sink": "1.2.7",
-    "@eik/sink-file-system": "2.2.0",
-    "@eik/sink-memory": "2.2.2",
+    "@eik/sink-file-system": "2.3.0",
+    "@eik/sink-memory": "2.3.0",
     "@metrics/client": "2.5.5",
     "abslog": "2.4.4",
     "busboy": "1.6.0",
