@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/eik-lib/core/compare/v2.3.0...v2.4.0) (2026-08-25)
+
+
+### Features
+
+* replace pipeline-based reads and writes with buffer operations ([#649](https://github.com/eik-lib/core/issues/649)) ([ace642f](https://github.com/eik-lib/core/commit/ace642f66ac08abcbda86c51b181bf107df68c5c))
+
 # [2.3.0](https://github.com/eik-lib/core/compare/v2.2.3...v2.3.0) (2026-08-24)
 
 
