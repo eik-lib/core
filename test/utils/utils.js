@@ -1,7 +1,13 @@
 import { Readable } from "node:stream";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { decodeUriComponent, streamCollector } from "../../lib/utils/utils.js";
+import {
+	decodeUriComponent,
+	streamCollector,
+	readJSON,
+	writeJSON,
+} from "../../lib/utils/utils.js";
+import Sink from "../../lib/sinks/test.js";
 
 test(".decodeUriComponent()", () => {
 	assert.strictEqual(
@@ -46,5 +52,32 @@ test("streamCollector() - correctly reassembles multi-byte UTF-8 characters spli
 		result,
 		'{"k":"€"}',
 		"should correctly decode multi-byte UTF-8 characters split across chunks",
+	);
+});
+
+// Regression: readJSON and writeJSON must use readBuffer/writeBuffer (no pipeline)
+test("readJSON() - reads JSON via readBuffer without stream pipeline", async () => {
+	const sink = new Sink();
+	const filePath = "/test/data.json";
+	const data = { hello: "world" };
+	await sink.writeBuffer(
+		filePath,
+		"application/json",
+		Buffer.from(JSON.stringify(data)),
+	);
+	const result = await readJSON(sink, filePath);
+	assert.deepStrictEqual(result, data, "should return parsed JSON");
+});
+
+test("writeJSON() - writes JSON via writeBuffer without stream pipeline", async () => {
+	const sink = new Sink();
+	const filePath = "/test/write.json";
+	const data = { foo: "bar" };
+	await writeJSON(sink, filePath, data, "application/json");
+	const buf = await sink.readBuffer(filePath);
+	assert.deepStrictEqual(
+		JSON.parse(buf.toString()),
+		data,
+		"should have written correct JSON",
 	);
 });
