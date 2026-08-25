@@ -1,4 +1,4 @@
-import { PassThrough, Writable } from "node:stream";
+import { PassThrough } from "node:stream";
 import HttpError from "http-errors";
 import { URL } from "node:url";
 import { test } from "node:test";
@@ -616,36 +616,25 @@ test("Parser() - _handleFile caps concurrent sink writes to avoid exhausting con
 	let activeWrites = 0;
 	let peakActiveWrites = 0;
 
-	// Simulates a real sink (e.g. GCS) where:
-	//   - write() resolves immediately (just creates the upload stream object)
-	//   - data drains through the stream without backpressure
-	//   - but the stream stays "open" (final() is delayed) while data uploads
-	//
-	// This means multiple entries can be in-flight simultaneously, and the
-	// peak active count reflects real concurrent open upload streams.
+	// Simulates a real sink (e.g. GCS) where writeBuffer() is async and
+	// takes some time to complete, meaning multiple entries can be in-flight
+	// simultaneously. Peak active count reflects real concurrent uploads.
 	const trackingSink = {
-		write() {
+		writeBuffer() {
 			activeWrites++;
 			if (activeWrites > peakActiveWrites) {
 				peakActiveWrites = activeWrites;
 			}
-			return Promise.resolve(
-				new Writable({
-					write(chunk, _enc, cb) {
-						// Accept data instantly — no backpressure — so the tar parser
-						// can advance to the next entry before this one completes.
-						cb();
-					},
-					final(cb) {
-						// Delay completion to simulate an in-progress upload.
-						// During this window other entries can dispatch and open
-						// their own streams, making peak concurrency observable.
-						setTimeout(() => {
-							activeWrites--;
-							cb();
-						}, 20);
-					},
-				}),
+			// Delay completion to simulate an in-progress upload.
+			// During this window other entries can dispatch their own
+			// writeBuffer calls, making peak concurrency observable.
+			return /** @type {Promise<void>} */ (
+				new Promise((resolve) => {
+					setTimeout(() => {
+						activeWrites--;
+						resolve(undefined);
+					}, 20);
+				})
 			);
 		},
 		exist() {
