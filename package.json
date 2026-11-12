@@ -38,7 +38,7 @@
     "http-errors": "2.0.1",
     "mrmime": "2.0.1",
     "original-url": "1.2.3",
-    "semver": "7.8.5",
+    "semver": "7.8.6",
     "ssri": "14.0.0",
     "tar": "7.5.23"
   },
