@@ -40,7 +40,7 @@
     "original-url": "1.2.3",
     "semver": "7.8.6",
     "ssri": "14.0.0",
-    "tar": "7.5.24"
+    "tar": "8.0.2"
   },
   "devDependencies": {
     "@eik/common": "5.2.1",
